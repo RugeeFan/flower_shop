@@ -14,7 +14,8 @@ export default function ProductContainer({ product }: { product: Product }) {
       <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-8 lg:gap-10">
         {/* Carousel/Image Section */}
         <div className="w-full md:w-1/2">
-          <Carousel images={product.imgUrl} />
+        <Carousel images={Array.isArray(product.imgUrl) ? product.imgUrl : [product.imgUrl]} />
+
         </div>
 
         {/* Product Details Section */}

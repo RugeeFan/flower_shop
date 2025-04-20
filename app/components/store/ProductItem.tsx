@@ -1,17 +1,11 @@
 import { Link } from "@remix-run/react";
 import formatCurrency from "~/utils/formatCurrency";
+import { ProductListItem } from "~/types/product";
 
-interface ProductProps {
-  documentId: string;
-  name: string;
-  imgUrl: string;
-  price: number;
-}
-
-export default function ProductItem({ documentId, name, imgUrl, price }: ProductProps) {
+export default function ProductItem({ id, name, imgUrl, price }: ProductListItem) {
   return (
     <div className="cursor-pointer group">
-      <Link to={`/product/${documentId}`}>
+      <Link to={`/product/${id}`}>
         <div className="overflow-hidden aspect-square rounded-md mb-2">
           <img
             src={imgUrl}

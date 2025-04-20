@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+import { useDropdownStore } from "~/lib/useDropdownStore";
 
 // 创建显示文本到URL路径的映射
 const occasionToUrlMap: Record<string, string> = {
@@ -26,55 +27,46 @@ const occasionToUrlMap: Record<string, string> = {
 interface DropdownMenuProps {
   title: string;
   items: string[];
-  isOpen: boolean;
-  onToggle: () => void;
   isMobile?: boolean;
-  onClose?: () => void;
 }
 
-export default function DropdownMenu({ 
-  title, 
-  items, 
-  isOpen, 
-  onToggle, 
+export default function DropdownMenu({
+  title,
+  items,
   isMobile = false,
-  onClose = () => {}
 }: DropdownMenuProps) {
-  // 获取URL路径，如果没有映射则使用小写并替换空格为连字符
+  const isOpen = useDropdownStore((state) => state.isOpen);
+  const toggle = useDropdownStore((state) => state.toggle);
+  const close = useDropdownStore((state) => state.close);
+
   const getUrlPath = (item: string) => {
-    return occasionToUrlMap[item] || item.toLowerCase().replace(/\s+/g, '-');
+    return occasionToUrlMap[item] || item.toLowerCase().replace(/\s+/g, "-");
   };
 
-  // 处理链接点击，关闭下拉菜单
   const handleLinkClick = () => {
-    if (isOpen) {
-      onClose();
-    }
+    close();
   };
 
-  // 只在桌面版使用这个组件的下拉功能
-  // 移动版的下拉功能由 NavBar 组件处理
   if (isMobile) {
     return (
       <div
         className="flex items-center gap-1 cursor-pointer text-primary hover:text-primary/80 transition-colors"
-        onClick={onToggle}
+        onClick={toggle}
       >
         <span>{title}</span>
-        <i className={`ri-arrow-down-s-line transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>
+        <i className={`ri-arrow-down-s-line transition-transform ${isOpen ? "rotate-180" : ""}`}></i>
       </div>
     );
   }
 
-  // 桌面版下拉菜单
   return (
     <div className="relative group">
       <div
         className="flex items-center gap-1 cursor-pointer text-primary hover:text-primary/80 transition-colors"
-        onClick={onToggle}
+        onClick={toggle}
       >
         <span>{title}</span>
-        <i className={`ri-arrow-down-s-line transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>
+        <i className={`ri-arrow-down-s-line transition-transform ${isOpen ? "rotate-180" : ""}`}></i>
       </div>
 
       {isOpen && (
@@ -95,4 +87,4 @@ export default function DropdownMenu({
       )}
     </div>
   );
-} 
+}

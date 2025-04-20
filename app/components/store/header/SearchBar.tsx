@@ -1,4 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "@remix-run/react";
+
+interface ProductResult {
+  id: string;
+  name: string;
+  imgUrl: string;
+}
 
 interface SearchBarProps {
   onClose: () => void;
@@ -6,29 +13,35 @@ interface SearchBarProps {
 
 export default function SearchBar({ onClose }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState<ProductResult[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
-  // 组件挂载时自动聚焦输入框
   useEffect(() => {
     inputRef.current?.focus();
-
-    // 添加 ESC 键关闭搜索栏
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleEsc);
-    return () => {
-      document.removeEventListener('keydown', handleEsc);
-    };
+    const handleEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: 实现搜索逻辑
-    console.log('Searching for:', searchTerm);
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if (searchTerm.trim()) {
+        fetch(`/api/search-products?q=${encodeURIComponent(searchTerm)}`)
+          .then(res => res.json())
+          .then(data => setResults(data))
+          .catch(() => setResults([]));
+      } else {
+        setResults([]);
+      }
+    }, 300); // debounce
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm]);
+
+  const handleSelect = (id: string) => {
+    onClose();
+    navigate(`/product/${id}`);
   };
 
   return (
@@ -37,35 +50,41 @@ export default function SearchBar({ onClose }: SearchBarProps) {
         <div className="container mx-auto px-4 md:px-8 py-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg md:text-xl font-semibold text-gray-800">Search Products</h2>
-            <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 transition-colors"
-            >
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
               <i className="ri-close-line text-2xl"></i>
             </button>
           </div>
 
-          <form onSubmit={handleSearch} className="relative">
-            <input
-              ref={inputRef}
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search for flowers, gifts..."
-              className="w-full px-4 py-3 pr-12 text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
-            />
-            <button
-              type="submit"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
-            >
-              <i className="ri-search-line text-xl"></i>
-            </button>
-          </form>
+          <input
+            ref={inputRef}
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search for flowers, gifts..."
+            className="w-full px-4 py-3 text-gray-800 border border-gray-300 rounded-lg"
+          />
 
-          {searchTerm && (
-            <div className="mt-4 text-sm text-gray-500">
-              Press Enter to search for "{searchTerm}"
-            </div>
+          {results.length > 0 && (
+            <ul className="mt-4 border-t pt-4 divide-y">
+              {results.map((product) => (
+                <li
+                  key={product.id}
+                  className="flex items-center gap-4 py-2 cursor-pointer hover:bg-gray-100 px-2 rounded"
+                  onClick={() => handleSelect(product.id)}
+                >
+                  <img
+                    src={Array.isArray(product.imgUrl) ? product.imgUrl[0] : product.imgUrl}
+                    className="w-12 h-12 object-cover rounded"
+                    alt={product.name}
+                  />
+                  <span className="text-gray-800">{product.name}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {searchTerm && results.length === 0 && (
+            <p className="mt-4 text-sm text-gray-500">No results found.</p>
           )}
         </div>
       </div>

@@ -1,51 +1,79 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useParams } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import Comments from "~/components/store/Comments";
 import FAQs from "~/components/store/FAQs";
 import ProductContainer from "~/components/store/ProductContainer";
-import SimilarProducts from "~/components/store/SimilarProducts";
-import { ApiResponse, Product } from '~/types';
-import { apiService } from "~/utils/apiService";
-import { formatProduct, RawProduct } from "~/utils/formData";
+import { Product } from "~/types/product";
+import { prisma } from "~/lib/prisma.server";
 
-export async function loader({ params, request }: LoaderFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   const { productId } = params;
 
   if (!productId) {
-    return ({ products: [], error: "Product not found" });
+    return {
+      product: null,
+      error: "Product not found",
+      category: null,
+      success: false,
+    };
   }
 
   try {
-    const url = `products/${productId}?populate=*`;
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+      include: {
+        categories: {
+          select: { id: true, name: true },
+        },
+      },
+    });
 
-    const response = await apiService.get<ApiResponse>(url);
-    // console.log("response", response.data);
-    // 格式化产品数据
-    const formattedProduct = formatProduct(response.data as RawProduct);
-    console.log("formattedProducts", formattedProduct);
+    if (!product) {
+      return {
+        product: null,
+        error: "Product not found",
+        category: null,
+        success: false,
+      };
+    }
 
-    return ({
+    const formattedProduct: Product = {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      imgUrl: product.imgUrl,
+      categories: product.categories,
+    };
+
+    return {
       product: formattedProduct,
-      category: formattedProduct.category,
-      success: true
-    });
+      category: product.categories.length > 0 ? product.categories[0].name : null,
+      success: true,
+    };
   } catch (error) {
-    console.error("Error loading products:", error);
-    return ({
-      product: [],
-      error: "Failed to load products",
+    console.error("Error loading product:", error);
+    return {
+      product: null,
+      error: "Failed to load product",
       category: null,
-      success: false
-    });
+      success: false,
+    };
   }
 }
 
 export default function ProductPage() {
   const { product, error, success } = useLoaderData<typeof loader>();
-  return <div>
-    <ProductContainer product={product as Product} />
-    {/* <SimilarProducts /> */}
-    <Comments />
-    <FAQs />
-  </div>;
+
+  if (!success || !product) {
+    return <div className="text-center py-20 text-red-500">{error || "Product not found"}</div>;
+  }
+
+  return (
+    <div>
+      <ProductContainer product={product} />
+      <Comments />
+      <FAQs />
+    </div>
+  );
 }

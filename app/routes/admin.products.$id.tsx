@@ -75,78 +75,93 @@ export default function EditProductPage() {
   const selectedCategoryIds = new Set(product.categories.map((c) => c.id));
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">编辑商品</h1>
+    <div className="max-w-3xl mx-auto p-6 bg-white shadow-sm rounded-xl">
+      <h1 className="text-2xl font-bold mb-6">编辑商品</h1>
 
-      {actionData?.error && (
-        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{actionData.error}</div>
+      {product.imgUrl && (
+        <div className="mb-6 max-w-[370px] mx-auto">
+          <div className="aspect-[370/460] w-full border rounded-md overflow-hidden shadow-sm">
+            <img
+              src={product.imgUrl}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
       )}
 
-      <Form method="post" className="space-y-4">
+      {actionData?.error && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{actionData.error}</div>
+      )}
+
+      <Form method="post" className="space-y-5">
         <div>
-          <label className="block font-medium">商品名称 *</label>
+          <label className="block font-medium text-gray-700 mb-1">商品名称 *</label>
           <input
             name="name"
             defaultValue={product.name}
-            className="w-full border rounded px-3 py-2"
+            className="input-style"
             required
           />
         </div>
 
         <div>
-          <label className="block font-medium">价格 *</label>
+          <label className="block font-medium text-gray-700 mb-1">价格 *</label>
           <input
             name="price"
             type="number"
             step="0.01"
             defaultValue={product.price}
-            className="w-full border rounded px-3 py-2"
+            className="input-style"
             required
           />
         </div>
 
         <div>
-          <label className="block font-medium">图片地址 *</label>
+          <label className="block font-medium text-gray-700 mb-1">图片地址 *</label>
           <input
             name="imgUrl"
             type="url"
             defaultValue={product.imgUrl}
-            className="w-full border rounded px-3 py-2"
+            className="input-style"
             required
           />
         </div>
 
         <div>
-          <label className="block font-medium">分类</label>
-          <div className="flex flex-wrap gap-2">
+          <label className="block font-medium text-gray-700 mb-1">分类</label>
+          <div className="flex flex-wrap gap-3 mt-1">
             {categories.map((cat) => (
-              <label key={cat.id} className="flex items-center gap-1">
+              <label
+                key={cat.id}
+                className="flex items-center gap-2 text-sm text-gray-600"
+              >
                 <input
                   type="checkbox"
                   name="categories"
                   value={cat.id}
                   defaultChecked={selectedCategoryIds.has(cat.id)}
                 />
-                <span>{cat.name}</span>
+                {cat.name}
               </label>
             ))}
           </div>
         </div>
 
         <div>
-          <label className="block font-medium">描述</label>
+          <label className="block font-medium text-gray-700 mb-1">描述</label>
           <textarea
             name="description"
             defaultValue={product.description}
-            className="w-full border rounded px-3 py-2"
             rows={4}
+            className="input-style"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+          className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 transition"
         >
           {loading ? "提交中..." : "保存更改"}
         </button>

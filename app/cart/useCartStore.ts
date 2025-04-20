@@ -1,5 +1,5 @@
-// app/store/cartStore.ts
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { Product } from "~/types/product";
 
 export interface CartItem extends Product {
@@ -9,65 +9,85 @@ export interface CartItem extends Product {
 interface CartState {
   items: CartItem[];
   isCartOpen: boolean;
+  hasHydrated: boolean;
+
+  setHasHydrated: (value: boolean) => void;
+  setItems: (items: CartItem[]) => void;
   setCartOpen: (value: boolean) => void;
 
   addToCart: (product: Product) => void;
-  removeFromCart: (id: number) => void;
+  removeFromCart: (id: string) => void;
   clearCart: () => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  updateQuantity: (id: string, quantity: number) => void;
 
   totalItems: number;
   totalPrice: number;
 }
 
-export const useCartStore = create<CartState>((set, get) => ({
-  items: [],
-  isCartOpen: false,
-  setCartOpen: (value) => set({ isCartOpen: value }),
+export const useCartStore = create<CartState>()(
+  persist(
+    (set, get) => ({
+      items: [],
+      isCartOpen: false,
+      hasHydrated: false,
 
-  addToCart: (product: Product) => {
-    set((state) => {
-      const existing = state.items.find((item) => item.id === product.id);
-      if (existing) {
-        return {
+      setHasHydrated: (value) => set({ hasHydrated: value }),
+
+      setItems: (items) => set({ items }),
+
+      setCartOpen: (value) => set({ isCartOpen: value }),
+
+      addToCart: (product: Product) => {
+        const exist = get().items.find((item) => item.id === product.id);
+        if (exist) {
+          set((state) => ({
+            items: state.items.map((item) =>
+              item.id === product.id
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            ),
+          }));
+        } else {
+          set((state) => ({
+            items: [...state.items, { ...product, quantity: 1 }],
+          }));
+        }
+      },
+
+      removeFromCart: (id) =>
+        set((state) => ({
+          items: state.items.filter((item) => item.id !== id),
+        })),
+
+      clearCart: () => set({ items: [] }),
+
+      updateQuantity: (id, quantity) =>
+        set((state) => ({
           items: state.items.map((item) =>
-            item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+            item.id === id ? { ...item, quantity } : item
           ),
-        };
-      }
-      return {
-        items: [...state.items, { ...product, quantity: 1 }],
-      };
-    });
-  },
+        })),
 
-  updateQuantity: (id, quantity) => {
-    if (quantity <= 0) {
-      // 移除该商品
-      set((state) => ({
-        items: state.items.filter((item) => item.id !== id),
-      }));
-    } else {
-      // 正常更新数量
-      set((state) => ({
-        items: state.items.map((item) =>
-          item.id === id ? { ...item, quantity } : item
-        ),
-      }));
+      get totalItems() {
+        return get().items.reduce((sum, item) => sum + item.quantity, 0);
+      },
+
+      get totalPrice() {
+        return get().items.reduce(
+          (sum, item) => sum + item.quantity * item.price,
+          0
+        );
+      },
+    }),
+    {
+      name: "cart-storage",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        items: state.items,
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
-  },
-
-  removeFromCart: (id: number) =>
-    set((state) => ({
-      items: state.items.filter((item) => item.id !== id),
-    })),
-
-  clearCart: () => set({ items: [] }),
-
-  get totalItems() {
-    return get().items.reduce((acc, item) => acc + item.quantity, 0);
-  },
-  get totalPrice() {
-    return get().items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  },
-}));
+  )
+);

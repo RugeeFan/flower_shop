@@ -1,48 +1,71 @@
-import { useSearchParams } from "@remix-run/react";
-import { stripe } from "~/utils/stripe";
-import { json, LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { stripe } from "~/lib/stripe.server";
+import { prisma } from "~/lib/prisma.server";
+import { useEffect } from "react";
 
-// 服务器端加载器函数获取会话信息
-export async function loader({ request }: LoaderFunctionArgs) {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const sessionId = url.searchParams.get("session_id");
 
   if (!sessionId) {
-    return json({ error: "No session ID provided" }, { status: 400 });
+    throw new Response("Missing session_id", { status: 400 });
   }
 
-  try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
-    return json({ session });
-  } catch (error: any) {
-    return json({ error: error.message }, { status: 500 });
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+  if (!session.metadata?.orderId) {
+    throw new Response("Order Not Found", { status: 404 });
   }
-}
 
-export default function CheckoutSuccess() {
-  const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get("session_id");
+  const order = await prisma.order.findUnique({
+    where: { id: session.metadata.orderId },
+    include: {
+      items: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
 
+  if (!order) {
+    throw new Response("Order Not Found", { status: 404 });
+  }
+
+  return json({ order });
+};
+
+export default function CheckoutSuccessPage() {
+  const { order } = useLoaderData<typeof loader>();
+  useEffect(() => {
+    localStorage.removeItem("current_order_id");
+  }, []);
   return (
-    <div className="max-w-2xl mx-auto py-16 px-4">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold mb-4">Thank You for Your Order!</h1>
-        <p className="mb-8">Your payment was successful and your order is being processed.</p>
+    <div className="container mx-auto px-4 py-10">
+      <h1 className="text-2xl font-bold mb-6">Payment Successful 🎉</h1>
 
-        <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
-          <p className="text-green-700">Order ID: {sessionId}</p>
-          <p className="text-sm text-green-600 mt-2">
-            A confirmation email has been sent to your email address.
-          </p>
-        </div>
-
-        <a
-          href="/"
-          className="inline-block bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition"
-        >
-          Continue Shopping
-        </a>
+      <div className="space-y-4">
+        <div>Order ID: {order.id}</div>
+        <div>Recipient: {order.recipientName}</div>
+        <div>Email: {order.recipientEmail}</div>
+        <div>Address: {order.address}</div>
+        <div>Delivery Date: {new Date(order.deliveryDate).toLocaleDateString()}</div>
+        <div>Total Paid: ${order.totalAmount.toFixed(2)}</div>
       </div>
+
+      <h2 className="text-xl font-semibold mt-6 mb-3">Order Items:</h2>
+
+      <ul className="space-y-4">
+        {order.items.map((item) => (
+          <li key={item.id} className="flex justify-between border-b pb-2">
+            <div>{item.product.name}</div>
+            <div>x{item.quantity}</div>
+            <div>${(item.unitPrice * item.quantity).toFixed(2)}</div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-} 
+}

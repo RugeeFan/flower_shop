@@ -9,8 +9,11 @@ datasource db {
 
 model User {
   id        String   @id @default(cuid())
-  email     String?  @unique
+  email     String   @unique
+  password  String?
   name      String?
+  phone     String? // ✅ 新增字段
+  isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now())
   orders    Order[]
 }
@@ -52,7 +55,7 @@ model Order {
 
 model OrderItem {
   id        String  @id @default(cuid())
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade) // ✅ 关键改动
   orderId   String
   product   Product @relation(fields: [productId], references: [id])
   productId String

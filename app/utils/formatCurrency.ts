@@ -1,3 +1,6 @@
-export default function formatCurrency(amount: number): string {
-  return `$${amount.toFixed(2)}`;
+export default function formatCurrency(amount: number, currency = "AUD") {
+  return new Intl.NumberFormat("en-AU", {
+    style: "currency",
+    currency,
+  }).format(amount);
 }

@@ -8,7 +8,7 @@ export default function CategoryList() {
         return (
           <Link
             key={item.title}
-            to="/categories"
+            to="/products"
             className="group relative w-full h-0 pb-[75%] sm:pb-[56.25%] rounded-lg overflow-hidden"
           >
             {/* Image inside the div */}

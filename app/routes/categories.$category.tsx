@@ -1,56 +1,71 @@
 import { useParams, useLoaderData } from "@remix-run/react";
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { apiService } from "~/utils/apiService";
-import { formatProducts, RawProduct, FormattedProduct } from "~/utils/formData";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import ProductItem from "~/components/store/ProductItem";
-import { ApiResponse } from '~/types';
-
-// 定义 API 响应类型
-
+import { prisma } from "~/lib/prisma.server";
+import { ProductListItem } from "~/types/product";
 
 // 格式化分类名称以便显示
 function formatCategoryName(category: string) {
   return category
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
-export async function loader({ params, request }: LoaderFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   const { category } = params;
 
   if (!category) {
-    return ({ products: [], error: "Category not found" });
+    return {
+      products: [],
+      category,
+      success: false,
+      error: "Category not found",
+    };
   }
 
   try {
-    const url = `products?populate=*&filters[categories][title][$eq]=${category}`;
-
-    const response = await apiService.get<ApiResponse>(url);
-
-    // 格式化产品数据
-    const formattedProducts = formatProducts(response.data as RawProduct[]);
-
-    return ({
-      products: formattedProducts,
-      category,
-      success: true
+    const products = await prisma.product.findMany({
+      where: {
+        categories: {
+          some: {
+            name: {
+              equals: category,
+              mode: "insensitive",
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        imgUrl: true,
+      },
     });
+
+    return {
+      products,
+      category,
+      success: true,
+    };
   } catch (error) {
-    console.error("Error loading products:", error);
-    return ({
+    console.error("Error loading category products:", error);
+    return {
       products: [],
       category,
+      success: false,
       error: "Failed to load products",
-      success: false
-    });
+    };
   }
 }
 
 export default function CategoryPage() {
   const { category } = useParams();
   const { products, error, success } = useLoaderData<typeof loader>();
-
   const displayName = category ? formatCategoryName(category) : "";
 
   return (
@@ -67,10 +82,10 @@ export default function CategoryPage() {
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {products?.map(product => (
+          {products.map((product: ProductListItem) => (
             <ProductItem
               key={product.id}
-              documentId={product.documentId}
+              id={product.id}
               name={product.name}
               imgUrl={product.imgUrl}
               price={product.price}

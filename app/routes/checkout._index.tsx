@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useCartStore } from "~/cart/useCartStore";
+import { useCartStore } from "~/zustand/useCartStore";
 
 interface CheckoutFormData {
   buyerName: string;
@@ -17,8 +17,8 @@ interface CheckoutFormData {
 export default function CheckoutPage() {
   const cart = useCartStore((state) => state.items);
   const setCartItems = useCartStore((state) => state.setItems);
-
   const [hydrated, setHydrated] = useState(false);
+  const [shippingFee, setShippingFee] = useState<number | null>(null);
 
   const {
     register,
@@ -27,6 +27,8 @@ export default function CheckoutPage() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>();
+
+  const postcode = watch("postcode");
 
   useEffect(() => setHydrated(true), []);
 
@@ -40,7 +42,7 @@ export default function CheckoutPage() {
             setCartItems(parsed.state.items);
           }
         } catch (err) {
-          console.warn("解析购物车失败", err);
+          console.warn("Failed to parse cart:", err);
         }
       }
     }
@@ -52,7 +54,7 @@ export default function CheckoutPage() {
       try {
         reset(JSON.parse(saved));
       } catch (err) {
-        console.warn("恢复表单失败", err);
+        console.warn("Failed to restore form:", err);
       }
     }
   }, [reset]);
@@ -64,9 +66,28 @@ export default function CheckoutPage() {
     return () => sub.unsubscribe();
   }, [watch]);
 
+  useEffect(() => {
+    if (postcode && postcode.length >= 4) {
+      const controller = new AbortController();
+      fetch(`/api/get-shipping-fee?postcode=${postcode}`, {
+        signal: controller.signal,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.price) {
+            setShippingFee(data.price);
+          } else {
+            setShippingFee(null);
+          }
+        })
+        .catch(() => setShippingFee(null));
+      return () => controller.abort();
+    }
+  }, [postcode]);
+
   const onSubmit = async (data: CheckoutFormData) => {
     if (cart.length === 0) {
-      alert("您的购物车为空，请添加商品后再下单。");
+      alert("Your cart is empty.");
       return;
     }
 
@@ -76,11 +97,7 @@ export default function CheckoutPage() {
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cart,
-          customer: data,
-          orderId,
-        }),
+        body: JSON.stringify({ cart, customer: data, orderId }),
       });
 
       const result = await res.json();
@@ -91,57 +108,106 @@ export default function CheckoutPage() {
         }
         window.location.href = result.url;
       } else {
-        alert("跳转支付失败，请稍后再试。");
+        alert("Redirect to payment failed. Please try again.");
       }
     } catch (err) {
-      console.error("创建 checkout session 出错:", err);
-      alert("创建支付会话失败，请检查网络或稍后再试。");
+      console.error("Error creating checkout session:", err);
+      alert("Failed to create checkout session. Please check your network.");
     }
   };
 
   if (!hydrated) {
-    return <div className="text-center py-10">加载中...</div>;
+    return <div className="text-center py-10">Loading...</div>;
   }
 
   return (
     <div className="container mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* 左侧表单 */}
+      {/* Form Section */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="lg:col-span-2 space-y-6 border border-gray-200 shadow-sm p-8 rounded-2xl bg-white"
       >
-        <h2 className="text-2xl font-semibold text-gray-800">买家信息</h2>
+        <h2 className="text-2xl font-semibold text-gray-800">Buyer Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input {...register("buyerName", { required: true })} placeholder="姓名" className="input-style" />
-          <input {...register("buyerEmail", { required: true })} placeholder="邮箱" className="input-style" />
-          <input {...register("buyerPhone", { required: true })} placeholder="手机号" className="input-style md:col-span-2" />
+          <div className="space-y-1">
+            <label htmlFor="buyerName" className="text-sm font-medium text-gray-700">
+              Full Name
+            </label>
+            <input id="buyerName" {...register("buyerName", { required: true })} className="input-style" />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="buyerEmail" className="text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input id="buyerEmail" {...register("buyerEmail", { required: true })} className="input-style" />
+          </div>
+          <div className="md:col-span-2 space-y-1">
+            <label htmlFor="buyerPhone" className="text-sm font-medium text-gray-700">
+              Phone Number
+            </label>
+            <input id="buyerPhone" {...register("buyerPhone", { required: true })} className="input-style" />
+          </div>
         </div>
 
-        <h2 className="text-2xl font-semibold text-gray-800 pt-6">收件人信息</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 pt-6">Recipient Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input {...register("recipientName", { required: true })} placeholder="收件人姓名" className="input-style" />
-          <input {...register("recipientEmail", { required: true })} placeholder="收件人邮箱" className="input-style" />
-          <input {...register("address", { required: true })} placeholder="地址" className="input-style md:col-span-2" />
-          <input {...register("postcode", { required: true })} placeholder="邮政编码" className="input-style" />
-          <input {...register("deliveryDate", { required: true })} type="date" className="input-style" />
+          <div className="space-y-1">
+            <label htmlFor="recipientName" className="text-sm font-medium text-gray-700">
+              Recipient Name
+            </label>
+            <input id="recipientName" {...register("recipientName", { required: true })} className="input-style" />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="recipientEmail" className="text-sm font-medium text-gray-700">
+              Recipient Email
+            </label>
+            <input id="recipientEmail" {...register("recipientEmail", { required: true })} className="input-style" />
+          </div>
+          <div className="md:col-span-2 space-y-1">
+            <label htmlFor="address" className="text-sm font-medium text-gray-700">
+              Delivery Address
+            </label>
+            <input id="address" {...register("address", { required: true })} className="input-style" />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="postcode" className="text-sm font-medium text-gray-700">
+              Postcode
+            </label>
+            <input id="postcode" {...register("postcode", { required: true })} className="input-style" />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="deliveryDate" className="text-sm font-medium text-gray-700">
+              Delivery Date
+            </label>
+            <input id="deliveryDate" type="date" {...register("deliveryDate", { required: true })} className="input-style" />
+          </div>
         </div>
 
-        <textarea {...register("message")} placeholder="卡片留言（可选）" className="input-style min-h-[100px]" />
+        <div className="space-y-1">
+          <label htmlFor="message" className="text-sm font-medium text-gray-700">
+            Card Message (Optional)
+          </label>
+          <textarea
+            id="message"
+            {...register("message")}
+            className="input-style min-h-[100px]"
+          />
+        </div>
 
         <button
           type="submit"
           className="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-medium transition disabled:opacity-50"
           disabled={isSubmitting || cart.length === 0}
         >
-          {isSubmitting ? "提交中..." : "确认并前往支付"}
+          {isSubmitting ? "Submitting..." : "Confirm and Proceed to Pay"}
         </button>
       </form>
 
-      {/* 右侧购物车 */}
+      {/* Cart Summary */}
       <div className="lg:col-span-1 border border-gray-200 shadow-sm p-6 rounded-2xl bg-white sticky top-10 h-fit">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">购物车</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Shopping Cart</h2>
         {cart.length === 0 ? (
-          <p className="text-gray-500">购物车为空。</p>
+          <p className="text-gray-500">Your cart is empty.</p>
         ) : (
           <ul className="space-y-4">
             {cart.map((item) => (
@@ -155,10 +221,31 @@ export default function CheckoutPage() {
                   <div className="font-medium text-gray-800">{item.name}</div>
                   <div className="text-sm text-gray-500">x {item.quantity}</div>
                 </div>
-                <div className="font-semibold text-gray-700">${item.price * item.quantity}</div>
+                <div className="font-semibold text-gray-700">
+                  ${(item.price * item.quantity).toFixed(2)}
+                </div>
               </li>
             ))}
           </ul>
+        )}
+
+        {shippingFee !== null && (
+          <div className="mt-6 border-t pt-4">
+            <div className="flex justify-between text-gray-700 mb-2">
+              <span>Shipping</span>
+              <span>${shippingFee.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between font-semibold text-lg text-gray-900">
+              <span>Total</span>
+              <span>
+                $
+                {(
+                  cart.reduce((sum, item) => sum + item.price * item.quantity, 0) +
+                  shippingFee
+                ).toFixed(2)}
+              </span>
+            </div>
+          </div>
         )}
       </div>
     </div>

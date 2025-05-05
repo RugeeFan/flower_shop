@@ -1,72 +1,88 @@
 import { Link } from "@remix-run/react";
-import { useDropdownStore } from "~/lib/useDropdownStore";
-
-// 创建显示文本到URL路径的映射
-const occasionToUrlMap: Record<string, string> = {
-  "Anniversary": "anniversary",
-  "Sympathy Flowers For The Home": "sympathy-flowers-for-the-home",
-  "Get Well": "get-well",
-  "Celebration": "celebration",
-  "Corporate": "corporate",
-  "Valentines Day": "valentines-day",
-  "Christmas": "christmas",
-  "Same Day Delivery": "same-day-delivery",
-  "Multi Coloured Flower Arrangements": "multi-coloured-flower-arrangements",
-  "Birthday": "birthday",
-  "New Baby": "new-baby",
-  "I'm Sorry": "im-sorry",
-  "Thank You": "thank-you",
-  "Congratulations": "congratulations",
-  "Mothers Day": "mothers-day",
-  "Romance": "romance",
-  "Green Flowers": "green-flowers",
-  "Funeral Flowers": "funeral-flowers",
-  "Bestsellers": "bestsellers"
-};
+import { useDropdownStore } from "~/zustand/useDropdownStore";
+import { occasionToUrlMap } from "~/data/homepage";
 
 interface DropdownMenuProps {
   title: string;
   items: string[];
+  dropdownKey: "occasion" | "wedding";
   isMobile?: boolean;
 }
+
+import { useEffect, useRef } from "react";
 
 export default function DropdownMenu({
   title,
   items,
+  dropdownKey,
   isMobile = false,
 }: DropdownMenuProps) {
-  const isOpen = useDropdownStore((state) => state.isOpen);
+  const openDropdown = useDropdownStore((state) => state.openDropdown);
   const toggle = useDropdownStore((state) => state.toggle);
   const close = useDropdownStore((state) => state.close);
+  const isOpen = openDropdown === dropdownKey;
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const getUrlPath = (item: string) => {
-    return occasionToUrlMap[item] || item.toLowerCase().replace(/\s+/g, "-");
-  };
+  const getUrlPath = (item: string) =>
+    occasionToUrlMap[item] || item.toLowerCase().replace(/\s+/g, "-");
 
-  const handleLinkClick = () => {
-    close();
-  };
+  const handleLinkClick = () => close();
+  const toggleThis = () => toggle(dropdownKey);
+
+  // ✅ 监听点击页面其他区域关闭 dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isOpen &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        close();
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [isOpen, close]);
 
   if (isMobile) {
     return (
-      <div
-        className="flex items-center gap-1 cursor-pointer text-primary hover:text-primary/80 transition-colors"
-        onClick={toggle}
-      >
-        <span>{title}</span>
-        <i className={`ri-arrow-down-s-line transition-transform ${isOpen ? "rotate-180" : ""}`}></i>
+      <div ref={containerRef}>
+        <div
+          className="flex items-center justify-between px-4 py-3 cursor-pointer text-primary hover:text-primary/80 transition-colors"
+          onClick={toggleThis}
+        >
+          <span>{title}</span>
+          <i className={`ri-arrow-down-s-line transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        </div>
+
+        {isOpen && (
+          <div className="flex flex-col gap-1 px-6 pb-3">
+            {items.map((item) => (
+              <Link
+                key={item}
+                to={`/categories/${getUrlPath(item)}`}
+                className="text-sm text-primary hover:text-primary/80 py-1 transition-colors"
+                onClick={handleLinkClick}
+              >
+                {item}
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
 
+
   return (
-    <div className="relative group">
+    <div className="relative group dropdown-container" ref={containerRef}>
       <div
         className="flex items-center gap-1 cursor-pointer text-primary hover:text-primary/80 transition-colors"
-        onClick={toggle}
+        onClick={toggleThis}
       >
         <span>{title}</span>
-        <i className={`ri-arrow-down-s-line transition-transform ${isOpen ? "rotate-180" : ""}`}></i>
+        <i className={`ri-arrow-down-s-line transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </div>
 
       {isOpen && (
@@ -88,3 +104,4 @@ export default function DropdownMenu({
     </div>
   );
 }
+

@@ -1,40 +1,39 @@
+import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { prisma } from "./prisma.server";
-import { getSession, commitSession, destroySession } from "./session.server";
-import { redirect } from "@remix-run/node";
-console.log("JWT_SECRET:", process.env.JWT_SECRET); // 看看是不是 undefined
+import { prisma } from "~/lib/prisma.server";
 
-// 加密密码
+export const sessionStorage = createCookieSessionStorage({
+  cookie: {
+    name: "__session",
+    secrets: [process.env.SESSION_SECRET || "dev"],
+    sameSite: "lax",
+    path: "/",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  },
+});
 export async function hashPassword(password: string) {
-  return await bcrypt.hash(password, 10);
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
 }
 
-// 校验密码
-export async function verifyPassword(password: string, hash: string) {
-  return await bcrypt.compare(password, hash);
-}
+export const { getSession, commitSession, destroySession } = sessionStorage;
 
-// 生成 JWT
-export function generateToken(userId: string) {
-  return jwt.sign({ userId }, process.env.JWT_SECRET!, { expiresIn: "7d" });
-}
-
-// 创建用户 Session（登录后调用）
+// ✅ 创建 Session：支持设置 isAdmin
 export async function createUserSession({
   request,
   userId,
   redirectTo,
+  isAdmin = false,
 }: {
   request: Request;
   userId: string;
   redirectTo: string;
+  isAdmin?: boolean;
 }) {
   const session = await getSession(request.headers.get("Cookie"));
-  const token = generateToken(userId);
-
-  session.set("token", token);
-
+  session.set("userId", userId);
+  if (isAdmin) session.set("isAdmin", true);
   return redirect(redirectTo, {
     headers: {
       "Set-Cookie": await commitSession(session),
@@ -42,38 +41,68 @@ export async function createUserSession({
   });
 }
 
-// 获取当前用户
-export async function getUser(request: Request) {
+// ✅ 注销
+export async function logout(request: Request, redirectTo = "/") {
   const session = await getSession(request.headers.get("Cookie"));
-  const token = session.get("token");
-  if (!token) return null;
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-    });
-    return user;
-  } catch (err) {
-    return null;
-  }
-}
-
-// 强制要求登录用户
-export async function requireUser(request: Request) {
-  const user = await getUser(request);
-  if (!user) {
-    throw redirect("/admin/login");
-  }
-  return user;
-}
-
-
-export async function logout(request: Request) {
-  const session = await getSession(request.headers.get("Cookie"));
-  return redirect("/admin/login", {
+  return redirect(redirectTo, {
     headers: {
       "Set-Cookie": await destroySession(session),
     },
   });
+}
+
+// ✅ 获取完整用户对象（后台页面用）
+export async function requireUser(request: Request) {
+  const session = await getSession(request.headers.get("Cookie"));
+  const userId = session.get("userId");
+  if (!userId) {
+    throw redirect("/admin/login");
+  }
+
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) {
+    throw await logout(request, "/admin/login");
+  }
+
+  return user;
+}
+
+// ✅ 获取 userId，仅限用户已登录验证
+export async function requireUserId(
+  request: Request,
+  redirectTo: string = "/"
+) {
+  const session = await getSession(request.headers.get("Cookie"));
+  const userId = session.get("userId");
+  if (!userId) throw redirect(redirectTo);
+  return userId;
+}
+
+// ✅ 管理员专用验证（强制要求 isAdmin = true）
+export async function requireAdmin(
+  request: Request,
+  redirectTo = "/admin/login"
+) {
+  const session = await getSession(request.headers.get("Cookie"));
+  const userId = session.get("userId");
+  const isAdmin = session.get("isAdmin");
+
+  if (!userId || !isAdmin) {
+    throw redirect(redirectTo);
+  }
+
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user || !user.isAdmin) {
+    throw await logout(request, "/admin/login");
+  }
+
+  return user;
+}
+
+// ✅ 密码比对
+export async function verifyPassword(
+  inputPassword: string,
+  storedHash: string
+) {
+  return bcrypt.compare(inputPassword, storedHash);
 }

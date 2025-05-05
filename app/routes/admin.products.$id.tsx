@@ -11,7 +11,7 @@ import {
   useNavigation,
 } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
-
+import { useTranslation } from "react-i18next";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const id = params.id;
@@ -29,7 +29,6 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return json({ product, categories });
 };
 
-
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const id = params.id;
   const form = await request.formData();
@@ -41,7 +40,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const categoryIds = form.getAll("categories") as string[];
 
   if (!id || !name || isNaN(price) || !imgUrl) {
-    return json({ error: "请填写所有必填字段。" }, { status: 400 });
+    return json({ error: "missingFields" }, { status: 400 });
   }
 
   try {
@@ -62,7 +61,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     return redirect("/admin/products");
   } catch (err) {
     console.error("编辑失败", err);
-    return json({ error: "更新失败，请重试" }, { status: 500 });
+    return json({ error: "updateFailed" }, { status: 500 });
   }
 };
 
@@ -70,13 +69,13 @@ export default function EditProductPage() {
   const { product, categories } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
+  const { t } = useTranslation("admin");
   const loading = state !== "idle";
-
   const selectedCategoryIds = new Set(product.categories.map((c) => c.id));
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-sm rounded-xl">
-      <h1 className="text-2xl font-bold mb-6">编辑商品</h1>
+      <h1 className="text-2xl font-bold mb-6">{t("editProduct")}</h1>
 
       {product.imgUrl && (
         <div className="mb-6 max-w-[370px] mx-auto">
@@ -91,12 +90,16 @@ export default function EditProductPage() {
       )}
 
       {actionData?.error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{actionData.error}</div>
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+          {t(actionData.error)}
+        </div>
       )}
 
       <Form method="post" className="space-y-5">
         <div>
-          <label className="block font-medium text-gray-700 mb-1">商品名称 *</label>
+          <label className="block font-medium text-gray-700 mb-1">
+            {t("productName")} *
+          </label>
           <input
             name="name"
             defaultValue={product.name}
@@ -106,7 +109,9 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700 mb-1">价格 *</label>
+          <label className="block font-medium text-gray-700 mb-1">
+            {t("price")} *
+          </label>
           <input
             name="price"
             type="number"
@@ -118,7 +123,9 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700 mb-1">图片地址 *</label>
+          <label className="block font-medium text-gray-700 mb-1">
+            {t("imageUrl")} *
+          </label>
           <input
             name="imgUrl"
             type="url"
@@ -129,7 +136,9 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700 mb-1">分类</label>
+          <label className="block font-medium text-gray-700 mb-1">
+            {t("category")}
+          </label>
           <div className="flex flex-wrap gap-3 mt-1">
             {categories.map((cat) => (
               <label
@@ -149,7 +158,9 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700 mb-1">描述</label>
+          <label className="block font-medium text-gray-700 mb-1">
+            {t("description")}
+          </label>
           <textarea
             name="description"
             defaultValue={product.description}
@@ -163,7 +174,7 @@ export default function EditProductPage() {
           disabled={loading}
           className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 transition"
         >
-          {loading ? "提交中..." : "保存更改"}
+          {loading ? t("submitting") : t("saveChanges")}
         </button>
       </Form>
     </div>

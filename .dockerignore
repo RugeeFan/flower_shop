@@ -1,0 +1,11 @@
+node_modules
+.env
+.env.*
+.vscode
+.cache
+build
+dist
+generated
+.prisma
+node_modules/.prisma
+node_modules/@prisma/client/query-engine*

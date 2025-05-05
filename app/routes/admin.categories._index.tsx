@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -70,19 +71,20 @@ export default function CategoryPage() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
+  const { t } = useTranslation("admin");
 
   const isSubmitting = navigation.state !== "idle";
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">分类管理</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("categories")}</h1>
 
       {/* 搜索 */}
       <Form method="get" className="mb-4 flex gap-2">
         <input
           type="text"
           name="q"
-          placeholder="搜索分类名称"
+          placeholder={t("searchCategory")}
           defaultValue={q}
           className="border rounded px-3 py-2 flex-1"
         />
@@ -90,7 +92,7 @@ export default function CategoryPage() {
           type="submit"
           className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800"
         >
-          搜索
+          {t("search")}
         </button>
       </Form>
 
@@ -98,12 +100,11 @@ export default function CategoryPage() {
       {showAddForm ? (
         <Form method="post" className="mb-6 flex flex-col gap-2">
           <input type="hidden" name="_action" value="create" />
-
           <div className="flex gap-2 items-center">
             <input
               type="text"
               name="name"
-              placeholder="请输入新分类名称"
+              placeholder={t("addCategory")}
               className="border px-3 py-2 rounded flex-1"
               required
             />
@@ -112,40 +113,41 @@ export default function CategoryPage() {
               disabled={isSubmitting}
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
-              {isSubmitting ? "添加中..." : "添加"}
+              {isSubmitting ? `${t("addCategory")}...` : t("addCategory")}
             </button>
             <button
               type="button"
               onClick={() => setShowAddForm(false)}
               className="text-sm text-gray-500 hover:underline"
             >
-              取消
+              {t("cancel")}
             </button>
           </div>
 
-          {/* 成功或失败提示 */}
+          {/* 提示 */}
           {successName && (
-            <p className="text-green-600 text-sm">{`分类 "${successName}" 添加成功`}</p>
+            <p className="text-green-600 text-sm">
+              {t("addSuccess", { name: successName })}
+            </p>
           )}
-
-{actionData && 'fieldErrors' in actionData && actionData.fieldErrors.name.length > 0 && (
-  <p className="text-red-600 text-sm">
-    {actionData.fieldErrors.name.join(", ")}
-  </p>
-)}
+          {actionData?.fieldErrors?.name?.length > 0 && (
+            <p className="text-red-600 text-sm">
+              {actionData.fieldErrors.name.join(", ")}
+            </p>
+          )}
         </Form>
       ) : (
         <button
           onClick={() => setShowAddForm(true)}
           className="mb-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
-          添加分类
+          {t("addCategory")}
         </button>
       )}
 
       {/* 列表 */}
       {categories.length === 0 ? (
-        <p className="text-gray-600">暂无分类</p>
+        <p className="text-gray-600">{t("noCategory")}</p>
       ) : (
         <ul className="space-y-3">
           {categories.map((cat) => (
@@ -167,14 +169,14 @@ export default function CategoryPage() {
                     type="submit"
                     className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
                   >
-                    保存
+                    {t("save")}
                   </button>
                   <button
                     type="button"
                     onClick={() => setEditingId(null)}
                     className="text-gray-500 hover:underline text-sm"
                   >
-                    取消
+                    {t("cancel")}
                   </button>
                 </Form>
               ) : (
@@ -188,12 +190,12 @@ export default function CategoryPage() {
                       }}
                       className="text-blue-600 hover:underline text-sm"
                     >
-                      编辑
+                      {t("edit")}
                     </button>
                     <Form
                       method="post"
                       onSubmit={(e) => {
-                        if (!confirm("确定要删除这个分类吗？")) {
+                        if (!confirm(t("confirmDelete"))) {
                           e.preventDefault();
                         }
                       }}
@@ -204,7 +206,7 @@ export default function CategoryPage() {
                         type="submit"
                         className="text-red-600 hover:underline text-sm"
                       >
-                        删除
+                        {t("delete")}
                       </button>
                     </Form>
                   </div>

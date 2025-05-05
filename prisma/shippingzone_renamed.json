@@ -1,0 +1,4786 @@
+{
+  "2176": [
+    {
+      "suburb": "Abbotsbury",
+      "km": "17.72",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Bossley Park",
+      "km": "14.48",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Edensor Park",
+      "km": "15.98",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Greenfield Park",
+      "km": "14.55",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Prairiewood",
+      "km": "12.72",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "St Johns Park",
+      "km": "14.11",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Wakeley",
+      "km": "13.21",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    }
+  ],
+  "2046": [
+    {
+      "suburb": "Abbotsford",
+      "km": "18.69",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Canada Bay",
+      "km": "13.86",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Chiswick",
+      "km": "19.14",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Five Dock",
+      "km": "17.09",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Rodd Point",
+      "km": "18.58",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Russell Lea",
+      "km": "18.36",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Wareemba",
+      "km": "17.98",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2763": [
+    {
+      "suburb": "Acacia Gardens",
+      "km": "15.71",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Quakers Hill",
+      "km": "18.99",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2753": [
+    {
+      "suburb": "Agnes Banks",
+      "km": "40.91",
+      "small": "57.02",
+      "medium": "59.62",
+      "large": "66.12"
+    },
+    {
+      "suburb": "Hobartville",
+      "km": "40.14",
+      "small": "56.02",
+      "medium": "58.62",
+      "large": "65.12"
+    },
+    {
+      "suburb": "Londonderry",
+      "km": "39.04",
+      "small": "54.59",
+      "medium": "57.19",
+      "large": "63.69"
+    },
+    {
+      "suburb": "Richmond",
+      "km": "39.22",
+      "small": "54.82",
+      "medium": "57.42",
+      "large": "63.92"
+    }
+  ],
+  "2560": [
+    {
+      "suburb": "Airds",
+      "km": "41.12",
+      "small": "61.84",
+      "medium": "64.44",
+      "large": "70.94"
+    },
+    {
+      "suburb": "Ambarvale",
+      "km": "42.44",
+      "small": "63.55",
+      "medium": "66.15",
+      "large": "72.65"
+    },
+    {
+      "suburb": "Blair Athol",
+      "km": "38.60",
+      "small": "58.56",
+      "medium": "61.16",
+      "large": "67.66"
+    },
+    {
+      "suburb": "Bradbury",
+      "km": "42.69",
+      "small": "63.88",
+      "medium": "66.48",
+      "large": "72.98"
+    },
+    {
+      "suburb": "Campbelltown",
+      "km": "37.46",
+      "small": "57.08",
+      "medium": "59.68",
+      "large": "66.18"
+    },
+    {
+      "suburb": "Englorie Park",
+      "km": "42.11",
+      "small": "63.13",
+      "medium": "65.73",
+      "large": "72.23"
+    },
+    {
+      "suburb": "Glen Alpine",
+      "km": "43.35",
+      "small": "64.74",
+      "medium": "67.34",
+      "large": "73.84"
+    },
+    {
+      "suburb": "Kentlyn",
+      "km": "40.40",
+      "small": "60.90",
+      "medium": "63.50",
+      "large": "70.00"
+    },
+    {
+      "suburb": "Leumeah",
+      "km": "36.66",
+      "small": "56.04",
+      "medium": "58.64",
+      "large": "65.14"
+    },
+    {
+      "suburb": "Rosemeadow",
+      "km": "45.35",
+      "small": "67.34",
+      "medium": "69.94",
+      "large": "76.44"
+    },
+    {
+      "suburb": "Ruse",
+      "km": "39.03",
+      "small": "59.12",
+      "medium": "61.72",
+      "large": "68.22"
+    },
+    {
+      "suburb": "St Helens Park",
+      "km": "45.69",
+      "small": "67.78",
+      "medium": "70.38",
+      "large": "76.88"
+    },
+    {
+      "suburb": "Woodbine",
+      "km": "36.39",
+      "small": "55.69",
+      "medium": "58.29",
+      "large": "64.79"
+    }
+  ],
+  "2015": [
+    {
+      "suburb": "Alexandria",
+      "km": "26.31",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Beaconsfield",
+      "km": "25.82",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Eveleigh",
+      "km": "24.15",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2234": [
+    {
+      "suburb": "Alfords Point",
+      "km": "28.26",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Bangor",
+      "km": "30.61",
+      "small": "43.63",
+      "medium": "46.23",
+      "large": "52.73"
+    },
+    {
+      "suburb": "Barden Ridge",
+      "km": "31.26",
+      "small": "44.47",
+      "medium": "47.07",
+      "large": "53.57"
+    },
+    {
+      "suburb": "Illawong",
+      "km": "27.57",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Menai",
+      "km": "28.67",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2100": [
+    {
+      "suburb": "Allambie Heights",
+      "km": "31.90",
+      "small": "49.85",
+      "medium": "52.45",
+      "large": "58.95"
+    },
+    {
+      "suburb": "Beacon Hill",
+      "km": "31.58",
+      "small": "49.44",
+      "medium": "52.04",
+      "large": "58.54"
+    },
+    {
+      "suburb": "Brookvale",
+      "km": "33.66",
+      "small": "52.14",
+      "medium": "54.74",
+      "large": "61.24"
+    },
+    {
+      "suburb": "North Manly",
+      "km": "34.89",
+      "small": "53.74",
+      "medium": "56.34",
+      "large": "62.84"
+    },
+    {
+      "suburb": "Oxford Falls",
+      "km": "32.00",
+      "small": "49.98",
+      "medium": "52.58",
+      "large": "59.08"
+    }
+  ],
+  "2218": [
+    {
+      "suburb": "Allawah",
+      "km": "26.60",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Carlton",
+      "km": "27.55",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2038": [
+    {
+      "suburb": "Annandale",
+      "km": "22.44",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2156": [
+    {
+      "suburb": "Annangrove",
+      "km": "24.23",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Glenhaven",
+      "km": "15.09",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Kenthurst",
+      "km": "21.83",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2205": [
+    {
+      "suburb": "Arncliffe",
+      "km": "28.90",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Turrella",
+      "km": "29.25",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Wolli Creek",
+      "km": "28.88",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2148": [
+    {
+      "suburb": "Arndell Park",
+      "km": "13.59",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Blacktown",
+      "km": "13.29",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Huntingwood",
+      "km": "11.84",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Kings Park",
+      "km": "16.20",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Marayong",
+      "km": "16.74",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Prospect",
+      "km": "9.44",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2064": [
+    {
+      "suburb": "Artarmon",
+      "km": "25.82",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2193": [
+    {
+      "suburb": "Ashbury",
+      "km": "19.19",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Canterbury",
+      "km": "21.26",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Hurlstone Park",
+      "km": "21.71",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2168": [
+    {
+      "suburb": "Ashcroft",
+      "km": "18.55",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Busby",
+      "km": "18.75",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Cartwright",
+      "km": "20.24",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Green Valley",
+      "km": "18.94",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Heckenberg",
+      "km": "17.82",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Hinchinbrook",
+      "km": "19.90",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Sadleir",
+      "km": "18.63",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Miller",
+      "km": "20.91",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    }
+  ],
+  "2131": [
+    {
+      "suburb": "Ashfield",
+      "km": "19.88",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2077": [
+    {
+      "suburb": "Asquith",
+      "km": "22.26",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Hornsby",
+      "km": "20.54",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Hornsby Heights",
+      "km": "23.40",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Waitara",
+      "km": "20.35",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2144": [
+    {
+      "suburb": "Auburn",
+      "km": "5.74",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2179": [
+    {
+      "suburb": "Austral",
+      "km": "28.44",
+      "small": "47.38",
+      "medium": "49.98",
+      "large": "56.48"
+    },
+    {
+      "suburb": "Leppington",
+      "km": "30.06",
+      "small": "47.46",
+      "medium": "50.06",
+      "large": "56.56"
+    }
+  ],
+  "2555": [
+    {
+      "suburb": "Badgerys Creek",
+      "km": "30.80",
+      "small": "48.42",
+      "medium": "51.02",
+      "large": "57.52"
+    }
+  ],
+  "2093": [
+    {
+      "suburb": "Balgowlah",
+      "km": "32.43",
+      "small": "50.54",
+      "medium": "53.14",
+      "large": "59.64"
+    },
+    {
+      "suburb": "Balgowlah Heights",
+      "km": "34.02",
+      "small": "52.61",
+      "medium": "55.21",
+      "large": "61.71"
+    },
+    {
+      "suburb": "Clontarf",
+      "km": "33.59",
+      "small": "52.05",
+      "medium": "54.65",
+      "large": "61.15"
+    },
+    {
+      "suburb": "Manly Vale",
+      "km": "34.48",
+      "small": "53.21",
+      "medium": "55.81",
+      "large": "62.31"
+    },
+    {
+      "suburb": "North Balgowlah",
+      "km": "33.30",
+      "small": "51.67",
+      "medium": "54.27",
+      "large": "60.77"
+    }
+  ],
+  "2041": [
+    {
+      "suburb": "Balmain",
+      "km": "21.47",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Balmain East",
+      "km": "22.09",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Birchgrove",
+      "km": "21.56",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2216": [
+    {
+      "suburb": "Banksia",
+      "km": "29.64",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Brighton-le-sands",
+      "km": "32.43",
+      "small": "45.99",
+      "medium": "48.59",
+      "large": "55.09"
+    },
+    {
+      "suburb": "Kyeemagh",
+      "km": "30.55",
+      "small": "43.55",
+      "medium": "46.15",
+      "large": "52.65"
+    },
+    {
+      "suburb": "Rockdale",
+      "km": "30.36",
+      "small": "43.30",
+      "medium": "45.90",
+      "large": "52.40"
+    },
+    {
+      "suburb": "Brighton Le Sands",
+      "km": "32.43",
+      "small": "45.99",
+      "medium": "48.59",
+      "large": "55.09"
+    }
+  ],
+  "2019": [
+    {
+      "suburb": "Banksmeadow",
+      "km": "34.46",
+      "small": "48.64",
+      "medium": "51.24",
+      "large": "57.74"
+    },
+    {
+      "suburb": "Botany",
+      "km": "33.26",
+      "small": "47.07",
+      "medium": "49.67",
+      "large": "56.17"
+    }
+  ],
+  "2200": [
+    {
+      "suburb": "Bankstown",
+      "km": "17.11",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Condell Park",
+      "km": "16.14",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Bankstown Aerodrome",
+      "km": "15.17",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2207": [
+    {
+      "suburb": "Bardwell Park",
+      "km": "26.61",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Bardwell Valley",
+      "km": "27.44",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Bexley",
+      "km": "26.71",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Bexley North",
+      "km": "25.41",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2197": [
+    {
+      "suburb": "Bass Hill",
+      "km": "11.07",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2153": [
+    {
+      "suburb": "Baulkham Hills",
+      "km": "6.83",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Bella Vista",
+      "km": "11.80",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Winston Hills",
+      "km": "6.67",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Norwest",
+      "km": "11.75",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2104": [
+    {
+      "suburb": "Bayview",
+      "km": "39.93",
+      "small": "60.29",
+      "medium": "62.89",
+      "large": "69.39"
+    }
+  ],
+  "2155": [
+    {
+      "suburb": "Beaumont Hills",
+      "km": "17.00",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Kellyville",
+      "km": "14.73",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Kellyville Ridge",
+      "km": "17.25",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Rouse Hill",
+      "km": "22.24",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "North Kellyville",
+      "km": "17.49",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2119": [
+    {
+      "suburb": "Beecroft",
+      "km": "11.55",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Cheltenham",
+      "km": "12.01",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2191": [
+    {
+      "suburb": "Belfield",
+      "km": "17.45",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2023": [
+    {
+      "suburb": "Bellevue Hill",
+      "km": "29.05",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2192": [
+    {
+      "suburb": "Belmore",
+      "km": "20.27",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2085": [
+    {
+      "suburb": "Belrose",
+      "km": "35.54",
+      "small": "54.58",
+      "medium": "57.18",
+      "large": "63.68"
+    },
+    {
+      "suburb": "Davidson",
+      "km": "36.88",
+      "small": "56.33",
+      "medium": "58.93",
+      "large": "65.43"
+    }
+  ],
+  "2141": [
+    {
+      "suburb": "Berala",
+      "km": "10.76",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Lidcombe",
+      "km": "8.21",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Rookwood",
+      "km": "12.99",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2765": [
+    {
+      "suburb": "Berkshire Park",
+      "km": "33.08",
+      "small": "46.84",
+      "medium": "49.44",
+      "large": "55.94"
+    },
+    {
+      "suburb": "Box Hill",
+      "km": "24.76",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Maraylya",
+      "km": "32.71",
+      "small": "46.36",
+      "medium": "48.96",
+      "large": "55.46"
+    },
+    {
+      "suburb": "Marsden Park",
+      "km": "29.38",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Nelson",
+      "km": "24.52",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Oakville",
+      "km": "29.79",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Riverstone",
+      "km": "25.28",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Vineyard",
+      "km": "25.98",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2081": [
+    {
+      "suburb": "Berowra",
+      "km": "31.05",
+      "small": "44.20",
+      "medium": "46.80",
+      "large": "53.30"
+    }
+  ],
+  "2082": [
+    {
+      "suburb": "Berowra Heights",
+      "km": "33.22",
+      "small": "47.02",
+      "medium": "49.62",
+      "large": "56.12"
+    }
+  ],
+  "2209": [
+    {
+      "suburb": "Beverly Hills",
+      "km": "22.15",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Narwee",
+      "km": "21.99",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2770": [
+    {
+      "suburb": "Bidwill",
+      "km": "24.39",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Blackett",
+      "km": "24.70",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Dharruk",
+      "km": "23.01",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Emerton",
+      "km": "23.79",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Hebersham",
+      "km": "23.63",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Lethbridge Park",
+      "km": "25.33",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Minchinbury",
+      "km": "19.48",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Mount Druitt",
+      "km": "19.88",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Shalvey",
+      "km": "26.64",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Tregear",
+      "km": "24.48",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Whalan",
+      "km": "23.41",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Willmot",
+      "km": "28.31",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2143": [
+    {
+      "suburb": "Birrong",
+      "km": "11.80",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Potts Hill",
+      "km": "10.98",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Regents Park",
+      "km": "10.51",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2559": [
+    {
+      "suburb": "Blairmount",
+      "km": "40.63",
+      "small": "61.20",
+      "medium": "63.80",
+      "large": "70.30"
+    },
+    {
+      "suburb": "Claymore",
+      "km": "38.53",
+      "small": "58.47",
+      "medium": "61.07",
+      "large": "67.57"
+    }
+  ],
+  "2221": [
+    {
+      "suburb": "Blakehurst",
+      "km": "27.80",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Carss Park",
+      "km": "28.08",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Connells Point",
+      "km": "26.47",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Kyle Bay",
+      "km": "27.85",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "South Hurstville",
+      "km": "25.97",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2756": [
+    {
+      "suburb": "Bligh Park",
+      "km": "35.55",
+      "small": "50.05",
+      "medium": "52.65",
+      "large": "59.15"
+    },
+    {
+      "suburb": "Clarendon",
+      "km": "35.90",
+      "small": "50.51",
+      "medium": "53.11",
+      "large": "59.61"
+    },
+    {
+      "suburb": "Freemans Reach",
+      "km": "40.46",
+      "small": "56.44",
+      "medium": "59.04",
+      "large": "65.54"
+    },
+    {
+      "suburb": "Mcgraths Hill",
+      "km": "31.12",
+      "small": "44.29",
+      "medium": "46.89",
+      "large": "53.39"
+    },
+    {
+      "suburb": "Mulgrave",
+      "km": "31.61",
+      "small": "44.93",
+      "medium": "47.53",
+      "large": "54.03"
+    },
+    {
+      "suburb": "Pitt Town",
+      "km": "36.24",
+      "small": "50.95",
+      "medium": "53.55",
+      "large": "60.05"
+    },
+    {
+      "suburb": "Scheyville",
+      "km": "32.22",
+      "small": "45.72",
+      "medium": "48.32",
+      "large": "54.82"
+    },
+    {
+      "suburb": "South Windsor",
+      "km": "35.09",
+      "small": "49.45",
+      "medium": "52.05",
+      "large": "58.55"
+    },
+    {
+      "suburb": "Windsor",
+      "km": "32.38",
+      "small": "45.93",
+      "medium": "48.53",
+      "large": "55.03"
+    },
+    {
+      "suburb": "Windsor Downs",
+      "km": "31.94",
+      "small": "45.35",
+      "medium": "47.95",
+      "large": "54.45"
+    },
+    {
+      "suburb": "Wilberforce",
+      "km": "38.74",
+      "small": "54.20",
+      "medium": "56.80",
+      "large": "63.30"
+    }
+  ],
+  "2026": [
+    {
+      "suburb": "Bondi",
+      "km": "31.34",
+      "small": "44.58",
+      "medium": "47.18",
+      "large": "53.68"
+    },
+    {
+      "suburb": "Bondi Beach",
+      "km": "32.05",
+      "small": "45.50",
+      "medium": "48.10",
+      "large": "54.60"
+    },
+    {
+      "suburb": "North Bondi",
+      "km": "33.64",
+      "small": "47.57",
+      "medium": "50.17",
+      "large": "56.67"
+    },
+    {
+      "suburb": "Tamarama",
+      "km": "32.34",
+      "small": "45.88",
+      "medium": "48.48",
+      "large": "54.98"
+    }
+  ],
+  "2022": [
+    {
+      "suburb": "Bondi Junction",
+      "km": "30.20",
+      "small": "43.10",
+      "medium": "45.70",
+      "large": "52.20"
+    },
+    {
+      "suburb": "Queens Park",
+      "km": "32.95",
+      "small": "46.67",
+      "medium": "49.27",
+      "large": "55.77"
+    }
+  ],
+  "2226": [
+    {
+      "suburb": "Bonnet Bay",
+      "km": "36.27",
+      "small": "50.99",
+      "medium": "53.59",
+      "large": "60.09"
+    },
+    {
+      "suburb": "Como",
+      "km": "37.66",
+      "small": "52.79",
+      "medium": "55.39",
+      "large": "61.89"
+    },
+    {
+      "suburb": "Jannali",
+      "km": "36.35",
+      "small": "51.09",
+      "medium": "53.69",
+      "large": "60.19"
+    }
+  ],
+  "2177": [
+    {
+      "suburb": "Bonnyrigg",
+      "km": "17.01",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Bonnyrigg Heights",
+      "km": "17.03",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    }
+  ],
+  "2566": [
+    {
+      "suburb": "Bow Bowing",
+      "km": "36.55",
+      "small": "55.90",
+      "medium": "58.50",
+      "large": "65.00"
+    },
+    {
+      "suburb": "Minto",
+      "km": "35.17",
+      "small": "54.10",
+      "medium": "56.70",
+      "large": "63.20"
+    },
+    {
+      "suburb": "Minto Heights",
+      "km": "40.13",
+      "small": "60.55",
+      "medium": "63.15",
+      "large": "69.65"
+    },
+    {
+      "suburb": "Raby",
+      "km": "37.15",
+      "small": "56.67",
+      "medium": "59.27",
+      "large": "65.77"
+    },
+    {
+      "suburb": "Varroville",
+      "km": "38.75",
+      "small": "58.75",
+      "medium": "61.35",
+      "large": "67.85"
+    },
+    {
+      "suburb": "St Andrews",
+      "km": "35.91",
+      "small": "55.06",
+      "medium": "57.66",
+      "large": "64.16"
+    }
+  ],
+  "2137": [
+    {
+      "suburb": "Breakfast Point",
+      "km": "17.45",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Cabarita",
+      "km": "16.96",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Concord",
+      "km": "13.11",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Mortlake",
+      "km": "16.99",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "North Strathfield",
+      "km": "13.47",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2556": [
+    {
+      "suburb": "Bringelly",
+      "km": "36.92",
+      "small": "56.38",
+      "medium": "58.98",
+      "large": "65.48"
+    }
+  ],
+  "2024": [
+    {
+      "suburb": "Bronte",
+      "km": "33.76",
+      "small": "47.73",
+      "medium": "50.33",
+      "large": "56.83"
+    },
+    {
+      "suburb": "Waverley",
+      "km": "33.90",
+      "small": "47.91",
+      "medium": "50.51",
+      "large": "57.01"
+    }
+  ],
+  "2134": [
+    {
+      "suburb": "Burwood",
+      "km": "16.22",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2136": [
+    {
+      "suburb": "Burwood Heights",
+      "km": "17.03",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Enfield",
+      "km": "16.79",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Strathfield South",
+      "km": "13.84",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2166": [
+    {
+      "suburb": "Cabramatta",
+      "km": "12.61",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Cabramatta West",
+      "km": "14.63",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Canley Heights",
+      "km": "12.11",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Canley Vale",
+      "km": "12.47",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Lansvale",
+      "km": "12.76",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2747": [
+    {
+      "suburb": "Cambridge Gardens",
+      "km": "31.62",
+      "small": "44.95",
+      "medium": "47.55",
+      "large": "54.05"
+    },
+    {
+      "suburb": "Cambridge Park",
+      "km": "29.79",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Claremont Meadows",
+      "km": "26.30",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Kingswood",
+      "km": "28.67",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Llandilo",
+      "km": "33.67",
+      "small": "47.61",
+      "medium": "50.21",
+      "large": "56.71"
+    },
+    {
+      "suburb": "Shanes Park",
+      "km": "30.97",
+      "small": "44.10",
+      "medium": "46.70",
+      "large": "53.20"
+    },
+    {
+      "suburb": "Werrington",
+      "km": "27.55",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Werrington County",
+      "km": "29.24",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Werrington Downs",
+      "km": "30.64",
+      "small": "43.67",
+      "medium": "46.27",
+      "large": "52.77"
+    },
+    {
+      "suburb": "Jordan Springs",
+      "km": "34.86",
+      "small": "49.15",
+      "medium": "51.75",
+      "large": "58.25"
+    },
+    {
+      "suburb": "Caddens",
+      "km": "26.50",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2142": [
+    {
+      "suburb": "Camellia",
+      "km": "3.69",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Clyde",
+      "km": "8.44",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Granville",
+      "km": "4.01",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Holroyd",
+      "km": "2.55",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Rosehill",
+      "km": "3.02",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "South Granville",
+      "km": "5.93",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2062": [
+    {
+      "suburb": "Cammeray",
+      "km": "30.23",
+      "small": "43.14",
+      "medium": "45.74",
+      "large": "52.24"
+    }
+  ],
+  "2050": [
+    {
+      "suburb": "Camperdown",
+      "km": "23.43",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2194": [
+    {
+      "suburb": "Campsie",
+      "km": "19.71",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2229": [
+    {
+      "suburb": "Caringbah",
+      "km": "35.17",
+      "small": "49.55",
+      "medium": "52.15",
+      "large": "58.65"
+    },
+    {
+      "suburb": "Dolans Bay",
+      "km": "37.28",
+      "small": "52.30",
+      "medium": "54.90",
+      "large": "61.40"
+    },
+    {
+      "suburb": "Lilli Pilli",
+      "km": "37.76",
+      "small": "52.93",
+      "medium": "55.53",
+      "large": "62.03"
+    },
+    {
+      "suburb": "Taren Point",
+      "km": "33.39",
+      "small": "47.25",
+      "medium": "49.85",
+      "large": "56.35"
+    },
+    {
+      "suburb": "PORT HACKING",
+      "km": "37.89",
+      "small": "53.09",
+      "medium": "55.69",
+      "large": "62.19"
+    },
+    {
+      "suburb": "Caringbah South",
+      "km": "36.14",
+      "small": "50.82",
+      "medium": "53.42",
+      "large": "59.92"
+    }
+  ],
+  "2118": [
+    {
+      "suburb": "Carlingford",
+      "km": "6.32",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2163": [
+    {
+      "suburb": "Carramar",
+      "km": "10.21",
+      "small": "21.38",
+      "medium": "23.98",
+      "large": "30.48"
+    },
+    {
+      "suburb": "Lansdowne",
+      "km": "10.34",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Villawood",
+      "km": "9.67",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2069": [
+    {
+      "suburb": "Castle Cove",
+      "km": "24.45",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Roseville",
+      "km": "22.12",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Roseville Chase",
+      "km": "28.44",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2154": [
+    {
+      "suburb": "Castle Hill",
+      "km": "12.30",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2068": [
+    {
+      "suburb": "Castlecrag",
+      "km": "28.34",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Middle Cove",
+      "km": "28.63",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "North Willoughby",
+      "km": "28.38",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Willoughby",
+      "km": "24.09",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Willoughby East",
+      "km": "28.38",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2749": [
+    {
+      "suburb": "Castlereagh",
+      "km": "42.46",
+      "small": "59.04",
+      "medium": "61.64",
+      "large": "68.14"
+    },
+    {
+      "suburb": "Cranebrook",
+      "km": "34.70",
+      "small": "48.95",
+      "medium": "51.55",
+      "large": "58.05"
+    }
+  ],
+  "2170": [
+    {
+      "suburb": "Casula",
+      "km": "20.10",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Chipping Norton",
+      "km": "16.92",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Hammondville",
+      "km": "21.27",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Liverpool",
+      "km": "16.88",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Lurnea",
+      "km": "19.95",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Moorebank",
+      "km": "18.52",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Mount Pritchard",
+      "km": "15.98",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Prestons",
+      "km": "23.66",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Warwick Farm",
+      "km": "14.42",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    },
+    {
+      "suburb": "Liverpool South",
+      "km": "17.55",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    }
+  ],
+  "2557": [
+    {
+      "suburb": "Catherine Field",
+      "km": "36.31",
+      "small": "55.58",
+      "medium": "58.18",
+      "large": "64.68"
+    },
+    {
+      "suburb": "Gregory Hills",
+      "km": "38.05",
+      "small": "57.85",
+      "medium": "60.45",
+      "large": "66.95"
+    },
+    {
+      "suburb": "Gledswood Hills",
+      "km": "43.16",
+      "small": "64.49",
+      "medium": "67.09",
+      "large": "73.59"
+    },
+    {
+      "suburb": "Rossmore",
+      "km": "36.54",
+      "small": "55.88",
+      "medium": "58.48",
+      "large": "64.98"
+    }
+  ],
+  "2171": [
+    {
+      "suburb": "Cecil Hills",
+      "km": "19.28",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Horningsea Park",
+      "km": "24.70",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Hoxton Park",
+      "km": "22.56",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Middleton Grange",
+      "km": "23.08",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "West Hoxton",
+      "km": "24.68",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Elizabeth Hills",
+      "km": "20.20",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    },
+    {
+      "suburb": "Carnes Hill",
+      "km": "24.08",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    }
+  ],
+  "2178": [
+    {
+      "suburb": "Cecil Park",
+      "km": "24.16",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Kemps Creek",
+      "km": "24.01",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Mount Vernon",
+      "km": "23.03",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    }
+  ],
+  "2067": [
+    {
+      "suburb": "Chatswood",
+      "km": "26.30",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Chatswood West",
+      "km": "20.23",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2126": [
+    {
+      "suburb": "Cherrybrook",
+      "km": "13.13",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2162": [
+    {
+      "suburb": "Chester Hill",
+      "km": "8.89",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Sefton",
+      "km": "10.09",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2036": [
+    {
+      "suburb": "Chifley",
+      "km": "39.19",
+      "small": "54.78",
+      "medium": "57.38",
+      "large": "63.88"
+    },
+    {
+      "suburb": "Eastgardens",
+      "km": "35.22",
+      "small": "49.62",
+      "medium": "52.22",
+      "large": "58.72"
+    },
+    {
+      "suburb": "Hillsdale",
+      "km": "36.97",
+      "small": "51.90",
+      "medium": "54.50",
+      "large": "61.00"
+    },
+    {
+      "suburb": "La Perouse",
+      "km": "39.68",
+      "small": "55.42",
+      "medium": "58.02",
+      "large": "64.52"
+    },
+    {
+      "suburb": "Little Bay",
+      "km": "38.94",
+      "small": "54.45",
+      "medium": "57.05",
+      "large": "63.55"
+    },
+    {
+      "suburb": "Malabar",
+      "km": "39.08",
+      "small": "54.64",
+      "medium": "57.24",
+      "large": "63.74"
+    },
+    {
+      "suburb": "Matraville",
+      "km": "37.13",
+      "small": "52.11",
+      "medium": "54.71",
+      "large": "61.21"
+    },
+    {
+      "suburb": "Phillip Bay",
+      "km": "39.44",
+      "small": "55.11",
+      "medium": "57.71",
+      "large": "64.21"
+    },
+    {
+      "suburb": "Port Botany",
+      "km": "37.78",
+      "small": "52.95",
+      "medium": "55.55",
+      "large": "62.05"
+    }
+  ],
+  "2008": [
+    {
+      "suburb": "Chippendale",
+      "km": "24.84",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Darlington",
+      "km": "24.66",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2190": [
+    {
+      "suburb": "Chullora",
+      "km": "13.15",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Greenacre",
+      "km": "17.06",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Mount Lewis",
+      "km": "17.33",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2105": [
+    {
+      "suburb": "Church Point",
+      "km": "42.90",
+      "small": "64.15",
+      "medium": "66.75",
+      "large": "73.25"
+    }
+  ],
+  "2206": [
+    {
+      "suburb": "Clemton Park",
+      "km": "21.23",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Earlwood",
+      "km": "22.55",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2031": [
+    {
+      "suburb": "Clovelly",
+      "km": "34.49",
+      "small": "48.67",
+      "medium": "51.27",
+      "large": "57.77"
+    },
+    {
+      "suburb": "Randwick",
+      "km": "32.17",
+      "small": "45.65",
+      "medium": "48.25",
+      "large": "54.75"
+    }
+  ],
+  "2570": [
+    {
+      "suburb": "Cobbitty",
+      "km": "49.85",
+      "small": "73.19",
+      "medium": "75.79",
+      "large": "82.29"
+    },
+    {
+      "suburb": "Elderslie",
+      "km": "49.62",
+      "small": "72.89",
+      "medium": "75.49",
+      "large": "81.99"
+    },
+    {
+      "suburb": "Kirkham",
+      "km": "49.72",
+      "small": "73.02",
+      "medium": "75.62",
+      "large": "82.12"
+    },
+    {
+      "suburb": "Oran Park",
+      "km": "39.41",
+      "small": "59.62",
+      "medium": "62.22",
+      "large": "68.72"
+    },
+    {
+      "suburb": "Spring Farm",
+      "km": "48.84",
+      "small": "71.87",
+      "medium": "74.47",
+      "large": "80.97"
+    }
+  ],
+  "2761": [
+    {
+      "suburb": "Colebee",
+      "km": "26.12",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Dean Park",
+      "km": "21.87",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Glendenning",
+      "km": "20.96",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Hassall Grove",
+      "km": "23.60",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Oakhurst",
+      "km": "22.51",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Plumpton",
+      "km": "20.85",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2097": [
+    {
+      "suburb": "Collaroy",
+      "km": "38.00",
+      "small": "57.78",
+      "medium": "60.38",
+      "large": "66.88"
+    },
+    {
+      "suburb": "Wheeler Heights",
+      "km": "35.31",
+      "small": "54.28",
+      "medium": "56.88",
+      "large": "63.38"
+    },
+    {
+      "suburb": "Collaroy Plateau",
+      "km": "36.67",
+      "small": "56.05",
+      "medium": "58.65",
+      "large": "65.15"
+    }
+  ],
+  "2760": [
+    {
+      "suburb": "Colyton",
+      "km": "21.44",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "North St Marys",
+      "km": "26.54",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Oxley Park",
+      "km": "22.09",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Ropes Crossing",
+      "km": "27.73",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "St Marys",
+      "km": "25.19",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2138": [
+    {
+      "suburb": "Concord West",
+      "km": "15.38",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Liberty Grove",
+      "km": "14.21",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Rhodes",
+      "km": "13.69",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2034": [
+    {
+      "suburb": "Coogee",
+      "km": "33.84",
+      "small": "47.83",
+      "medium": "50.43",
+      "large": "56.93"
+    },
+    {
+      "suburb": "South Coogee",
+      "km": "39.07",
+      "small": "54.63",
+      "medium": "57.23",
+      "large": "63.73"
+    }
+  ],
+  "2090": [
+    {
+      "suburb": "Cremorne",
+      "km": "26.43",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Cremorne Point",
+      "km": "27.54",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2099": [
+    {
+      "suburb": "Cromer",
+      "km": "34.89",
+      "small": "53.74",
+      "medium": "56.34",
+      "large": "62.84"
+    },
+    {
+      "suburb": "Dee Why",
+      "km": "34.65",
+      "small": "53.43",
+      "medium": "56.03",
+      "large": "62.53"
+    },
+    {
+      "suburb": "Narraweena",
+      "km": "32.97",
+      "small": "51.25",
+      "medium": "53.85",
+      "large": "60.35"
+    },
+    {
+      "suburb": "North Curl Curl",
+      "km": "36.06",
+      "small": "55.26",
+      "medium": "57.86",
+      "large": "64.36"
+    }
+  ],
+  "2230": [
+    {
+      "suburb": "Cronulla",
+      "km": "38.28",
+      "small": "53.60",
+      "medium": "56.20",
+      "large": "62.70"
+    },
+    {
+      "suburb": "Woolooware",
+      "km": "36.51",
+      "small": "51.30",
+      "medium": "53.90",
+      "large": "60.40"
+    },
+    {
+      "suburb": "Burraneer",
+      "km": "39.14",
+      "small": "54.72",
+      "medium": "57.32",
+      "large": "63.82"
+    }
+  ],
+  "2065": [
+    {
+      "suburb": "Crows Nest",
+      "km": "26.30",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Greenwich",
+      "km": "23.39",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Naremburn",
+      "km": "23.15",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "St Leonards",
+      "km": "22.92",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Wollstonecraft",
+      "km": "24.91",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Royal North Shore Hospital",
+      "km": "26.47",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2132": [
+    {
+      "suburb": "Croydon",
+      "km": "16.75",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2133": [
+    {
+      "suburb": "Croydon Park",
+      "km": "18.85",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2096": [
+    {
+      "suburb": "Curl Curl",
+      "km": "37.64",
+      "small": "57.32",
+      "medium": "59.92",
+      "large": "66.42"
+    },
+    {
+      "suburb": "Queenscliff",
+      "km": "36.39",
+      "small": "55.69",
+      "medium": "58.29",
+      "large": "64.79"
+    },
+    {
+      "suburb": "Freshwater",
+      "km": "37.15",
+      "small": "56.67",
+      "medium": "59.27",
+      "large": "65.77"
+    }
+  ],
+  "2567": [
+    {
+      "suburb": "Currans Hill",
+      "km": "42.33",
+      "small": "63.41",
+      "medium": "66.01",
+      "large": "72.51"
+    },
+    {
+      "suburb": "Harrington Park",
+      "km": "46.90",
+      "small": "69.35",
+      "medium": "71.95",
+      "large": "78.45"
+    },
+    {
+      "suburb": "Mount Annan",
+      "km": "42.96",
+      "small": "64.23",
+      "medium": "66.83",
+      "large": "73.33"
+    },
+    {
+      "suburb": "Narellan Vale",
+      "km": "43.79",
+      "small": "65.31",
+      "medium": "67.91",
+      "large": "74.41"
+    },
+    {
+      "suburb": "Smeaton Grange",
+      "km": "38.02",
+      "small": "57.81",
+      "medium": "60.41",
+      "large": "66.91"
+    }
+  ],
+  "2032": [
+    {
+      "suburb": "Daceyville",
+      "km": "33.10",
+      "small": "46.86",
+      "medium": "49.46",
+      "large": "55.96"
+    },
+    {
+      "suburb": "Kingsford",
+      "km": "32.62",
+      "small": "46.25",
+      "medium": "48.85",
+      "large": "55.35"
+    }
+  ],
+  "2027": [
+    {
+      "suburb": "Darling Point",
+      "km": "27.69",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Edgecliff",
+      "km": "27.01",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Point Piper",
+      "km": "28.84",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2010": [
+    {
+      "suburb": "Darlinghurst",
+      "km": "25.60",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Surry Hills",
+      "km": "25.51",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2000": [
+    {
+      "suburb": "Dawes Point",
+      "km": "25.99",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Haymarket",
+      "km": "24.73",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Millers Point",
+      "km": "25.07",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "The Rocks",
+      "km": "26.40",
+      "small": "47.38",
+      "medium": "49.98",
+      "large": "56.48"
+    },
+    {
+      "suburb": "Sydney",
+      "km": "24.51",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    },
+    {
+      "suburb": "Barangaroo",
+      "km": "25.73",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    }
+  ],
+  "2565": [
+    {
+      "suburb": "Denham Court",
+      "km": "28.57",
+      "small": "47.38",
+      "medium": "49.98",
+      "large": "56.48"
+    },
+    {
+      "suburb": "Ingleburn",
+      "km": "31.61",
+      "small": "49.47",
+      "medium": "52.07",
+      "large": "58.57"
+    },
+    {
+      "suburb": "Macquarie Links",
+      "km": "30.40",
+      "small": "47.90",
+      "medium": "50.50",
+      "large": "57.00"
+    },
+    {
+      "suburb": "Bardia",
+      "km": "25.74",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    }
+  ],
+  "2114": [
+    {
+      "suburb": "Denistone",
+      "km": "9.95",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Denistone West",
+      "km": "8.88",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Meadowbank",
+      "km": "9.85",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Melrose Park",
+      "km": "7.85",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "West Ryde",
+      "km": "9.08",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2112": [
+    {
+      "suburb": "Denistone East",
+      "km": "11.36",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Putney",
+      "km": "12.75",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Ryde",
+      "km": "10.79",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2219": [
+    {
+      "suburb": "Dolls Point",
+      "km": "36.15",
+      "small": "50.83",
+      "medium": "53.43",
+      "large": "59.93"
+    },
+    {
+      "suburb": "Sandringham",
+      "km": "31.53",
+      "small": "44.83",
+      "medium": "47.43",
+      "large": "53.93"
+    },
+    {
+      "suburb": "Sans Souci",
+      "km": "30.34",
+      "small": "43.28",
+      "medium": "45.88",
+      "large": "52.38"
+    }
+  ],
+  "2767": [
+    {
+      "suburb": "Doonside",
+      "km": "17.08",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Woodcroft",
+      "km": "20.11",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Bungarribee",
+      "km": "16.07",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2028": [
+    {
+      "suburb": "Double Bay",
+      "km": "27.69",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2030": [
+    {
+      "suburb": "Dover Heights",
+      "km": "32.74",
+      "small": "46.40",
+      "medium": "49.00",
+      "large": "55.50"
+    },
+    {
+      "suburb": "Vaucluse",
+      "km": "33.13",
+      "small": "46.91",
+      "medium": "49.51",
+      "large": "56.01"
+    },
+    {
+      "suburb": "Watsons Bay",
+      "km": "36.48",
+      "small": "51.26",
+      "medium": "53.86",
+      "large": "60.36"
+    }
+  ],
+  "2047": [
+    {
+      "suburb": "Drummoyne",
+      "km": "18.57",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2084": [
+    {
+      "suburb": "Duffys Forest",
+      "km": "37.71",
+      "small": "57.41",
+      "medium": "60.01",
+      "large": "66.51"
+    },
+    {
+      "suburb": "Terrey Hills",
+      "km": "34.75",
+      "small": "53.55",
+      "medium": "56.15",
+      "large": "62.65"
+    }
+  ],
+  "2203": [
+    {
+      "suburb": "Dulwich Hill",
+      "km": "21.45",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2117": [
+    {
+      "suburb": "Dundas",
+      "km": "4.49",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Dundas Valley",
+      "km": "7.36",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Oatlands",
+      "km": "5.14",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Telopea",
+      "km": "5.89",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2158": [
+    {
+      "suburb": "Dural",
+      "km": "17.71",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2558": [
+    {
+      "suburb": "Eagle Vale",
+      "km": "37.17",
+      "small": "56.70",
+      "medium": "59.30",
+      "large": "65.80"
+    },
+    {
+      "suburb": "Eschol Park",
+      "km": "36.90",
+      "small": "56.35",
+      "medium": "58.95",
+      "large": "65.45"
+    },
+    {
+      "suburb": "Kearns",
+      "km": "37.82",
+      "small": "57.55",
+      "medium": "60.15",
+      "large": "66.65"
+    }
+  ],
+  "2213": [
+    {
+      "suburb": "East Hills",
+      "km": "20.48",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Panania",
+      "km": "20.54",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Picnic Point",
+      "km": "22.58",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2071": [
+    {
+      "suburb": "East Killara",
+      "km": "24.89",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Killara",
+      "km": "19.86",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2070": [
+    {
+      "suburb": "East Lindfield",
+      "km": "25.28",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Lindfield",
+      "km": "23.23",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2113": [
+    {
+      "suburb": "East Ryde",
+      "km": "15.27",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Macquarie Park",
+      "km": "15.95",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "North Ryde",
+      "km": "14.10",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Macquarie Centre",
+      "km": "19.14",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2766": [
+    {
+      "suburb": "Eastern Creek",
+      "km": "15.56",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Rooty Hill",
+      "km": "20.07",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2018": [
+    {
+      "suburb": "Eastlakes",
+      "km": "39.15",
+      "small": "54.73",
+      "medium": "57.33",
+      "large": "63.83"
+    },
+    {
+      "suburb": "Rosebery",
+      "km": "35.37",
+      "small": "49.82",
+      "medium": "52.42",
+      "large": "58.92"
+    }
+  ],
+  "2122": [
+    {
+      "suburb": "Eastwood",
+      "km": "9.55",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Marsfield",
+      "km": "12.24",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2101": [
+    {
+      "suburb": "Elanora Heights",
+      "km": "42.18",
+      "small": "63.22",
+      "medium": "65.82",
+      "large": "72.32"
+    },
+    {
+      "suburb": "Ingleside",
+      "km": "38.32",
+      "small": "58.20",
+      "medium": "60.80",
+      "large": "67.30"
+    },
+    {
+      "suburb": "Narrabeen",
+      "km": "42.51",
+      "small": "63.65",
+      "medium": "66.25",
+      "large": "72.75"
+    },
+    {
+      "suburb": "North Narrabeen",
+      "km": "43.31",
+      "small": "64.68",
+      "medium": "67.28",
+      "large": "73.78"
+    }
+  ],
+  "2011": [
+    {
+      "suburb": "Elizabeth Bay",
+      "km": "27.82",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Potts Point",
+      "km": "31.01",
+      "small": "44.15",
+      "medium": "46.75",
+      "large": "53.25"
+    },
+    {
+      "suburb": "Rushcutters Bay",
+      "km": "27.59",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Woolloomooloo",
+      "km": "30.24",
+      "small": "43.15",
+      "medium": "45.75",
+      "large": "52.25"
+    }
+  ],
+  "2750": [
+    {
+      "suburb": "Emu Heights",
+      "km": "37.62",
+      "small": "52.75",
+      "medium": "55.35",
+      "large": "61.85"
+    },
+    {
+      "suburb": "Emu Plains",
+      "km": "35.89",
+      "small": "50.49",
+      "medium": "53.09",
+      "large": "59.59"
+    },
+    {
+      "suburb": "Jamisontown",
+      "km": "33.37",
+      "small": "47.22",
+      "medium": "49.82",
+      "large": "56.32"
+    },
+    {
+      "suburb": "Leonay",
+      "km": "35.52",
+      "small": "50.01",
+      "medium": "52.61",
+      "large": "59.11"
+    },
+    {
+      "suburb": "Penrith",
+      "km": "31.14",
+      "small": "44.32",
+      "medium": "46.92",
+      "large": "53.42"
+    },
+    {
+      "suburb": "South Penrith",
+      "km": "31.16",
+      "small": "44.35",
+      "medium": "46.95",
+      "large": "53.45"
+    }
+  ],
+  "2233": [
+    {
+      "suburb": "Engadine",
+      "km": "41.93",
+      "small": "58.35",
+      "medium": "60.95",
+      "large": "67.45"
+    },
+    {
+      "suburb": "Woronora Heights",
+      "km": "47.58",
+      "small": "65.69",
+      "medium": "68.29",
+      "large": "74.79"
+    },
+    {
+      "suburb": "Yarrawarrah",
+      "km": "39.68",
+      "small": "55.42",
+      "medium": "58.02",
+      "large": "64.52"
+    }
+  ],
+  "2042": [
+    {
+      "suburb": "Enmore",
+      "km": "22.05",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Newtown",
+      "km": "22.85",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2121": [
+    {
+      "suburb": "Epping",
+      "km": "10.10",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "North Epping",
+      "km": "13.86",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2115": [
+    {
+      "suburb": "Ermington",
+      "km": "6.89",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2759": [
+    {
+      "suburb": "Erskine Park",
+      "km": "20.97",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "St Clair",
+      "km": "22.75",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2043": [
+    {
+      "suburb": "Erskineville",
+      "km": "25.10",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2165": [
+    {
+      "suburb": "Fairfield",
+      "km": "8.95",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Fairfield East",
+      "km": "8.63",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Fairfield Heights",
+      "km": "9.56",
+      "small": "21.38",
+      "medium": "23.98",
+      "large": "30.48"
+    },
+    {
+      "suburb": "Fairfield West",
+      "km": "11.67",
+      "small": "27.88",
+      "medium": "30.48",
+      "large": "36.98"
+    }
+  ],
+  "2094": [
+    {
+      "suburb": "Fairlight",
+      "km": "33.62",
+      "small": "52.09",
+      "medium": "54.69",
+      "large": "61.19"
+    }
+  ],
+  "2037": [
+    {
+      "suburb": "Forest Lodge",
+      "km": "23.05",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Glebe",
+      "km": "23.02",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2087": [
+    {
+      "suburb": "Forestville",
+      "km": "27.82",
+      "small": "47.38",
+      "medium": "49.98",
+      "large": "56.48"
+    },
+    {
+      "suburb": "Killarney Heights",
+      "km": "28.62",
+      "small": "47.38",
+      "medium": "49.98",
+      "large": "56.48"
+    }
+  ],
+  "2086": [
+    {
+      "suburb": "Frenchs Forest",
+      "km": "29.53",
+      "small": "47.38",
+      "medium": "49.98",
+      "large": "56.48"
+    }
+  ],
+  "2198": [
+    {
+      "suburb": "Georges Hall",
+      "km": "12.29",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2145": [
+    {
+      "suburb": "Girraween",
+      "km": "6.49",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Greystanes",
+      "km": "6.73",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Mays Hill",
+      "km": "1.76",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Pemulwuy",
+      "km": "8.38",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Pendle Hill",
+      "km": "5.28",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "South Wentworthville",
+      "km": "4.95",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Wentworthville",
+      "km": "3.21",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Westmead",
+      "km": "2.26",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Constitution Hill",
+      "km": "5.63",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2111": [
+    {
+      "suburb": "Gladesville",
+      "km": "14.25",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Henley",
+      "km": "16.01",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Huntleys Cove",
+      "km": "16.01",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Huntleys Point",
+      "km": "17.22",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Tennyson Point",
+      "km": "14.19",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2167": [
+    {
+      "suburb": "Glenfield",
+      "km": "24.35",
+      "small": "40.88",
+      "medium": "43.48",
+      "large": "49.98"
+    }
+  ],
+  "2745": [
+    {
+      "suburb": "Glenmore Park",
+      "km": "32.53",
+      "small": "46.13",
+      "medium": "48.73",
+      "large": "55.23"
+    },
+    {
+      "suburb": "Luddenham",
+      "km": "33.12",
+      "small": "51.44",
+      "medium": "54.04",
+      "large": "60.54"
+    },
+    {
+      "suburb": "Regentville",
+      "km": "34.17",
+      "small": "48.25",
+      "medium": "50.85",
+      "large": "57.35"
+    }
+  ],
+  "2768": [
+    {
+      "suburb": "Glenwood",
+      "km": "13.82",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Parklea",
+      "km": "16.14",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Stanhope Gardens",
+      "km": "17.25",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2072": [
+    {
+      "suburb": "Gordon",
+      "km": "20.70",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2232": [
+    {
+      "suburb": "Grays Point",
+      "km": "41.12",
+      "small": "57.29",
+      "medium": "59.89",
+      "large": "66.39"
+    },
+    {
+      "suburb": "Kareela",
+      "km": "34.65",
+      "small": "48.88",
+      "medium": "51.48",
+      "large": "57.98"
+    },
+    {
+      "suburb": "Kirrawee",
+      "km": "36.90",
+      "small": "51.81",
+      "medium": "54.41",
+      "large": "60.91"
+    },
+    {
+      "suburb": "Loftus",
+      "km": "37.92",
+      "small": "53.14",
+      "medium": "55.74",
+      "large": "62.24"
+    },
+    {
+      "suburb": "Sutherland",
+      "km": "36.68",
+      "small": "51.52",
+      "medium": "54.12",
+      "large": "60.62"
+    },
+    {
+      "suburb": "Woronora",
+      "km": "35.47",
+      "small": "49.95",
+      "medium": "52.55",
+      "large": "59.05"
+    }
+  ],
+  "2161": [
+    {
+      "suburb": "Guildford",
+      "km": "6.18",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Guildford West",
+      "km": "6.45",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Old Guildford",
+      "km": "7.29",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Yennora",
+      "km": "8.06",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2227": [
+    {
+      "suburb": "Gymea",
+      "km": "34.09",
+      "small": "48.15",
+      "medium": "50.75",
+      "large": "57.25"
+    },
+    {
+      "suburb": "Gymea Bay",
+      "km": "36.08",
+      "small": "50.74",
+      "medium": "53.34",
+      "large": "59.84"
+    }
+  ],
+  "2045": [
+    {
+      "suburb": "Haberfield",
+      "km": "18.05",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2150": [
+    {
+      "suburb": "Harris Park",
+      "km": "2.14",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Parramatta",
+      "km": "0.00",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    }
+  ],
+  "2140": [
+    {
+      "suburb": "Homebush",
+      "km": "12.10",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Homebush West",
+      "km": "12.10",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2175": [
+    {
+      "suburb": "Horsley Park",
+      "km": "19.35",
+      "small": "34.38",
+      "medium": "36.98",
+      "large": "43.48"
+    }
+  ],
+  "2110": [
+    {
+      "suburb": "Hunters Hill",
+      "km": "15.63",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Woolwich",
+      "km": "18.63",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2220": [
+    {
+      "suburb": "Hurstville",
+      "km": "24.57",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Hurstville Grove",
+      "km": "26.63",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2224": [
+    {
+      "suburb": "Kangaroo Point",
+      "km": "31.69",
+      "small": "45.04",
+      "medium": "47.64",
+      "large": "54.14"
+    },
+    {
+      "suburb": "Sylvania",
+      "km": "30.64",
+      "small": "43.67",
+      "medium": "46.27",
+      "large": "52.77"
+    },
+    {
+      "suburb": "Sylvania Waters",
+      "km": "32.23",
+      "small": "45.74",
+      "medium": "48.34",
+      "large": "54.84"
+    }
+  ],
+  "2033": [
+    {
+      "suburb": "Kensington",
+      "km": "34.46",
+      "small": "48.64",
+      "medium": "51.24",
+      "large": "57.74"
+    }
+  ],
+  "2147": [
+    {
+      "suburb": "Kings Langley",
+      "km": "12.11",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Lalor Park",
+      "km": "11.65",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Seven Hills",
+      "km": "9.78",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Seven Hills West",
+      "km": "11.83",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2208": [
+    {
+      "suburb": "Kingsgrove",
+      "km": "22.57",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2061": [
+    {
+      "suburb": "Kirribilli",
+      "km": "29.26",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Milsons Point",
+      "km": "28.53",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2217": [
+    {
+      "suburb": "Kogarah",
+      "km": "29.88",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Kogarah Bay",
+      "km": "28.72",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Monterey",
+      "km": "33.06",
+      "small": "46.82",
+      "medium": "49.42",
+      "large": "55.92"
+    },
+    {
+      "suburb": "Ramsgate",
+      "km": "30.14",
+      "small": "43.02",
+      "medium": "45.62",
+      "large": "52.12"
+    },
+    {
+      "suburb": "Ramsgate Beach",
+      "km": "34.23",
+      "small": "48.34",
+      "medium": "50.94",
+      "large": "57.44"
+    },
+    {
+      "suburb": "Beverley Park",
+      "km": "28.93",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2231": [
+    {
+      "suburb": "Kurnell",
+      "km": "43.01",
+      "small": "59.75",
+      "medium": "62.35",
+      "large": "68.85"
+    }
+  ],
+  "2195": [
+    {
+      "suburb": "Lakemba",
+      "km": "19.50",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Wiley Park",
+      "km": "19.39",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2066": [
+    {
+      "suburb": "Lane Cove",
+      "km": "20.64",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Lane Cove North",
+      "km": "19.80",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Lane Cove West",
+      "km": "19.66",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Linley Point",
+      "km": "18.34",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Longueville",
+      "km": "22.49",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Northwood",
+      "km": "22.04",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Riverview",
+      "km": "21.48",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2060": [
+    {
+      "suburb": "Lavender Bay",
+      "km": "28.68",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Mcmahons Point",
+      "km": "28.90",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "North Sydney",
+      "km": "28.83",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Waverton",
+      "km": "30.36",
+      "small": "43.30",
+      "medium": "45.90",
+      "large": "52.40"
+    }
+  ],
+  "2040": [
+    {
+      "suburb": "Leichhardt",
+      "km": "20.47",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Lilyfield",
+      "km": "20.77",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2049": [
+    {
+      "suburb": "Lewisham",
+      "km": "20.07",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Petersham",
+      "km": "20.36",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2564": [
+    {
+      "suburb": "Long Point",
+      "km": "30.93",
+      "small": "48.59",
+      "medium": "51.19",
+      "large": "57.69"
+    },
+    {
+      "suburb": "Macquarie Fields",
+      "km": "29.43",
+      "small": "47.38",
+      "medium": "49.98",
+      "large": "56.48"
+    }
+  ],
+  "2210": [
+    {
+      "suburb": "Lugarno",
+      "km": "26.47",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Peakhurst",
+      "km": "23.71",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Peakhurst Heights",
+      "km": "25.98",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Riverwood",
+      "km": "22.13",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2095": [
+    {
+      "suburb": "Manly",
+      "km": "36.19",
+      "small": "55.43",
+      "medium": "58.03",
+      "large": "64.53"
+    }
+  ],
+  "2035": [
+    {
+      "suburb": "Maroubra",
+      "km": "38.72",
+      "small": "54.17",
+      "medium": "56.77",
+      "large": "63.27"
+    },
+    {
+      "suburb": "Pagewood",
+      "km": "35.28",
+      "small": "49.70",
+      "medium": "52.30",
+      "large": "58.80"
+    },
+    {
+      "suburb": "Maroubra South",
+      "km": "37.16",
+      "small": "52.15",
+      "medium": "54.75",
+      "large": "61.25"
+    }
+  ],
+  "2204": [
+    {
+      "suburb": "Marrickville",
+      "km": "22.10",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Marrickville South",
+      "km": "21.67",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2020": [
+    {
+      "suburb": "Mascot",
+      "km": "32.35",
+      "small": "45.89",
+      "medium": "48.49",
+      "large": "54.99"
+    },
+    {
+      "suburb": "Sydney Domestic Airport",
+      "km": "34.70",
+      "small": "48.95",
+      "medium": "51.55",
+      "large": "58.05"
+    }
+  ],
+  "2563": [
+    {
+      "suburb": "Menangle Park",
+      "km": "48.81",
+      "small": "71.84",
+      "medium": "74.44",
+      "large": "80.94"
+    }
+  ],
+  "2160": [
+    {
+      "suburb": "Merrylands",
+      "km": "3.82",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "Merrylands West",
+      "km": "5.25",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2214": [
+    {
+      "suburb": "Milperra",
+      "km": "16.52",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2228": [
+    {
+      "suburb": "Miranda",
+      "km": "33.34",
+      "small": "47.18",
+      "medium": "49.78",
+      "large": "56.28"
+    },
+    {
+      "suburb": "Yowie Bay",
+      "km": "34.92",
+      "small": "49.24",
+      "medium": "51.84",
+      "large": "58.34"
+    }
+  ],
+  "2103": [
+    {
+      "suburb": "Mona Vale",
+      "km": "40.52",
+      "small": "61.05",
+      "medium": "63.65",
+      "large": "70.15"
+    }
+  ],
+  "2021": [
+    {
+      "suburb": "Moore Park",
+      "km": "30.96",
+      "small": "44.08",
+      "medium": "46.68",
+      "large": "53.18"
+    },
+    {
+      "suburb": "Paddington",
+      "km": "27.28",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Centennial Park",
+      "km": "31.41",
+      "small": "44.67",
+      "medium": "47.27",
+      "large": "53.77"
+    }
+  ],
+  "2223": [
+    {
+      "suburb": "Mortdale",
+      "km": "25.42",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Oatley",
+      "km": "26.56",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2088": [
+    {
+      "suburb": "Mosman",
+      "km": "31.64",
+      "small": "44.97",
+      "medium": "47.57",
+      "large": "54.07"
+    }
+  ],
+  "2079": [
+    {
+      "suburb": "Mount Colah",
+      "km": "23.96",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2080": [
+    {
+      "suburb": "Mount Kuring-gai",
+      "km": "28.08",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2089": [
+    {
+      "suburb": "Neutral Bay",
+      "km": "26.05",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Kurraba Point",
+      "km": "30.39",
+      "small": "43.35",
+      "medium": "45.95",
+      "large": "52.45"
+    }
+  ],
+  "2127": [
+    {
+      "suburb": "Newington",
+      "km": "9.72",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Sydney Olympic Park",
+      "km": "10.20",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Wentworth Point",
+      "km": "10.93",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Homebush Bay",
+      "km": "9.18",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2106": [
+    {
+      "suburb": "Newport",
+      "km": "43.61",
+      "small": "65.07",
+      "medium": "67.67",
+      "large": "74.17"
+    }
+  ],
+  "2076": [
+    {
+      "suburb": "Normanhurst",
+      "km": "17.81",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "North Wahroonga",
+      "km": "22.57",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Wahroonga",
+      "km": "20.66",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2151": [
+    {
+      "suburb": "North Parramatta",
+      "km": "1.70",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    },
+    {
+      "suburb": "North Rocks",
+      "km": "5.74",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2754": [
+    {
+      "suburb": "North Richmond",
+      "km": "43.79",
+      "small": "60.76",
+      "medium": "63.36",
+      "large": "69.86"
+    }
+  ],
+  "2074": [
+    {
+      "suburb": "North Turramurra",
+      "km": "25.41",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "South Turramurra",
+      "km": "19.74",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Turramurra",
+      "km": "23.06",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Warrawee",
+      "km": "20.36",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2063": [
+    {
+      "suburb": "Northbridge",
+      "km": "28.64",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2152": [
+    {
+      "suburb": "Northmead",
+      "km": "3.73",
+      "small": "11.64",
+      "medium": "14.24",
+      "large": "20.74"
+    }
+  ],
+  "2146": [
+    {
+      "suburb": "Old Toongabbie",
+      "km": "6.14",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Toongabbie",
+      "km": "7.54",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2748": [
+    {
+      "suburb": "Orchard Hills",
+      "km": "29.29",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2225": [
+    {
+      "suburb": "Oyster Bay",
+      "km": "36.93",
+      "small": "51.85",
+      "medium": "54.45",
+      "large": "60.95"
+    }
+  ],
+  "2211": [
+    {
+      "suburb": "Padstow",
+      "km": "21.39",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Padstow Heights",
+      "km": "23.47",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2120": [
+    {
+      "suburb": "Pennant Hills",
+      "km": "14.68",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Thornleigh",
+      "km": "17.12",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Westleigh",
+      "km": "17.44",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2222": [
+    {
+      "suburb": "Penshurst",
+      "km": "23.68",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2172": [
+    {
+      "suburb": "Pleasure Point",
+      "km": "23.47",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Voyager Point",
+      "km": "24.65",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Sandy Point",
+      "km": "26.90",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2196": [
+    {
+      "suburb": "Punchbowl",
+      "km": "19.57",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Roselands",
+      "km": "20.78",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2073": [
+    {
+      "suburb": "Pymble",
+      "km": "23.31",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "West Pymble",
+      "km": "21.11",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2009": [
+    {
+      "suburb": "Pyrmont",
+      "km": "23.18",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2016": [
+    {
+      "suburb": "Redfern",
+      "km": "25.65",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2212": [
+    {
+      "suburb": "Revesby",
+      "km": "19.98",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    },
+    {
+      "suburb": "Revesby Heights",
+      "km": "22.15",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2029": [
+    {
+      "suburb": "Rose Bay",
+      "km": "30.55",
+      "small": "43.55",
+      "medium": "46.15",
+      "large": "52.65"
+    }
+  ],
+  "2039": [
+    {
+      "suburb": "Rozelle",
+      "km": "20.88",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2116": [
+    {
+      "suburb": "Rydalmere",
+      "km": "5.20",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2762": [
+    {
+      "suburb": "Schofields",
+      "km": "21.73",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2092": [
+    {
+      "suburb": "Seaforth",
+      "km": "33.00",
+      "small": "51.28",
+      "medium": "53.88",
+      "large": "60.38"
+    }
+  ],
+  "2128": [
+    {
+      "suburb": "Silverwater",
+      "km": "8.77",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2164": [
+    {
+      "suburb": "Smithfield",
+      "km": "8.55",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    },
+    {
+      "suburb": "Wetherill Park",
+      "km": "11.42",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Woodpark",
+      "km": "5.69",
+      "small": "16.84",
+      "medium": "19.44",
+      "large": "25.94"
+    }
+  ],
+  "2075": [
+    {
+      "suburb": "St Ives",
+      "km": "26.59",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "St Ives Chase",
+      "km": "27.24",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2044": [
+    {
+      "suburb": "St Peters",
+      "km": "23.46",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Sydenham",
+      "km": "23.18",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    },
+    {
+      "suburb": "Tempe",
+      "km": "29.53",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2048": [
+    {
+      "suburb": "Stanmore",
+      "km": "22.25",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2135": [
+    {
+      "suburb": "Strathfield",
+      "km": "13.25",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2130": [
+    {
+      "suburb": "Summer Hill",
+      "km": "19.98",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2769": [
+    {
+      "suburb": "The Ponds",
+      "km": "18.77",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2007": [
+    {
+      "suburb": "Ultimo",
+      "km": "24.47",
+      "small": "36.34",
+      "medium": "38.94",
+      "large": "45.44"
+    }
+  ],
+  "2102": [
+    {
+      "suburb": "Warriewood",
+      "km": "40.30",
+      "small": "60.77",
+      "medium": "63.37",
+      "large": "69.87"
+    }
+  ],
+  "2017": [
+    {
+      "suburb": "Waterloo",
+      "km": "26.55",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    },
+    {
+      "suburb": "Zetland",
+      "km": "30.20",
+      "small": "43.10",
+      "medium": "45.70",
+      "large": "52.20"
+    }
+  ],
+  "2173": [
+    {
+      "suburb": "Wattle Grove",
+      "km": "21.12",
+      "small": "29.84",
+      "medium": "32.44",
+      "large": "38.94"
+    }
+  ],
+  "2125": [
+    {
+      "suburb": "West Pennant Hills",
+      "km": "11.40",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2025": [
+    {
+      "suburb": "Woollahra",
+      "km": "28.34",
+      "small": "42.84",
+      "medium": "45.44",
+      "large": "51.94"
+    }
+  ],
+  "2199": [
+    {
+      "suburb": "Yagoona",
+      "km": "13.04",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    },
+    {
+      "suburb": "Yagoona West",
+      "km": "16.48",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2174": [
+    {
+      "suburb": "Edmondson Park",
+      "km": "28.13",
+      "small": "47.38",
+      "medium": "49.98",
+      "large": "56.48"
+    }
+  ],
+  "2109": [
+    {
+      "suburb": "Macquarie University",
+      "km": "13.94",
+      "small": "23.34",
+      "medium": "25.94",
+      "large": "32.44"
+    }
+  ],
+  "2052": [
+    {
+      "suburb": "Unsw Sydney",
+      "km": "31.86",
+      "small": "45.25",
+      "medium": "47.85",
+      "large": "54.35"
+    }
+  ]
+}

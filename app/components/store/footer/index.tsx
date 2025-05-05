@@ -1,18 +1,23 @@
+import { Link } from "@remix-run/react";
 import { footerLinks, footerPopular } from "~/data/homepage";
 
 export default function Footer() {
   return <div>
     <div className="pt-6 md:pt-10 pb-10 md:pb-20 px-4 md:px-20 lg:px-40 flex flex-col lg:flex-row bg-[#F4F0EC]">
       {/* Logo and Contact Section */}
-      <div className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-primary pb-6 lg:pb-0 lg:pr-8">
-        <div className="w-1/2 pb-4">
-          <img src="/logo.png" alt="" className="max-w-[150px]" />
-        </div>
+      <div className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-primary pb-6 lg:pb-0 lg:pr-8 ">
+        {/* <Link to="/">
+          <img
+            className="w-[68px] md:w-[110px] object-contain"
+            src="https://res.cloudinary.com/djwau0xeb/image/upload/v1745231609/logo_pmahyd.png"
+            alt="logo"
+          />
+        </Link> */}
         <div className="text-primary pb-4">
           <div className="border-t border-dashed border-primary"></div>
           <div className="flex py-2 gap-4">
             <i className="ri-phone-fill text-xl md:text-2xl flex justify-center items-center"></i>
-            <div className="py-1 text-lg md:text-xl">1300 158 899</div>
+            <div className="py-1 text-lg md:text-xl">0457 660 185</div>
           </div>
           <div className="border-t border-dashed border-primary"></div>
         </div>

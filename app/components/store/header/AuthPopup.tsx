@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Button from "~/components/ui/Button";
+import { GoogleLogin } from "@react-oauth/google";
 
 interface AuthPopupProps {
   onClose: () => void;
@@ -11,35 +12,55 @@ export default function AuthPopup({ onClose }: AuthPopupProps) {
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
+      if (e.key === 'Escape') onClose();
     };
-
     const handleClickOutside = (e: MouseEvent) => {
       if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
         onClose();
       }
     };
-
     document.addEventListener('keydown', handleEsc);
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => {
       document.removeEventListener('keydown', handleEsc);
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [onClose]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: 实现登录/注册逻辑
-    console.log('Form submitted');
-  };
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email")?.toString();
+    const password = formData.get("password")?.toString();
 
-  const handleGoogleAuth = () => {
-    // TODO: 实现 Google 登录
-    console.log('Google auth');
+    if (!email || !password) {
+      alert("请填写完整信息");
+      return;
+    }
+
+    const url = isLogin ? "/api/auth/login" : "/api/auth/register";
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.redirected) {
+        window.location.href = res.url;
+        return;
+      }
+
+      if (!res.ok) {
+        const result = await res.json();
+        alert(result.error || "登录失败");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("网络异常");
+    }
   };
 
   return (
@@ -64,38 +85,35 @@ export default function AuthPopup({ onClose }: AuthPopupProps) {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
+              name="email"
               type="email"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="your@email.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
+              name="password"
               type="password"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="••••••••"
             />
           </div>
 
           {!isLogin && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Confirm Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
               <input
+                name="confirmPassword"
                 type="password"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="••••••••"
               />
             </div>
@@ -128,14 +146,33 @@ export default function AuthPopup({ onClose }: AuthPopupProps) {
         </div>
 
         {/* Social Login */}
-        <Button
-          variant="outline"
-          fullWidth
-          onClick={handleGoogleAuth}
-          leftIcon={<i className="ri-google-fill"></i>}
-        >
-          Continue with Google
-        </Button>
+        <GoogleLogin
+          onSuccess={async (credentialResponse) => {
+            try {
+              const idToken = credentialResponse.credential;
+              const res = await fetch("/api/auth/google-callback", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ idToken }),
+              });
+
+              if (res.redirected) {
+                window.location.href = res.url;
+                return;
+              }
+
+              const data = await res.json();
+              alert(data?.error || "Google 登录失败");
+            } catch (error) {
+              console.error("Google 登录失败:", error);
+              alert("Google 登录异常");
+            }
+          }}
+          onError={() => {
+            alert("Google 登录失败");
+          }}
+        />
 
         {/* Toggle Login/Register */}
         <div className="mt-6 text-center text-sm text-gray-600">

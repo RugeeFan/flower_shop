@@ -1,9 +1,18 @@
-export default function CommentItem() {
+interface Comment {
+  name: string;
+  city: string;
+  title: string;
+  review: string;
+  reply: string;
+  timeAgo: string;
+}
+
+export default function CommentItem({ comment }: { comment: Comment }) {
   return (
     <div className="bg-white rounded-lg py-6 sm:py-10">
       {/* Rating and title */}
       <div className="flex items-center justify-between">
-        <div className="text-xl sm:text-2xl font-bold">IO</div>
+        <div className="text-xl sm:text-2xl font-bold">{comment.title}</div>
         <div className="text-xs sm:text-sm text-gray-500">Verified Customer</div>
       </div>
 
@@ -26,8 +35,8 @@ export default function CommentItem() {
             </svg>
           </div>
           <div className="ml-2 sm:ml-3">
-            <div className="text-sm sm:font-semibold">I. Orrego</div>
-            <div className="text-xs sm:text-sm text-gray-500">Parramatta, Australia</div>
+            <div className="text-sm sm:font-semibold">{comment.name}</div>
+            <div className="text-xs sm:text-sm text-gray-500">{comment.city}</div>
           </div>
         </div>
       </div>
@@ -37,7 +46,7 @@ export default function CommentItem() {
 
       {/* Rating stars */}
       <div className="flex items-center text-yellow-500">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <svg
             key={i}
             xmlns="http://www.w3.org/2000/svg"
@@ -56,21 +65,14 @@ export default function CommentItem() {
 
       {/* Comment content */}
       <div className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-700">
-        <p>
-          If you are looking for reliable, high quality flower delivery, I
-          wholeheartedly recommend Pearson Florist. They exceed all my
-          expectations and made the occasion even more special.
-        </p>
+        <p>{comment.review}</p>
       </div>
 
       {/* Reply section */}
       <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
         <div className="text-xs sm:text-sm font-semibold">Reply:</div>
         <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">
-          Thank you for your wonderful 5-star review, Isabel! We're thrilled to
-          hear that we could make your occasion even more special. Your support
-          means everything to us, and we look forward to bringing joy to your
-          future celebrations!
+          {comment.reply}
         </div>
         <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-500">
           Warm regards,<br />
@@ -81,11 +83,9 @@ export default function CommentItem() {
       {/* Help and date */}
       <div className="mt-3 sm:mt-4 flex items-center justify-between">
         <div className="text-xs sm:text-sm text-gray-500">
-          Was this review helpful?{' '}
-          <button className="hover:underline">Yes</button>{' '}
-          <button className="hover:underline">Report</button>
+          Was this review helpful? <button className="hover:underline">Yes</button> <button className="hover:underline">Report</button>
         </div>
-        <div className="text-xs sm:text-sm text-gray-500">2 months ago</div>
+        <div className="text-xs sm:text-sm text-gray-500">{comment.timeAgo}</div>
       </div>
     </div>
   );

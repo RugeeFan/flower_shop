@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["debian-openssl-1.1.x", "native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -11,11 +12,13 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   password  String?
+  googleId  String?  @unique
   name      String?
-  phone     String? // ✅ 新增字段
-  isAdmin   Boolean  @default(false)
-  createdAt DateTime @default(now())
   orders    Order[]
+  isAdmin   Boolean  @default(false)
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
@@ -61,6 +64,29 @@ model OrderItem {
   productId String
   quantity  Int
   unitPrice Float // 下单时的商品单价快照
+}
+
+model PageContent {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique // 比如 'home-banner', 'home-announcement', 'about-page-intro'
+  title     String?
+  subtitle  String?
+  content   String? // 富文本或者普通正文内容
+  imageUrl  String? // 可选，比如 Banner 图片地址
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ShippingZone {
+  id       Int    @id @default(autoincrement())
+  postcode String
+  suburb   String
+  km       Float
+  small    Float
+  medium   Float
+  large    Float
+
+  @@index([postcode, suburb]) // 优化根据用户地址匹配查询
 }
 
 enum OrderStatus {

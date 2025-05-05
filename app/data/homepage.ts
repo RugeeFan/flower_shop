@@ -1,4 +1,4 @@
-export const navBarTitle = ["BEST SELLERS", "OCCATION", "SHOP ALL"]
+export const navBarTitle = ["HOME", "BEST SELLERS", "OCCATION", "WEDDINGS & SERVICES", "SHOP ALL", "ABOUT US"]
 
 export const categoryListTag = [
   "Anniversary",
@@ -21,6 +21,11 @@ export const categoryListTag = [
   "Funeral Flowers",
   "Bestsellers"
 ];
+
+export const weddingServiceTag = [
+  "Weddings",
+  "Corporate"
+]
 
 export const bestSellTitle = [
   {
@@ -204,4 +209,24 @@ export const whyChooseUs = [
 ];
 
 
-
+export const occasionToUrlMap: Record<string, string> = {
+  "Anniversary": "anniversary",
+  "Sympathy Flowers For The Home": "sympathy-flowers-for-the-home",
+  "Get Well": "get-well",
+  "Celebration": "celebration",
+  "Corporate": "corporate",
+  "Valentines Day": "valentines-day",
+  "Christmas": "christmas",
+  "Same Day Delivery": "same-day-delivery",
+  "Multi Coloured Flower Arrangements": "multi-coloured-flower-arrangements",
+  "Birthday": "birthday",
+  "New Baby": "new-baby",
+  "I'm Sorry": "im-sorry",
+  "Thank You": "thank-you",
+  "Congratulations": "congratulations",
+  "Mothers Day": "mothers-day",
+  "Romance": "romance",
+  "Green Flowers": "green-flowers",
+  "Funeral Flowers": "funeral-flowers",
+  "Bestsellers": "bestsellers"
+};

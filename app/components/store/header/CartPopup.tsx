@@ -1,6 +1,6 @@
 import formatCurrency from "~/utils/formatCurrency";
 import Button from "~/components/ui/Button";
-import { useCartStore } from "~/cart/useCartStore";
+import { useCartStore } from "~/zustand/useCartStore";
 import { useNavigate } from "@remix-run/react";
 
 interface CartPopupProps {
@@ -83,12 +83,12 @@ export default function CartPopup({ onClose }: CartPopupProps) {
                         onClick={() =>
                           item.quantity > 1
                             ? useCartStore.setState((state) => ({
-                                items: state.items.map((i) =>
-                                  i.id === item.id
-                                    ? { ...i, quantity: i.quantity - 1 }
-                                    : i
-                                ),
-                              }))
+                              items: state.items.map((i) =>
+                                i.id === item.id
+                                  ? { ...i, quantity: i.quantity - 1 }
+                                  : i
+                              ),
+                            }))
                             : removeFromCart(item.id)
                         }
                       >
@@ -130,11 +130,11 @@ export default function CartPopup({ onClose }: CartPopupProps) {
             </div>
             <div className="flex justify-between text-gray-600">
               <span>Shipping</span>
-              <span>{shipping === 0 ? "Free" : formatCurrency(shipping)}</span>
+              <span className=" text-gray-500">calculated at checkout</span>
             </div>
             <div className="flex justify-between text-lg font-semibold pt-2 border-t">
               <span>Total</span>
-              <span>{formatCurrency(total)}</span>
+              <span>{`${formatCurrency(total)} + Shipping Fee`}</span>
             </div>
           </div>
 

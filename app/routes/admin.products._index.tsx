@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { prisma } from "~/lib/prisma.server";
 import { formatCurrency } from "~/utils/money";
+import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 12;
 
@@ -54,27 +55,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect("/admin/products");
 };
 
-// 分页页码处理函数
 function getResponsivePageNumbers(current: number, total: number, maxPages: number) {
   const pages: (number | "...")[] = [];
 
-  if (total <= maxPages) {
-    return Array.from({ length: total }, (_, i) => i + 1);
-  }
+  if (total <= maxPages) return Array.from({ length: total }, (_, i) => i + 1);
 
   pages.push(1);
-
   const start = Math.max(2, current - 1);
   const end = Math.min(total - 1, current + 1);
-
   if (start > 2) pages.push("...");
-
-  for (let i = start; i <= end; i++) {
-    pages.push(i);
-  }
-
+  for (let i = start; i <= end; i++) pages.push(i);
   if (end < total - 1) pages.push("...");
-
   pages.push(total);
   return pages;
 }
@@ -83,6 +74,7 @@ export default function AdminProductList() {
   const { products, q, page, total } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation("admin");
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
   const prevPage = page > 1 ? page - 1 : null;
@@ -90,14 +82,9 @@ export default function AdminProductList() {
 
   const [maxVisiblePages, setMaxVisiblePages] = useState(10);
 
-  // 响应式设置分页最大页数显示
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setMaxVisiblePages(5);
-      } else {
-        setMaxVisiblePages(10);
-      }
+      setMaxVisiblePages(window.innerWidth < 640 ? 5 : 10);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -110,12 +97,12 @@ export default function AdminProductList() {
     <div className="p-6 max-w-7xl mx-auto">
       {/* 标题 + 新增按钮 */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="text-2xl font-bold">商品管理</h1>
+        <h1 className="text-2xl font-bold">{t("products")}</h1>
         <Link
           to="/admin/products/new"
           className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90 transition"
         >
-          新增商品
+          {t("addProduct")}
         </Link>
       </div>
 
@@ -124,7 +111,7 @@ export default function AdminProductList() {
         <input
           type="text"
           name="q"
-          placeholder="搜索商品名称"
+          placeholder={t("searchProductName")}
           defaultValue={q}
           className="w-full max-w-md border rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary"
         />
@@ -132,25 +119,36 @@ export default function AdminProductList() {
           type="submit"
           className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800"
         >
-          搜索
+          {t("search")}
         </button>
       </Form>
 
       {/* 商品列表 */}
       <div className="space-y-6">
         {products.length === 0 ? (
-          <p className="text-gray-500">没有找到符合条件的商品</p>
+          <p className="text-gray-500">{t("noProducts")}</p>
         ) : (
           products.map((product) => (
             <div
               key={product.id}
-              className="flex flex-col md:flex-row justify-between items-start gap-4 border rounded-xl p-4 bg-white shadow-sm hover:shadow-md transition"
+              className="flex flex-col md:flex-row justify-between items-stretch gap-4 border rounded-xl p-4 bg-white shadow-sm hover:shadow-md transition"
             >
-              {/* 左侧：商品信息 */}
+              {/* 移动端先展示图片 */}
+              {product.imgUrl?.length > 0 && (
+                <div className="w-full md:w-[150px] aspect-[370/460] shrink-0 rounded-md border overflow-hidden">
+                  <img
+                    src={product.imgUrl}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              {/* 商品信息 */}
               <div className="flex-1 space-y-1">
                 <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
                 <p className="text-sm text-gray-500">
-                  分类：{product.categories.map((c) => c.name).join(", ") || "无"}
+                  {t("category")}: {product.categories.map((c) => c.name).join(", ") || t("none")}
                 </p>
                 <p className="text-primary font-bold">{formatCurrency(product.price)}</p>
                 <div className="flex gap-4 pt-2">
@@ -158,12 +156,12 @@ export default function AdminProductList() {
                     to={`/admin/products/${product.id}`}
                     className="text-sm text-blue-600 hover:underline"
                   >
-                    编辑
+                    {t("edit")}
                   </Link>
                   <Form
                     method="post"
                     onSubmit={(e) => {
-                      if (!confirm("确定要删除这个商品吗？")) e.preventDefault();
+                      if (!confirm(t("confirmDeleteProduct"))) e.preventDefault();
                     }}
                   >
                     <input type="hidden" name="_action" value="delete" />
@@ -173,23 +171,13 @@ export default function AdminProductList() {
                       className="text-sm text-red-600 hover:underline disabled:opacity-50"
                       disabled={navigation.state !== "idle"}
                     >
-                      删除
+                      {t("delete")}
                     </button>
                   </Form>
                 </div>
               </div>
-
-              {/* 右侧：商品图片 */}
-              {product.imgUrl?.length > 0 && (
-                <div className="w-[120px] md:w-[150px] aspect-[370/460] shrink-0 rounded-md border overflow-hidden">
-                  <img
-                    src={product.imgUrl}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
             </div>
+
           ))
         )}
       </div>
@@ -202,18 +190,13 @@ export default function AdminProductList() {
               to={`?${new URLSearchParams({ q, page: prevPage.toString() })}`}
               className="px-4 py-2 rounded border bg-white hover:bg-gray-50"
             >
-              « 上一页
+              « {t("prevPage")}
             </Link>
           )}
 
           {pageList.map((p, idx) =>
             p === "..." ? (
-              <span
-                key={`ellipsis-${idx}`}
-                className="px-3 py-2 text-gray-400 select-none"
-              >
-                ...
-              </span>
+              <span key={`ellipsis-${idx}`} className="px-3 py-2 text-gray-400 select-none">...</span>
             ) : (
               <Link
                 key={p}
@@ -237,7 +220,7 @@ export default function AdminProductList() {
               to={`?${new URLSearchParams({ q, page: nextPage.toString() })}`}
               className="px-4 py-2 rounded border bg-white hover:bg-gray-50"
             >
-              下一页 »
+              {t("nextPage")} »
             </Link>
           )}
         </div>

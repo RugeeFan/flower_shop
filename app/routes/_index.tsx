@@ -11,8 +11,8 @@ import Information from "~/components/store/home/Information";
 import Intro from "~/components/store/home/Intro";
 
 import type { ProductListItem } from "~/types/product";
-import Header from "~/components/store/header";
-import Footer from "~/components/store/footer";
+import BackToTop from "~/components/store/BackToTop";
+
 
 export const meta = () => {
   return [
@@ -50,14 +50,12 @@ export default function Index() {
 
   return (
     <>
-      {/* <Header /> */}
       <Hero />
       <BestSell products={starProducts} />
       <CategoryList />
       <Intro />
       <FollowUs />
       <Information />
-      {/* <Footer /> */}
     </>
   );
 }

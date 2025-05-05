@@ -5,32 +5,53 @@ import { prisma } from "~/lib/prisma.server";
 import { verifyPassword, createUserSession } from "~/lib/auth.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData();
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  try {
+    console.log("📩 Admin login request received");
 
-  if (!email || !password) {
-    return json({ error: "请输入邮箱和密码。" }, { status: 400 });
+    const formData = await request.formData();
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    console.log("📧 email:", email);
+    console.log("🔑 password:", password ? "●●●" : "empty");
+
+    if (!email || !password) {
+      return json({ error: "Please enter both email and password." }, { status: 400 });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      console.log("❌ user not found");
+      return json({ error: "User not found." }, { status: 404 });
+    }
+
+    if (!user.password || !user.isAdmin) {
+      console.log("❌ user is not admin or password missing");
+      return json({ error: "Not authorized." }, { status: 403 });
+    }
+
+    const valid = await verifyPassword(password, user.password);
+    console.log("🔐 password valid:", valid);
+
+    if (!valid) {
+      return json({ error: "Incorrect password." }, { status: 401 });
+    }
+
+    console.log("✅ creating session for admin:", user.email);
+    return createUserSession({
+      request,
+      userId: user.id,
+      redirectTo: "/admin",
+      isAdmin: true,
+    });
+  } catch (err) {
+    console.error("🔥 Unexpected error during admin login:", err);
+    return json({ error: "服务器错误，请稍后再试。" }, { status: 500 });
   }
-
-  const user = await prisma.user.findUnique({ where: { email } });
-
-  if (!user || !user.password || !user.isAdmin) {
-    return json({ error: "无效的管理员账号。" }, { status: 401 });
-  }
-
-  const valid = await verifyPassword(password, user.password);
-  if (!valid) {
-    return json({ error: "密码错误。" }, { status: 401 });
-  }
-
-  // ✅ 使用封装好的 createUserSession
-  return createUserSession({
-    request,
-    userId: user.id,
-    redirectTo: "/admin",
-  });
 };
+
+
 
 export default function AdminLoginPage() {
   const actionData = useActionData<typeof action>();

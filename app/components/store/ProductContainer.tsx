@@ -2,7 +2,7 @@ import Carousel from "./Carousel";
 import AddMoreItem from "./AddMoreItem";
 import { Product } from "~/types/product";
 import formatCurrency from "~/utils/formatCurrency";
-import { useCartStore } from "~/cart/useCartStore";
+import { useCartStore } from "~/zustand/useCartStore";
 
 export default function ProductContainer({ product }: { product: Product }) {
   const addToCart = useCartStore((state) => state.addToCart);
@@ -14,7 +14,7 @@ export default function ProductContainer({ product }: { product: Product }) {
       <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-8 lg:gap-10">
         {/* Carousel/Image Section */}
         <div className="w-full md:w-1/2">
-        <Carousel images={Array.isArray(product.imgUrl) ? product.imgUrl : [product.imgUrl]} />
+          <Carousel images={Array.isArray(product.imgUrl) ? product.imgUrl : [product.imgUrl]} />
 
         </div>
 

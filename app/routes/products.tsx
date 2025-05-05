@@ -1,15 +1,15 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, Link, useSearchParams } from "@remix-run/react";
+import { useLoaderData, Link, useSearchParams, useLocation } from "@remix-run/react";
 import ProductItem from "~/components/store/ProductItem";
+import Sidebar from "~/components/store/SideBar";
 import { prisma } from "~/lib/prisma.server";
 import { ProductListItem } from "~/types/product";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const page = Number(url.searchParams.get("page") || "1");
-  const pageSize = 25;
+  const pageSize = 28;
   const skip = (page - 1) * pageSize;
-
   const [products, total] = await Promise.all([
     prisma.product.findMany({
       skip,
@@ -51,18 +51,23 @@ export default function Products() {
       <p className="text-gray-600 text-center mb-8">
         {`Showing ${products.length} of ${pagination.total} beautiful arrangements`}
       </p>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {products.map((product: ProductListItem) => (
-          <ProductItem
-            key={product.id}
-            id={product.id}
-            name={product.name}
-            imgUrl={product.imgUrl}
-            price={product.price}
-          />
-        ))}
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="hidden md:block">
+          <Sidebar />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products.map((product: ProductListItem) => (
+            <ProductItem
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              imgUrl={product.imgUrl}
+              price={product.price}
+            />
+          ))}
+        </div>
       </div>
+
 
       <div className="flex justify-center mt-12 gap-2 flex-wrap items-center">
         <Link

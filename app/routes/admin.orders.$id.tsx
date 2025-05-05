@@ -1,10 +1,15 @@
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
+import { useLoaderData } from "@remix-run/react";
+import { useTranslation } from "react-i18next";
 
-export const loader = async ({ params }: { params: { id: string } }) => {
+export async function loader({ params }: LoaderFunctionArgs) {
+  const id = params.id;
+  if (!id) throw new Response("Missing ID", { status: 400 });
+
   const order = await prisma.order.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       user: true,
       items: {
@@ -15,108 +20,121 @@ export const loader = async ({ params }: { params: { id: string } }) => {
     },
   });
 
-  if (!order) {
-    throw new Response("订单不存在", { status: 404 });
-  }
+  if (!order) throw new Response("Order Not Found", { status: 404 });
 
   return json({ order });
-};
+}
 
-export default function OrderDetailPage() {
+export default function AdminOrderDetail() {
   const { order } = useLoaderData<typeof loader>();
+  const { t } = useTranslation("admin");
+
+  const subtotal = order.items.reduce(
+    (sum, item) => sum + item.unitPrice * item.quantity,
+    0
+  );
+  const shippingFee = order.totalAmount - subtotal;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      {/* 返回按钮 */}
-      <div className="mb-6">
-        <Link
-          to="/admin/orders"
-          className="text-sm text-blue-600 hover:underline"
-        >
-          ← 返回订单列表
-        </Link>
-      </div>
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <h1 className="text-2xl font-bold mb-6">{t("orderDetails")}</h1>
 
-      {/* 标题 */}
-      <h1 className="text-2xl font-bold mb-6">订单详情</h1>
-
-      {/* 上部信息区 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-4 text-sm">
         {/* 订单信息 */}
-        <div className="bg-white rounded-lg border p-5 shadow-sm space-y-2 text-sm">
-          <h2 className="text-lg font-semibold mb-2">订单信息</h2>
-          <div><strong>订单编号：</strong>{order.id}</div>
+        <div className="text-gray-700 space-y-1">
+          <div><span className="font-medium">{t("orderId")}:</span> {order.id}</div>
+          <div><span className="font-medium">{t("buyer")}:</span> {order.user?.name || "-"}</div>
+          <div><span className="font-medium">{t("email")}:</span> {order.user?.email || "-"}</div>
+          <div><span className="font-medium">{t("phone")}:</span> {order.user?.phone || "-"}</div>
+          <div><span className="font-medium">{t("recipient")}:</span> {order.recipientName}</div>
+          <div><span className="font-medium">{t("recipientEmail")}:</span> {order.recipientEmail}</div>
+          <div><span className="font-medium">{t("address")}:</span> {order.address}</div>
+          <div><span className="font-medium">{t("postcode")}:</span> {order.postcode}</div>
+          <div><span className="font-medium">{t("deliveryDate")}:</span> {new Date(order.deliveryDate).toLocaleDateString()}</div>
           <div>
-            <strong>订单状态：</strong>
-            <span className={`inline-block px-2 py-1 text-xs rounded ${order.status === "PAID"
-              ? "bg-green-100 text-green-700"
-              : order.status === "PENDING"
-                ? "bg-yellow-100 text-yellow-700"
-                : "bg-gray-100 text-gray-600"
-              }`}>
+            <span className="font-medium">{t("message")}:</span>
+            <div className="mt-1 p-3 rounded border bg-gray-50 text-gray-800 whitespace-pre-line">
+              {order.message || "—"}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="font-medium">{t("status")}:</span>
+            <span
+              className={`px-2 py-1 text-xs rounded font-semibold
+      ${order.status === "PAID"
+                  ? "bg-green-100 text-green-700"
+                  : order.status === "PENDING"
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+            >
               {order.status}
             </span>
           </div>
-          <div><strong>创建时间：</strong>{new Date(order.createdAt).toLocaleString()}</div>
-          <div><strong>配送日期：</strong>{new Date(order.deliveryDate).toLocaleDateString()}</div>
+
         </div>
 
-        {/* 收件人信息 */}
-        <div className="bg-white rounded-lg border p-5 shadow-sm space-y-2 text-sm">
-          <h2 className="text-lg font-semibold mb-2">收件人信息</h2>
-          <div><strong>姓名：</strong>{order.recipientName}</div>
-          <div><strong>邮箱：</strong>{order.recipientEmail}</div>
-          <div><strong>地址：</strong>{order.address}</div>
-          <div><strong>邮编：</strong>{order.postcode}</div>
-          {order.message && (
-            <div><strong>留言：</strong>{order.message}</div>
-          )}
-        </div>
-      </div>
-
-      {/* 下单用户 */}
-      {order.user && (
-        <div className="bg-white rounded-lg border p-5 shadow-sm text-sm mb-10">
-          <h2 className="text-lg font-semibold mb-2">下单用户</h2>
-          <div><strong>姓名：</strong>{order.user.name || "未填写"}</div>
-          <div><strong>Email：</strong>{order.user.email}</div>
-          <div><strong>电话：</strong>{order.user.phone || "未提供"}</div>
-        </div>
-      )}
-
-      {/* 商品明细 */}
-      <div className="bg-white border rounded-lg shadow-sm overflow-x-auto text-sm">
-        <h2 className="text-lg font-semibold p-4 border-b">商品明细</h2>
-        <table className="w-full table-auto">
-          <thead className="bg-gray-50 border-b text-left">
-            <tr>
-              <th className="px-4 py-2">商品名称</th>
-              <th className="px-4 py-2">数量</th>
-              <th className="px-4 py-2">单价</th>
-              <th className="px-4 py-2">小计</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order.items.map((item, i) => (
-              <tr
+        {/* 商品列表 */}
+        <div className="border-t pt-4">
+          <h2 className="text-lg font-semibold mb-3">{t("orderItems")}</h2>
+          <ul className="divide-y">
+            {order.items.map((item) => (
+              <li
                 key={item.id}
-                className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                className="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-4"
               >
-                <td className="px-4 py-2">{item.product.name}</td>
-                <td className="px-4 py-2">{item.quantity}</td>
-                <td className="px-4 py-2">${item.unitPrice.toFixed(2)}</td>
-                <td className="px-4 py-2">
-                  ${(item.unitPrice * item.quantity).toFixed(2)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                {/* 图片 */}
+                <img
+                  src={
+                    Array.isArray(item.product.imgUrl)
+                      ? item.product.imgUrl[0]
+                      : item.product.imgUrl
+                  }
+                  alt={item.product.name}
+                  className="w-20 h-20 object-cover rounded border"
+                />
 
-      {/* 总金额 */}
-      <div className="mt-6 text-right text-lg font-bold">
-        总金额: ${order.totalAmount.toFixed(2)}
+                {/* 名称 + 数量 × 单价 */}
+                <div className="flex-1 text-gray-800">
+                  <div className="font-medium">{item.product.name}</div>
+                  <div className="text-sm text-gray-600">
+                    x{item.quantity} × ${item.unitPrice.toFixed(2)}
+                  </div>
+                </div>
+
+                {/* 小计 */}
+                <div className="text-right font-semibold text-gray-800 w-24">
+                  ${(item.unitPrice * item.quantity).toFixed(2)}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* 金额合计 */}
+        <div className="mt-6 text-right text-sm space-y-1">
+          <div className="flex justify-end gap-8">
+            <span className="text-gray-700">{t("subtotal")}:</span>
+            <span className="font-medium">${subtotal.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-end gap-8">
+            <span className="text-gray-700">{t("shippingFee") || "Shipping Fee"}:</span>
+            <span className="font-medium">${shippingFee.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-end gap-8 text-lg font-bold pt-2 border-t mt-2">
+            <span>{t("totalAmount")}:</span>
+            <span>${order.totalAmount.toFixed(2)}</span>
+          </div>
+          <div className="text-right mt-3">
+            <button
+              onClick={() => window.print()}
+              className="text-sm bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 print:hidden"
+            >
+              🖨️ {t("print")}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

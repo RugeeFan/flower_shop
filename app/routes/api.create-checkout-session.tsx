@@ -29,7 +29,18 @@ export async function action({ request }: ActionFunctionArgs) {
     },
   });
 
-  // 2️⃣ 如果已有未完成订单则复用，否则新建订单
+  // 2️⃣ 查询运费
+  const shippingZone = await prisma.shippingZone.findFirst({
+    where: { postcode: customer.postcode },
+  });
+
+  const shippingFee = shippingZone ? shippingZone.small : 0;
+
+  // 3️⃣ 计算总价
+  const subtotal = cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  const totalAmount = subtotal + shippingFee;
+
+  // 4️⃣ 如果已有未完成订单则复用，否则新建订单
   let order;
 
   if (orderId) {
@@ -47,7 +58,7 @@ export async function action({ request }: ActionFunctionArgs) {
         deliveryDate: new Date(customer.deliveryDate),
         message: customer.message || "",
         status: "PENDING",
-        totalAmount: cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0),
+        totalAmount: totalAmount,
         items: {
           create: cart.map((item: any) => ({
             productId: item.id,
@@ -59,22 +70,34 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  // 3️⃣ 创建 Stripe Checkout Session
+  // 5️⃣ 创建 Stripe Checkout Session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
     success_url: `${process.env.BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.BASE_URL}/checkout`,
-    line_items: cart.map((item: any) => ({
-      price_data: {
-        currency: "aud",
-        product_data: {
-          name: item.name,
+    line_items: [
+      ...cart.map((item: any) => ({
+        price_data: {
+          currency: "aud",
+          product_data: {
+            name: item.name,
+          },
+          unit_amount: Math.round(item.price * 100),
         },
-        unit_amount: Math.round(item.price * 100),
+        quantity: item.quantity,
+      })),
+      {
+        price_data: {
+          currency: "aud",
+          product_data: {
+            name: "Shipping Fee",
+          },
+          unit_amount: Math.round(shippingFee * 100),
+        },
+        quantity: 1,
       },
-      quantity: item.quantity,
-    })),
+    ],
     metadata: {
       orderId: order.id,
     },

@@ -11,9 +11,11 @@ import {
   useNavigation,
 } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
-import { useTranslation } from "react-i18next";
+import { requireAdmin } from "~/lib/auth.server";
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  await requireAdmin(request);
   const id = params.id;
   if (!id) throw new Response("Not Found", { status: 404 });
 
@@ -29,7 +31,9 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return json({ product, categories });
 };
 
+
 export const action = async ({ request, params }: ActionFunctionArgs) => {
+  await requireAdmin(request);
   const id = params.id;
   const form = await request.formData();
 
@@ -40,7 +44,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const categoryIds = form.getAll("categories") as string[];
 
   if (!id || !name || isNaN(price) || !imgUrl) {
-    return json({ error: "missingFields" }, { status: 400 });
+    return json({ error: "请填写所有必填字段。" }, { status: 400 });
   }
 
   try {
@@ -61,7 +65,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     return redirect("/admin/products");
   } catch (err) {
     console.error("编辑失败", err);
-    return json({ error: "updateFailed" }, { status: 500 });
+    return json({ error: "更新失败，请重试" }, { status: 500 });
   }
 };
 
@@ -69,13 +73,13 @@ export default function EditProductPage() {
   const { product, categories } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
-  const { t } = useTranslation("admin");
   const loading = state !== "idle";
+
   const selectedCategoryIds = new Set(product.categories.map((c) => c.id));
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-sm rounded-xl">
-      <h1 className="text-2xl font-bold mb-6">{t("editProduct")}</h1>
+      <h1 className="text-2xl font-bold mb-6">编辑商品</h1>
 
       {product.imgUrl && (
         <div className="mb-6 max-w-[370px] mx-auto">
@@ -90,16 +94,12 @@ export default function EditProductPage() {
       )}
 
       {actionData?.error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-          {t(actionData.error)}
-        </div>
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{actionData.error}</div>
       )}
 
       <Form method="post" className="space-y-5">
         <div>
-          <label className="block font-medium text-gray-700 mb-1">
-            {t("productName")} *
-          </label>
+          <label className="block font-medium text-gray-700 mb-1">商品名称 *</label>
           <input
             name="name"
             defaultValue={product.name}
@@ -109,9 +109,7 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700 mb-1">
-            {t("price")} *
-          </label>
+          <label className="block font-medium text-gray-700 mb-1">价格 *</label>
           <input
             name="price"
             type="number"
@@ -123,9 +121,7 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700 mb-1">
-            {t("imageUrl")} *
-          </label>
+          <label className="block font-medium text-gray-700 mb-1">图片地址 *</label>
           <input
             name="imgUrl"
             type="url"
@@ -136,9 +132,7 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700 mb-1">
-            {t("category")}
-          </label>
+          <label className="block font-medium text-gray-700 mb-1">分类</label>
           <div className="flex flex-wrap gap-3 mt-1">
             {categories.map((cat) => (
               <label
@@ -158,9 +152,7 @@ export default function EditProductPage() {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700 mb-1">
-            {t("description")}
-          </label>
+          <label className="block font-medium text-gray-700 mb-1">描述</label>
           <textarea
             name="description"
             defaultValue={product.description}
@@ -174,7 +166,7 @@ export default function EditProductPage() {
           disabled={loading}
           className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 transition"
         >
-          {loading ? t("submitting") : t("saveChanges")}
+          {loading ? "提交中..." : "保存更改"}
         </button>
       </Form>
     </div>

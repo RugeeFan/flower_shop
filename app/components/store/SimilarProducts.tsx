@@ -8,7 +8,13 @@ export default function SimilarProducts() {
       <div className="font-bold text-xl py-4">SIMILAR PRODUCTS</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center items-center gap-2 sm:gap-4">
         {bestSellTitle.map((item, index) => (
-          <ProductItem key={index} product={item} />
+          <ProductItem
+            key={index}
+            id={String(index)}
+            name={item.title}
+            imgUrl={item.imgUrl}
+            price={item.price}
+          />
         ))}
       </div>
       <div className="pt-6 md:pt-10">

@@ -13,7 +13,7 @@ function TopNav() {
   const isCartOpen = useCartStore((state) => state.isCartOpen);
   const setCartOpen = useCartStore((state) => state.setCartOpen);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const phoneNumber = "0457660185";
+  const phoneNumber = "0451182178";
   return <div>
     {isSearchOpen && <SearchBar onClose={() => setIsSearchOpen(false)} />}
     {isLocationOpen && (
@@ -28,7 +28,7 @@ function TopNav() {
           className="flex items-center gap-4 hover:opacity-80 transition-opacity"
         >
           <i className="ri-phone-line text-4xl"></i>
-          <div className="text-lg">0457 660 185</div>
+          <div className="text-lg">0451 182 178</div>
         </a>
       </div>
 

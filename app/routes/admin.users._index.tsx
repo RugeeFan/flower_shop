@@ -1,12 +1,11 @@
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Form } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
-import { hashPassword, requireUser } from "~/lib/auth.server";
+import { hashPassword, requireAdmin } from "~/lib/auth.server";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 export async function loader({ request }: { request: Request }) {
-  await requireUser(request);
+  await requireAdmin(request);
   const admins = await prisma.user.findMany({
     where: { isAdmin: true },
     select: {
@@ -22,6 +21,7 @@ export async function loader({ request }: { request: Request }) {
 }
 
 export async function action({ request }: { request: Request }) {
+  const currentUser = await requireAdmin(request);
   const formData = await request.formData();
   const intent = formData.get("_intent");
 
@@ -55,7 +55,23 @@ export async function action({ request }: { request: Request }) {
 
   if (intent === "delete") {
     const id = formData.get("id") as string;
-    await prisma.user.delete({ where: { id } });
+    if (!id) return json({ error: "缺少 id" }, { status: 400 });
+
+    // 不能删除自己（删完会被锁出后台）
+    if (id === currentUser.id) {
+      return json({ error: "不能删除当前登录的管理员" }, { status: 400 });
+    }
+
+    // 不能删除最后一个管理员
+    const adminCount = await prisma.user.count({ where: { isAdmin: true } });
+    if (adminCount <= 1) {
+      return json({ error: "至少保留一个管理员" }, { status: 400 });
+    }
+
+    await prisma.user.delete({
+      where: { id },
+    });
+
     return redirect("/admin/users");
   }
 
@@ -65,21 +81,20 @@ export async function action({ request }: { request: Request }) {
 export default function AdminUsersPage() {
   const { admins } = useLoaderData<typeof loader>();
   const [showModal, setShowModal] = useState(false);
-  const { t } = useTranslation("admin");
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{t("adminList")}</h1>
+        <h1 className="text-2xl font-bold">管理员列表</h1>
         <button
           className="bg-primary text-white px-4 py-2 rounded"
           onClick={() => setShowModal(true)}
         >
-          {t("addAdmin")}
+          添加管理员
         </button>
       </div>
 
-      {/* ✅ 弹窗添加管理员 */}
+      {/* 添加管理员表单（弹窗） */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <Form
@@ -87,22 +102,13 @@ export default function AdminUsersPage() {
             className="bg-white p-6 rounded shadow space-y-4 w-full max-w-md"
             onSubmit={() => setShowModal(false)}
           >
-            <h2 className="text-lg font-semibold">{t("addAdmin")}</h2>
+            <h2 className="text-lg font-semibold">添加管理员</h2>
             <input type="hidden" name="_intent" value="add" />
-            <input
-              name="name"
-              placeholder={t("name")}
-              className="input w-full"
-            />
-            <input
-              name="email"
-              placeholder={t("email")}
-              required
-              className="input w-full"
-            />
+            <input name="name" placeholder="姓名" className="input w-full" />
+            <input name="email" placeholder="邮箱" required className="input w-full" />
             <input
               name="password"
-              placeholder={t("password")}
+              placeholder="密码"
               required
               type="password"
               className="input w-full"
@@ -113,28 +119,25 @@ export default function AdminUsersPage() {
                 className="text-gray-500"
                 onClick={() => setShowModal(false)}
               >
-                {t("cancel")}
+                取消
               </button>
-              <button
-                type="submit"
-                className="bg-primary text-white px-4 py-2 rounded"
-              >
-                {t("create")}
+              <button type="submit" className="bg-primary text-white px-4 py-2 rounded">
+                创建
               </button>
             </div>
           </Form>
         </div>
       )}
 
-      {/* ✅ 桌面端表格 */}
-      <div className="bg-white shadow border rounded overflow-x-auto hidden sm:block">
+      {/* 管理员列表 */}
+      <div className="bg-white shadow border rounded overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-2 text-left">{t("name")}</th>
-              <th className="px-4 py-2 text-left">{t("email")}</th>
-              <th className="px-4 py-2 text-left">{t("registeredAt")}</th>
-              <th className="px-4 py-2 text-left">{t("actions")}</th>
+              <th className="px-4 py-2 text-left">姓名</th>
+              <th className="px-4 py-2 text-left">邮箱</th>
+              <th className="px-4 py-2 text-left">注册时间</th>
+              <th className="px-4 py-2 text-left">操作</th>
             </tr>
           </thead>
           <tbody>
@@ -146,17 +149,26 @@ export default function AdminUsersPage() {
                   {new Date(admin.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-4 py-2">
-                  <Form method="post" className="inline-block">
+                  <Form
+                    method="post"
+                    className="inline-block"
+                    onSubmit={(e) => {
+                      if (
+                        !confirm(
+                          `确定要删除 ${admin.name || admin.email} 吗？`
+                        )
+                      ) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
                     <input type="hidden" name="_intent" value="delete" />
                     <input type="hidden" name="id" value={admin.id} />
                     <button
                       type="submit"
                       className="text-red-600 hover:underline"
-                      onClick={() =>
-                        confirm(`${t("confirmDelete")}: ${admin.name || admin.email}`)
-                      }
                     >
-                      {t("delete")}
+                      删除
                     </button>
                   </Form>
                 </td>
@@ -164,40 +176,6 @@ export default function AdminUsersPage() {
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* ✅ 移动端卡片式展示 */}
-      <div className="space-y-4 sm:hidden">
-        {admins.map((admin) => (
-          <div
-            key={admin.id}
-            className="border rounded-lg p-4 shadow-sm bg-white text-sm"
-          >
-            <div className="mb-2">
-              <strong>{t("name")}:</strong> {admin.name}
-            </div>
-            <div className="mb-2">
-              <strong>{t("email")}:</strong> {admin.email}
-            </div>
-            <div className="mb-2">
-              <strong>{t("registeredAt")}:</strong>{" "}
-              {new Date(admin.createdAt).toLocaleDateString()}
-            </div>
-            <Form method="post" className="inline-block mt-2">
-              <input type="hidden" name="_intent" value="delete" />
-              <input type="hidden" name="id" value={admin.id} />
-              <button
-                type="submit"
-                className="text-red-600 hover:underline"
-                onClick={() =>
-                  confirm(`${t("confirmDelete")}: ${admin.name || admin.email}`)
-                }
-              >
-                {t("delete")}
-              </button>
-            </Form>
-          </div>
-        ))}
       </div>
     </div>
   );

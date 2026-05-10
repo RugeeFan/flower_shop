@@ -1,56 +1,44 @@
-// app/routes/admin.tsx
-import { Form, NavLink, Outlet } from "@remix-run/react";
+import { Form, Link, NavLink, Outlet } from "@remix-run/react";
 import { useState } from "react";
 import { requireAdmin } from "~/lib/auth.server";
-import { useTranslation } from "react-i18next";
 
 export async function loader({ request }: { request: Request }) {
-  await requireAdmin(request); // ✅ 更安全
+  await requireAdmin(request);
   return null;
 }
 
 export default function AdminLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { i18n, t } = useTranslation("admin");
-
-  const handleChange = () => {
-    const newLang = i18n.language === "zh" ? "en" : "zh";
-    i18n.changeLanguage(newLang);
-    localStorage.setItem("lang", newLang);
-  };
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `block px-4 py-2 rounded hover:bg-gray-100 ${isActive ? "bg-gray-200 font-semibold" : "text-gray-800"}`;
 
   const navItems = (
     <>
-      <NavLink to="/admin" end className={navLinkClass} onClick={() => setMenuOpen(!menuOpen)}>
-        {t("dashboard")}
+      <NavLink to="/admin" end className={navLinkClass}>
+        控制台首页
       </NavLink>
-      <NavLink to="/admin/products" className={navLinkClass} onClick={() => setMenuOpen(!menuOpen)}>
-        {t("productManagement")}
+      <NavLink to="/admin/products" className={navLinkClass}>
+        商品管理
       </NavLink>
-      <NavLink to="/admin/orders" className={navLinkClass} onClick={() => setMenuOpen(!menuOpen)}>
-        {t("orderManagement")}
+      <NavLink to="/admin/orders" className={navLinkClass}>
+        订单管理
       </NavLink>
-      <NavLink to="/admin/categories" className={navLinkClass} onClick={() => setMenuOpen(!menuOpen)}>
-        {t("categoryManagement")}
+      <NavLink to="/admin/categories" className={navLinkClass}>
+        分类管理
       </NavLink>
-      <NavLink to="/admin/customers" className={navLinkClass} onClick={() => setMenuOpen(!menuOpen)}>
-        {t("customerManagement")}
+      <NavLink to="/admin/users" className={navLinkClass}>
+        管理员管理
       </NavLink>
-      <NavLink to="/admin/users" className={navLinkClass} onClick={() => setMenuOpen(!menuOpen)}>
-        {t("adminManagement")}
-      </NavLink>
-      <NavLink to="/admin/site-content" className={navLinkClass} onClick={() => setMenuOpen(!menuOpen)}>
-        {t("siteContent")}
+      <NavLink to="/admin/settings" className={navLinkClass}>
+        站点设置
       </NavLink>
       <Form method="post" action="/admin/logout">
         <button
           type="submit"
           className="mt-4 block w-full text-left text-red-500 px-4 py-2 rounded hover:bg-red-50"
         >
-          {t("logout")}
+          退出登录
         </button>
       </Form>
     </>
@@ -60,37 +48,19 @@ export default function AdminLayout() {
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* 桌面端侧边栏 */}
       <aside className="hidden lg:block w-64 bg-gray-50 border-r p-4">
-        <button
-          onClick={handleChange}
-          className="text-sm border border-gray-300 rounded px-3 py-1 hover:bg-gray-100 mb-4"
-        >
-          {i18n.language === "zh" ? "🇨🇳 中文" : "🇺🇸 English"}
-        </button>
-        <h2 className="text-lg font-bold mb-6">{t("adminTitle")}</h2>
+        <h2 className="text-lg font-bold mb-6">🌼 花店后台</h2>
         <nav className="space-y-2 text-sm">{navItems}</nav>
       </aside>
 
       {/* 移动端顶部导航 */}
       <header className="lg:hidden bg-gray-50 border-b p-4 flex justify-between items-center">
-        <h2 className="text-lg font-bold flex">{t("adminTitle")}
-        </h2>
-        <div className="flex items-center gap-4">
-          <div className="flex justify-center items-center">
-            <button
-              onClick={handleChange}
-              className="text-sm border border-gray-300 rounded px-3  hover:bg-gray-100"
-            >
-              {i18n.language === "zh" ? "🇨🇳 中文" : "🇺🇸 English"}
-            </button>
-          </div>
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-gray-600 focus:outline-none"
-          >
-            {menuOpen ? "✕" : "☰"}
-          </button>
-        </div>
-
+        <h2 className="text-lg font-bold">🌼 花店后台</h2>
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="text-gray-600 focus:outline-none"
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
       </header>
 
       {/* 移动端下拉菜单 */}

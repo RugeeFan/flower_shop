@@ -15,10 +15,10 @@ export default function Footer() {
         </Link> */}
         <div className="text-primary pb-4">
           <div className="border-t border-dashed border-primary"></div>
-          <div className="flex py-2 gap-4">
+          <a href="tel:0451182178" className="flex py-2 gap-4 hover:opacity-80 transition-opacity">
             <i className="ri-phone-fill text-xl md:text-2xl flex justify-center items-center"></i>
-            <div className="py-1 text-lg md:text-xl">0457 660 185</div>
-          </div>
+            <div className="py-1 text-lg md:text-xl">0451 182 178</div>
+          </a>
           <div className="border-t border-dashed border-primary"></div>
         </div>
         <div className="text-sm">
@@ -50,7 +50,15 @@ export default function Footer() {
           {/* Social Media Icons */}
           <div className="text-3xl flex gap-2 justify-start sm:justify-center items-center sm:border-r border-primary sm:pr-4 py-1">
             <i className="ri-facebook-circle-fill"></i>
-            <i className="ri-instagram-line"></i>
+            <a
+              href="https://www.instagram.com/royalrose_au?igsh=MTVxOWR0MXNicnFpcQ=="
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on Instagram"
+              className="hover:opacity-80 transition-opacity flex items-center"
+            >
+              <i className="ri-instagram-line"></i>
+            </a>
           </div>
           {/* Payment Methods */}
           <div className="flex gap-3 sm:gap-5 sm:pl-6 py-1 justify-start sm:justify-center items-center">

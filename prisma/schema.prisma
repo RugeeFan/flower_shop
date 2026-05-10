@@ -14,11 +14,11 @@ model User {
   password  String?
   googleId  String?  @unique
   name      String?
-  orders    Order[]
-  isAdmin   Boolean  @default(false)
   phone     String?
+  isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  orders    Order[]
 }
 
 model Category {
@@ -33,47 +33,53 @@ model Product {
   description String
   price       Float
   imgUrl      String
-  categories  Category[]  @relation("ProductCategories")
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   OrderItem   OrderItem[]
+  categories  Category[]  @relation("ProductCategories")
 }
 
 model Order {
   id              String      @id @default(cuid())
   userId          String?
-  user            User?       @relation(fields: [userId], references: [id])
   recipientName   String
   recipientEmail  String
-  recipientPhone  String? // ✅ 新增字段
-  address         String
-  postcode        String
+  recipientPhone  String?
+  address         String?
+  postcode        String?
   deliveryDate    DateTime
-  message         String? // 可选的卡片信息
+  message         String?
   totalAmount     Float
+  deliveryFee     Float       @default(0)
   status          OrderStatus @default(PENDING)
   createdAt       DateTime    @default(now())
+  stripeSessionId String?
+  user            User?       @relation(fields: [userId], references: [id])
   items           OrderItem[]
-  stripeSessionId String? // Stripe session id for tracking
+
+  deliveryType   DeliveryType    @default(DELIVERY)
+  pickupLocation PickupLocation?
+  pickupTimeSlot PickupTimeSlot?
+  deliveryWindow DeliveryWindow?
 }
 
 model OrderItem {
   id        String  @id @default(cuid())
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade) // ✅ 关键改动
   orderId   String
-  product   Product @relation(fields: [productId], references: [id])
   productId String
   quantity  Int
-  unitPrice Float // 下单时的商品单价快照
+  unitPrice Float
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model PageContent {
   id        Int      @id @default(autoincrement())
-  slug      String   @unique // 比如 'home-banner', 'home-announcement', 'about-page-intro'
+  slug      String   @unique
   title     String?
   subtitle  String?
-  content   String? // 富文本或者普通正文内容
-  imageUrl  String[] // 可选，比如 Banner 图片地址
+  content   String?
+  imageUrl  String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -87,7 +93,13 @@ model ShippingZone {
   medium   Float
   large    Float
 
-  @@index([postcode, suburb]) // 优化根据用户地址匹配查询
+  @@index([postcode, suburb])
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }
 
 enum OrderStatus {
@@ -96,4 +108,26 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   CANCELLED
+}
+
+enum DeliveryType {
+  DELIVERY
+  PICKUP
+}
+
+enum PickupLocation {
+  PARRAMATTA
+  GORDON
+}
+
+enum PickupTimeSlot {
+  SLOT_8_11
+  SLOT_11_14
+  SLOT_14_18
+}
+
+enum DeliveryWindow {
+  RESIDENTIAL
+  BUSINESS_SCHOOL
+  PRIORITY
 }

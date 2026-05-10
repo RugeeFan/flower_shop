@@ -33,10 +33,9 @@ export default function AddMoreItem() {
       name: product.name,
       price: product.price,
       imgUrl: product.imgUrl,
-      quantity: 1,
     });
-    setSelectedProductId(null); // 清除选中状态
-    setCartOpen(true); // 打开购物车
+    setSelectedProductId(null);
+    setCartOpen(true);
   };
 
   return (

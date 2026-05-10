@@ -18,10 +18,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   if (!category) {
     return {
-      products: [],
+      products: [] as { id: string; name: string; price: number; imgUrl: string }[],
       category,
       success: false,
-      error: "Category not found",
+      error: "Category not found" as string | null,
     };
   }
 
@@ -52,14 +52,15 @@ export async function loader({ params }: LoaderFunctionArgs) {
       products,
       category,
       success: true,
+      error: null as string | null,
     };
   } catch (error) {
     console.error("Error loading category products:", error);
     return {
-      products: [],
+      products: [] as { id: string; name: string; price: number; imgUrl: string }[],
       category,
       success: false,
-      error: "Failed to load products",
+      error: "Failed to load products" as string | null,
     };
   }
 }

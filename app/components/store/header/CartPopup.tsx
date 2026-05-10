@@ -20,10 +20,8 @@ export default function CartPopup({ onClose }: CartPopupProps) {
 
   const handleCheckout = () => {
     onClose();
-
-    // ✅ 正确地只保存 cart（不要手动修改 cart-storage）
-    localStorage.setItem("cart", JSON.stringify(items));
-
+    // Zustand persist already syncs items to localStorage under "cart-storage".
+    // No manual localStorage write here — kept clean to avoid stale duplicate keys.
     setTimeout(() => {
       navigate("/checkout");
     }, 100);

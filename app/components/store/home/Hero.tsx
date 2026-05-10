@@ -8,7 +8,7 @@ interface BannerContent {
   imageUrl: string[]; // 你实际字段名若为 imageUrls，则对应调整
 }
 
-export default function Hero({ banner }: { banner: BannerContent }) {
+export default function Hero({ banner }: { banner: BannerContent | null }) {
   if (!banner) {
     return (
       <div className="h-[300px] md:h-[400px] lg:h-[488px] bg-gray-200 animate-pulse"></div>

@@ -31,7 +31,7 @@ export default function NavBar() {
 
   const closeDropdown = useDropdownStore((state) => state.close);
 
-  const phoneNumber = "0457660185";
+  const phoneNumber = "0451182178";
 
   const handleMenuItemClick = () => {
     setIsMobileMenuOpen(false);
@@ -83,7 +83,7 @@ export default function NavBar() {
             className="flex items-center gap-4 hover:opacity-80 transition-opacity"
           >
             <i className="ri-phone-line text-4xl"></i>
-            <div className="text-lg">0457 660 185</div>
+            <div className="text-lg">0451 182 178</div>
           </a>
         </div>
 
@@ -133,7 +133,7 @@ export default function NavBar() {
         <div className="hidden md:flex justify-center items-center gap-4 text-primary">
           <a href={`tel:${phoneNumber}`} className="flex items-center gap-4 hover:opacity-80 transition-opacity">
             <i className="ri-phone-line text-4xl"></i>
-            <div className="text-lg">0457 660 185</div>
+            <div className="text-lg">0451 182 178</div>
           </a>
         </div>
 
@@ -279,7 +279,7 @@ export default function NavBar() {
           className="flex items-center gap-2 p-4 border-b border-gray-200"
         >
           <i className="ri-phone-line text-2xl text-primary"></i>
-          <span className="text-primary">0457 660 185</span>
+          <span className="text-primary">0451 182 178</span>
         </a>
 
         <div className="flex flex-col">

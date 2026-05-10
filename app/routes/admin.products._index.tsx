@@ -13,12 +13,14 @@ import {
 } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { prisma } from "~/lib/prisma.server";
+import { requireAdmin } from "~/lib/auth.server";
 import { formatCurrency } from "~/utils/money";
 import { useTranslation } from "react-i18next";
 
 const PAGE_SIZE = 12;
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  await requireAdmin(request);
   const url = new URL(request.url);
   const q = url.searchParams.get("q")?.trim() ?? "";
   const page = parseInt(url.searchParams.get("page") ?? "1");
@@ -44,6 +46,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  await requireAdmin(request);
   const form = await request.formData();
   const intent = form.get("_action");
   const productId = form.get("productId")?.toString();

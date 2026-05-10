@@ -1,10 +1,15 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { Product } from "~/types/product";
 
-export interface CartItem extends Product {
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  imgUrl: string;
   quantity: number;
 }
+
+export type CartItemInput = Omit<CartItem, "quantity">;
 
 interface CartState {
   items: CartItem[];
@@ -15,7 +20,7 @@ interface CartState {
   setItems: (items: CartItem[]) => void;
   setCartOpen: (value: boolean) => void;
 
-  addToCart: (product: Product) => void;
+  addToCart: (product: CartItemInput) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
   updateQuantity: (id: string, quantity: number) => void;
@@ -37,7 +42,7 @@ export const useCartStore = create<CartState>()(
 
       setCartOpen: (value) => set({ isCartOpen: value }),
 
-      addToCart: (product: Product) => {
+      addToCart: (product: CartItemInput) => {
         const exist = get().items.find((item) => item.id === product.id);
         if (exist) {
           set((state) => ({

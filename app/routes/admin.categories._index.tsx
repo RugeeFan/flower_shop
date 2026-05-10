@@ -8,10 +8,12 @@ import {
   useSubmit,
 } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
+import { requireAdmin } from "~/lib/auth.server";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  await requireAdmin(request);
   const url = new URL(request.url);
   const q = url.searchParams.get("q")?.trim() ?? "";
   const successName = url.searchParams.get("success");
@@ -25,6 +27,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  await requireAdmin(request);
   const formData = await request.formData();
   const actionType = formData.get("_action");
   const name = formData.get("name")?.toString().trim();
@@ -130,7 +133,7 @@ export default function CategoryPage() {
               {t("addSuccess", { name: successName })}
             </p>
           )}
-          {actionData?.fieldErrors?.name?.length > 0 && (
+          {actionData && "fieldErrors" in actionData && actionData.fieldErrors.name.length > 0 && (
             <p className="text-red-600 text-sm">
               {actionData.fieldErrors.name.join(", ")}
             </p>

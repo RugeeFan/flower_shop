@@ -23,7 +23,7 @@ function TopNav() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const phoneNumber = "0457660185";
+  const phoneNumber = "0451182178";
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -50,7 +50,7 @@ function TopNav() {
         <div className="hidden md:flex justify-center items-center gap-4 text-primary">
           <a href={`tel:${phoneNumber}`} className="flex items-center gap-4 hover:opacity-80 transition-opacity">
             <i className="ri-phone-line text-4xl"></i>
-            <div className="text-lg">0457 660 185</div>
+            <div className="text-lg">0451 182 178</div>
           </a>
         </div>
 

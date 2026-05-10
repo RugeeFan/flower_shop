@@ -1,19 +1,16 @@
 // app/lib/prisma.server.ts
-import { PrismaClient } from "@prisma/client"; // 改回默认位置
-
-let prisma: PrismaClient;
+import { PrismaClient } from "@prisma/client";
 
 declare global {
+  // eslint-disable-next-line no-var
   var __prisma: PrismaClient | undefined;
 }
 
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient();
-} else {
-  if (!global.__prisma) {
-    global.__prisma = new PrismaClient();
-  }
-  prisma = global.__prisma;
+// 在开发热重载和 serverless 冷启动场景下复用同一个连接，避免连接池耗尽
+const prisma = global.__prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") {
+  global.__prisma = prisma;
 }
 
 export { prisma };

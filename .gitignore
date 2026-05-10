@@ -3,8 +3,9 @@ node_modules
 /.cache
 /build
 .env
-.vercel
 .env.*
+.vercel
+.gstack/
 .DS_Store
 **/.DS_Store
 .env.production

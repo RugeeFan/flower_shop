@@ -7,10 +7,11 @@ import {
   useSubmit,
 } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
+import { requireAdmin } from "~/lib/auth.server";
 import formatCurrency from "~/utils/formatCurrency";
-import { useTranslation } from "react-i18next";
 
 export async function loader({ request }: { request: Request }) {
+  await requireAdmin(request);
   const url = new URL(request.url);
   const keyword = url.searchParams.get("q")?.toLowerCase();
 
@@ -38,6 +39,7 @@ export async function loader({ request }: { request: Request }) {
 }
 
 export async function action({ request }: { request: Request }) {
+  await requireAdmin(request);
   const formData = await request.formData();
   const intent = formData.get("_intent");
 
@@ -45,7 +47,7 @@ export async function action({ request }: { request: Request }) {
     const id = formData.get("id") as string;
     if (!id) return json({ error: "订单 ID 缺失" }, { status: 400 });
 
-    await prisma.orderItem.deleteMany({ where: { orderId: id } });
+    // OrderItem.order 已声明 onDelete: Cascade，删 Order 时会自动级联
     await prisma.order.delete({ where: { id } });
 
     return redirect("/admin/orders");
@@ -58,12 +60,12 @@ export default function AdminOrdersPage() {
   const { orders, keyword } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const submit = useSubmit();
-  const { t } = useTranslation("admin");
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 p-6">
+      {/* 顶部标题 + 搜索 */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold">{t("orders")}</h1>
+        <h1 className="text-2xl font-bold">订单管理</h1>
 
         <form
           method="get"
@@ -78,43 +80,50 @@ export default function AdminOrdersPage() {
           <input
             type="text"
             name="q"
-            placeholder={t("searchOrder")}
+            placeholder="搜索订单：姓名 / 电话 / 邮箱 / 日期"
             defaultValue={keyword || ""}
             className="border px-3 py-2 rounded w-full sm:w-80"
           />
           <button type="submit" className="bg-primary text-white px-4 py-2 rounded">
-            {t("search")}
+            搜索
           </button>
         </form>
       </div>
 
+      {/* 桌面端表格 */}
       <div className="bg-white shadow border rounded overflow-x-auto hidden sm:block">
         <table className="w-full text-sm">
           <thead className="bg-gray-100">
             <tr>
-              <th className="text-left px-4 py-2">{t("orderId")}</th>
-              <th className="text-left px-4 py-2">{t("buyerName")}</th>
-              <th className="text-left px-4 py-2">{t("email")}</th>
-              <th className="text-left px-4 py-2">{t("phone")}</th>
-              <th className="text-left px-4 py-2">{t("amount")}</th>
-              <th className="text-left px-4 py-2">{t("status")}</th>
-              <th className="text-left px-4 py-2">{t("action")}</th>
+              <th className="text-left px-4 py-2">订单号</th>
+              <th className="text-left px-4 py-2">买家姓名</th>
+              <th className="text-left px-4 py-2">邮箱</th>
+              <th className="text-left px-4 py-2">电话</th>
+              <th className="text-left px-4 py-2">履约方式</th>
+              <th className="text-left px-4 py-2">金额</th>
+              <th className="text-left px-4 py-2">状态</th>
+              <th className="text-left px-4 py-2">操作</th>
             </tr>
           </thead>
           <tbody>
             {orders.length === 0 ? (
               <tr>
-                <td colSpan={7} className="text-center py-4 text-gray-500">
-                  {t("noOrders")}
+                <td colSpan={8} className="text-center py-4 text-gray-500">
+                  没有符合条件的订单。
                 </td>
               </tr>
             ) : (
               orders.map((order) => (
                 <tr key={order.id} className="border-t">
                   <td className="px-4 py-2">{order.id.slice(0, 8)}...</td>
-                  <td className="px-4 py-2">{order.user?.name || t("noName")}</td>
+                  <td className="px-4 py-2">{order.user?.name || "无名"}</td>
                   <td className="px-4 py-2">{order.user?.email || "-"}</td>
                   <td className="px-4 py-2">{order.user?.phone || "-"}</td>
+                  <td className="px-4 py-2">
+                    <span className={`inline-block px-2 py-1 text-xs rounded ${order.deliveryType === "PICKUP" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"}`}>
+                      {order.deliveryType === "PICKUP" ? "店内自取" : "本地配送"}
+                    </span>
+                  </td>
                   <td className="px-4 py-2">{formatCurrency(order.totalAmount)}</td>
                   <td className="px-4 py-2">{order.status}</td>
                   <td className="px-4 py-2 flex gap-2 items-center">
@@ -122,12 +131,12 @@ export default function AdminOrdersPage() {
                       to={`/admin/orders/${order.id}`}
                       className="text-blue-600 hover:underline"
                     >
-                      {t("view")}
+                      查看
                     </Link>
                     <Form
                       method="post"
                       onSubmit={(e) => {
-                        if (!window.confirm(t("confirmDeleteOrder"))) {
+                        if (!window.confirm("确认要删除该订单吗？此操作无法撤销。")) {
                           e.preventDefault();
                         }
                       }}
@@ -138,7 +147,7 @@ export default function AdminOrdersPage() {
                         type="submit"
                         className="text-red-500 hover:underline"
                       >
-                        {t("delete")}
+                        删除
                       </button>
                     </Form>
                   </td>
@@ -149,30 +158,36 @@ export default function AdminOrdersPage() {
         </table>
       </div>
 
-      {/* 移动端 */}
+      {/* 移动端卡片展示 */}
       <div className="block sm:hidden space-y-4">
         {orders.length === 0 ? (
-          <p className="text-gray-500">{t("noOrders")}</p>
+          <p className="text-gray-500">没有符合条件的订单。</p>
         ) : (
           orders.map((order) => (
             <div key={order.id} className="border rounded-lg p-4 bg-white shadow-sm space-y-2">
               <div className="text-sm text-gray-600">
-                <strong>{t("orderId")}：</strong>{order.id.slice(0, 8)}...
+                <strong>订单号：</strong>{order.id.slice(0, 8)}...
               </div>
               <div className="text-sm text-gray-600">
-                <strong>{t("buyerName")}：</strong>{order.user?.name || t("noName")}
+                <strong>姓名：</strong>{order.user?.name || "无名"}
               </div>
               <div className="text-sm text-gray-600">
-                <strong>{t("email")}：</strong>{order.user?.email || "-"}
+                <strong>邮箱：</strong>{order.user?.email || "-"}
               </div>
               <div className="text-sm text-gray-600">
-                <strong>{t("phone")}：</strong>{order.user?.phone || "-"}
+                <strong>电话：</strong>{order.user?.phone || "-"}
               </div>
               <div className="text-sm text-gray-600">
-                <strong>{t("amount")}：</strong>{formatCurrency(order.totalAmount)}
+                <strong>履约方式：</strong>
+                <span className={`ml-1 inline-block px-2 py-1 text-xs rounded ${order.deliveryType === "PICKUP" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"}`}>
+                  {order.deliveryType === "PICKUP" ? "店内自取" : "本地配送"}
+                </span>
               </div>
               <div className="text-sm text-gray-600">
-                <strong>{t("status")}：</strong>
+                <strong>金额：</strong>{formatCurrency(order.totalAmount)}
+              </div>
+              <div className="text-sm text-gray-600">
+                <strong>状态：</strong>
                 <span className="ml-1 px-2 py-1 text-xs rounded bg-gray-100">
                   {order.status}
                 </span>
@@ -182,12 +197,12 @@ export default function AdminOrdersPage() {
                   to={`/admin/orders/${order.id}`}
                   className="text-sm text-blue-600 hover:underline"
                 >
-                  {t("view")}
+                  查看
                 </Link>
                 <Form
                   method="post"
                   onSubmit={(e) => {
-                    if (!window.confirm(t("confirmDeleteOrder"))) {
+                    if (!window.confirm("确认要删除该订单吗？此操作无法撤销。")) {
                       e.preventDefault();
                     }
                   }}
@@ -198,7 +213,7 @@ export default function AdminOrdersPage() {
                     type="submit"
                     className="text-sm text-red-500 hover:underline"
                   >
-                    {t("delete")}
+                    删除
                   </button>
                 </Form>
               </div>

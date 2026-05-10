@@ -50,12 +50,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
       product: formattedProduct,
       category: product.categories.length > 0 ? product.categories[0].name : null,
       success: true,
+      error: null as string | null,
     };
   } catch (error) {
     console.error("Error loading product:", error);
     return {
       product: null,
-      error: "Failed to load product",
+      error: "Failed to load product" as string | null,
       category: null,
       success: false,
     };

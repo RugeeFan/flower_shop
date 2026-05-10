@@ -5,36 +5,61 @@ interface BannerContent {
   title: string | null;
   subtitle: string | null;
   content: string | null;
-  imageUrl: string[]; // 你实际字段名若为 imageUrls，则对应调整
+  imageUrl: string[];
 }
 
 export default function Hero({ banner }: { banner: BannerContent | null }) {
-  if (!banner) {
-    return (
-      <div className="h-[300px] md:h-[400px] lg:h-[488px] bg-gray-200 animate-pulse"></div>
-    );
-  }
+  // Editorial split layout: text panel (bone) on the left, image on the right.
+  // Stacks vertically on mobile (image first, then text) so the visual leads.
+  const eyebrow = banner?.subtitle?.trim() || "Sydney Florist";
+  const headline = banner?.content?.trim() || "Flowers, gathered with care.";
+  const supporting = banner?.title?.trim() || "";
+  const images = banner?.imageUrl?.length ? banner.imageUrl : [];
 
   return (
-    <div className="relative h-[300px] md:h-[400px] lg:h-[488px] overflow-hidden">
-      <Carousel images={banner.imageUrl} />
+    <section className="bg-bone">
+      <div className="grid grid-cols-1 md:grid-cols-12 md:min-h-[560px] lg:min-h-[640px]">
+        {/* Image — appears first on mobile, right on desktop */}
+        <div className="order-1 md:order-2 md:col-span-7 lg:col-span-8 relative bg-cream overflow-hidden">
+          <div className="aspect-[4/5] md:aspect-auto md:h-full">
+            {images.length > 0 ? (
+              <Carousel images={images} />
+            ) : (
+              <div className="h-full w-full bg-cream" />
+            )}
+          </div>
+        </div>
 
-      <div className="absolute inset-0 flex items-center justify-center text-white z-10 flex-col px-4 text-center md:top-1/3">
-        <div className="text-md md:text-2xl lg:text-3xl font-semibold tracking-widest pb-2 md:pb-4">
-          {banner.title}
+        {/* Text panel */}
+        <div className="order-2 md:order-1 md:col-span-5 lg:col-span-4 flex flex-col justify-center px-6 md:px-10 lg:px-16 py-12 md:py-0">
+          <div className="eyebrow mb-4">{eyebrow}</div>
+
+          <h1 className="font-display text-charcoal text-[40px] md:text-[52px] lg:text-[64px] leading-display tracking-tight">
+            {headline}
+          </h1>
+
+          {supporting && (
+            <p className="mt-6 text-ink-muted text-[15px] md:text-base max-w-[40ch] leading-body">
+              {supporting}
+            </p>
+          )}
+
+          <div className="mt-10 flex items-center gap-6">
+            <Link
+              to="/products"
+              className="inline-flex items-center justify-center bg-charcoal text-bone px-7 py-3 text-sm font-medium tracking-eyebrow uppercase hover:bg-terracotta transition-colors"
+            >
+              Shop the collection
+            </Link>
+            <Link
+              to="/about"
+              className="text-charcoal text-sm font-medium underline underline-offset-4 decoration-charcoal/30 hover:decoration-charcoal transition"
+            >
+              Our story
+            </Link>
+          </div>
         </div>
-        <div className="text-xl md:text-4xl lg:text-5xl font-bold">
-          {banner.content}
-        </div>
-        <Link
-          to="/products"
-          className="mt-4 md:mt-8 bg-white text-black px-6 py-2.5 rounded-md text-sm font-semibold hover:bg-gray-100 transition-colors"
-        >
-          ORDER NOW
-        </Link>
       </div>
-
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-    </div>
+    </section>
   );
 }

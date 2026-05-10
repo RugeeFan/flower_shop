@@ -4,377 +4,269 @@ import {
   categoryListTag,
   weddingServiceTag,
 } from "~/data/homepage";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import SearchBar from "./SearchBar";
 import LocationPopup from "./LocationPopup";
 import AuthPopup from "./AuthPopup";
 import CartPopup from "./CartPopup";
 import DropdownMenu from "./DropdownMenu";
+import CustomerDropDown from "./CustomerDropDown";
 import { useCartStore } from "~/zustand/useCartStore";
 import { useDropdownStore } from "~/zustand/useDropdownStore";
-
-import CustomerDropDown from "./CustomerDropDown";
-import { useRef, useEffect } from "react";
-import { } from "~/zustand/useCartStore";
 import { useLoaderData } from "@remix-run/react";
 
 type RootLoaderData = {
   user: { id: string; email: string } | null;
 };
+
+const PHONE_NUMBER = "0451182178";
+const PHONE_DISPLAY = "0451 182 178";
+
 export default function NavBar() {
+  // popup state — DO NOT change semantics, only restyle
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const isCartOpen = useCartStore((state) => state.isCartOpen);
   const setCartOpen = useCartStore((state) => state.setCartOpen);
-
   const closeDropdown = useDropdownStore((state) => state.close);
 
-  const phoneNumber = "0451182178";
-
-  const handleMenuItemClick = () => {
-    setIsMobileMenuOpen(false);
-    closeDropdown();
-  };
   const { user } = useLoaderData<RootLoaderData>();
   const isLoggedIn = !!user;
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
+  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setIsDropdownOpen(false);
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) {
+        setIsAccountDropdownOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleMobileMenuItemClick = () => {
+    setIsMobileMenuOpen(false);
+    closeDropdown();
+  };
+
+  const renderDesktopNavItem = (title: string) => {
+    if (title === "OCCATION") {
+      return (
+        <DropdownMenu
+          key={title}
+          title={title}
+          items={categoryListTag}
+          dropdownKey="occasion"
+        />
+      );
+    }
+    if (title === "WEDDINGS & SERVICES") {
+      return (
+        <DropdownMenu
+          key={title}
+          title={title}
+          items={weddingServiceTag}
+          dropdownKey="wedding"
+        />
+      );
+    }
+    const navLinkClass =
+      "text-charcoal text-[12px] font-medium uppercase tracking-eyebrow hover:text-terracotta transition-colors";
+    if (title === "SHOP ALL")
+      return <Link key={title} to="/products" className={navLinkClass}>{title}</Link>;
+    if (title === "BEST SELLERS")
+      return <Link key={title} to="/categories/bestsellers" className={navLinkClass}>Best sellers</Link>;
+    if (title === "ABOUT US")
+      return <Link key={title} to="/about" className={navLinkClass}>About</Link>;
+    if (title === "HOME")
+      return <Link key={title} to="/" className={navLinkClass}>Home</Link>;
+    return <span key={title} className={`${navLinkClass} cursor-default`}>{title}</span>;
+  };
+
+  const mobileLinkClass =
+    "block px-6 py-4 text-charcoal text-[14px] font-medium tracking-eyebrow uppercase border-b border-border last:border-b-0";
+
+  const renderMobileNavItem = (title: string) => {
+    if (title === "OCCATION") {
+      return (
+        <DropdownMenu
+          key={title}
+          title={title}
+          items={categoryListTag}
+          isMobile={true}
+          dropdownKey="occasion"
+        />
+      );
+    }
+    if (title === "WEDDINGS & SERVICES") {
+      return (
+        <DropdownMenu
+          key={title}
+          isMobile={true}
+          title={title}
+          items={weddingServiceTag}
+          dropdownKey="wedding"
+        />
+      );
+    }
+    if (title === "SHOP ALL")
+      return <Link key={title} to="/products" onClick={handleMobileMenuItemClick} className={mobileLinkClass}>Shop all</Link>;
+    if (title === "BEST SELLERS")
+      return <Link key={title} to="/categories/bestsellers" onClick={handleMobileMenuItemClick} className={mobileLinkClass}>Best sellers</Link>;
+    if (title === "ABOUT US")
+      return <Link key={title} to="/about" onClick={handleMobileMenuItemClick} className={mobileLinkClass}>About</Link>;
+    if (title === "HOME")
+      return <Link key={title} to="/" onClick={handleMobileMenuItemClick} className={mobileLinkClass}>Home</Link>;
+    return <Link key={title} to="/products" onClick={handleMobileMenuItemClick} className={mobileLinkClass}>{title}</Link>;
+  };
+
   return (
     <div
-      className="relative"
+      className="relative bg-bone"
       onClick={(e) => {
-        // ✅ 只在电脑端执行自动关闭逻辑
-        if (window.innerWidth >= 768 && !(e.target as HTMLElement).closest(".dropdown-container")) {
+        if (
+          window.innerWidth >= 768 &&
+          !(e.target as HTMLElement).closest(".dropdown-container")
+        ) {
           closeDropdown();
         }
       }}
     >
-      {/* <TopNav /> */}
-      {/* Search / Popup */}
-      {/* {isSearchOpen && <SearchBar onClose={() => setIsSearchOpen(false)} />}
-      {isLocationOpen && (
-        <LocationPopup onClose={() => setIsLocationOpen(false)} />
-      )}
-      {isAuthOpen && <AuthPopup onClose={() => setIsAuthOpen(false)} />}
-      {isCartOpen && <CartPopup onClose={() => setCartOpen(false)} />} */}
-
-      {/* 顶部 Logo & 图标 */}
-      {/* <div className="grid grid-cols-3 py-2 md:py-4 border-0 md:border border-b-1 border-primary">
-        <div className="hidden md:flex justify-center items-center gap-4 text-primary">
-          <a
-            href={`tel:${phoneNumber}`}
-            className="flex items-center gap-4 hover:opacity-80 transition-opacity"
-          >
-            <i className="ri-phone-line text-4xl"></i>
-            <div className="text-lg">0451 182 178</div>
-          </a>
-        </div>
-
-        <div className="flex md:hidden items-center justify-start pl-4">
-          <i
-            className="ri-menu-line text-2xl text-primary cursor-pointer"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          ></i>
-        </div>
-
-        <div className="h-16 md:h-20 relative flex justify-center items-center">
-          <Link to="/">
-            <img
-              className="w-[68px] md:w-[110px] object-contain"
-              src="https://res.cloudinary.com/djwau0xeb/image/upload/v1745231609/logo_pmahyd.png"
-              alt="logo"
-            />
-          </Link>
-        </div>
-
-        <div className="flex gap-2 md:gap-4 justify-end md:justify-center items-center text-primary pr-4 md:pr-0">
-          <i
-            className="ri-search-line text-xl md:text-3xl cursor-pointer"
-            onClick={() => setIsSearchOpen(true)}
-          ></i>
-          <i
-            className="ri-user-line text-xl md:text-3xl cursor-pointer"
-            onClick={() => setIsAuthOpen(true)}
-          ></i>
-          <i
-            className="ri-map-pin-line text-xl md:text-3xl cursor-pointer"
-            onClick={() => setIsLocationOpen(true)}
-          ></i>
-          <i
-            className="ri-shopping-cart-line text-xl md:text-3xl cursor-pointer"
-            onClick={() => setCartOpen(true)}
-          ></i>
-        </div>
-      </div> */}
+      {/* Popups (unchanged behavior) */}
       {isSearchOpen && <SearchBar onClose={() => setIsSearchOpen(false)} />}
       {isLocationOpen && <LocationPopup onClose={() => setIsLocationOpen(false)} />}
       {isAuthOpen && !isLoggedIn && <AuthPopup onClose={() => setIsAuthOpen(false)} />}
       {isCartOpen && <CartPopup onClose={() => setCartOpen(false)} />}
 
-      <div className="grid grid-cols-3 py-2 md:py-4 border-0 md:border border-b-1 border-primary">
-        {/* 左侧电话 */}
-        <div className="hidden md:flex justify-center items-center gap-4 text-primary">
-          <a href={`tel:${phoneNumber}`} className="flex items-center gap-4 hover:opacity-80 transition-opacity">
-            <i className="ri-phone-line text-4xl"></i>
-            <div className="text-lg">0451 182 178</div>
-          </a>
+      {/* TopBar — phone left, account right (desktop only) */}
+      <div className="hidden md:flex items-center justify-between px-8 lg:px-16 py-3 text-[12px] text-ink-muted border-b border-border">
+        <a
+          href={`tel:${PHONE_NUMBER}`}
+          className="hover:text-charcoal transition-colors tracking-eyebrow uppercase"
+        >
+          {PHONE_DISPLAY}
+        </a>
+        <div className="flex items-center gap-6">
+          {isLoggedIn ? (
+            <div className="relative" ref={accountRef}>
+              <button
+                onClick={() => setIsAccountDropdownOpen((p) => !p)}
+                className="text-charcoal hover:text-terracotta transition-colors"
+              >
+                {user.email}
+              </button>
+              {isAccountDropdownOpen && <CustomerDropDown />}
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAuthOpen(true)}
+              className="hover:text-charcoal transition-colors tracking-eyebrow uppercase"
+            >
+              Sign in
+            </button>
+          )}
+          <button
+            onClick={() => setIsLocationOpen(true)}
+            className="hover:text-charcoal transition-colors tracking-eyebrow uppercase"
+          >
+            Sydney
+          </button>
+        </div>
+      </div>
+
+      {/* Main bar — logo center, mobile menu / search / cart on edges */}
+      <div className="grid grid-cols-3 items-center px-4 md:px-8 lg:px-16 py-4 md:py-6">
+        {/* Left: mobile menu button (mobile) / search (desktop) */}
+        <div className="flex items-center justify-start gap-6">
+          <button
+            onClick={() => setIsMobileMenuOpen((p) => !p)}
+            className="md:hidden text-charcoal"
+            aria-label="Open menu"
+          >
+            <i className="ri-menu-line text-2xl"></i>
+          </button>
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="hidden md:inline-flex text-charcoal hover:text-terracotta transition-colors text-[12px] font-medium uppercase tracking-eyebrow"
+          >
+            <i className="ri-search-line text-base mr-2"></i>
+            Search
+          </button>
         </div>
 
-        {/* 移动端菜单 */}
-        <div className="flex md:hidden items-center justify-start pl-4">
-          <i
-            className="ri-menu-line text-2xl text-primary cursor-pointer"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          ></i>
-        </div>
-
-        {/* LOGO */}
-        <div className="h-16 md:h-20 relative flex justify-center items-center">
-          <Link to="/">
-            <img
-              className="w-[68px] md:w-[110px] object-contain"
-              src="https://res.cloudinary.com/djwau0xeb/image/upload/v1745231609/logo_pmahyd.png"
-              alt="logo"
-            />
+        {/* Center: logo as wordmark */}
+        <div className="flex justify-center items-center">
+          <Link to="/" aria-label="Royal Rose home">
+            <span className="font-display text-charcoal text-[22px] md:text-[28px] tracking-tight leading-none">
+              Royal Rose
+            </span>
           </Link>
         </div>
 
-        {/* 右侧图标栏 */}
-        <div className="flex gap-2 md:gap-4 justify-end md:justify-center items-center text-primary pr-4 md:pr-0">
-          <i
-            className="ri-search-line text-xl md:text-3xl cursor-pointer"
-            onClick={() => setIsSearchOpen(true)}
-          ></i>
-
-          {/* 登录状态判断 */}
-          {isLoggedIn ? null : (
-            <i
-              className="ri-user-line text-xl md:text-3xl cursor-pointer"
-              onClick={() => setIsAuthOpen(true)}
-            ></i>
-          )}
-
-          <i
-            className="ri-map-pin-line text-xl md:text-3xl cursor-pointer"
-            onClick={() => setIsLocationOpen(true)}
-          ></i>
-          <i
-            className="ri-shopping-cart-line text-xl md:text-3xl cursor-pointer"
+        {/* Right: cart (always) + mobile auth/location collapsed into menu */}
+        <div className="flex items-center justify-end gap-5">
+          {/* Mobile-only quick icons */}
+          <button
+            onClick={() => setIsAuthOpen(true)}
+            className="md:hidden text-charcoal"
+            aria-label="Account"
+          >
+            <i className="ri-user-line text-xl"></i>
+          </button>
+          <button
             onClick={() => setCartOpen(true)}
-          ></i>
+            className="relative text-charcoal hover:text-terracotta transition-colors"
+            aria-label="Open cart"
+          >
+            <i className="ri-shopping-bag-line text-xl md:text-[22px]"></i>
+            <span className="hidden md:inline ml-2 text-[12px] font-medium uppercase tracking-eyebrow">
+              Bag
+            </span>
+          </button>
         </div>
-
-      </div>
-      <div className="flex justify-end items-center gap-4 pr-4 md:px-48 py-2 md:py-4">
-        {isLoggedIn ? (<div>
-
-          <div className="relative" ref={dropdownRef}>
-            <p className="text-primary">Welcome ,<button
-              onClick={() => setIsDropdownOpen((prev) => !prev)}
-              className="text-sm md:text-base hover:underline text-primary"
-            >
-              {user.email}
-            </button>
-              {isDropdownOpen && <CustomerDropDown />}</p>
-          </div>
-        </div>
-        ) : null}
       </div>
 
-      {/* 桌面端导航 */}
-      <div className="hidden md:flex gap-24 justify-center items-center py-4 border border-b-2 border-primary font-semibold">
-        {navBarTitle.map((title) => {
-          if (title === "OCCATION") {
-            return (
-              <DropdownMenu
-                key={title}
-                title={title}
-                items={categoryListTag}
-                dropdownKey="occasion"
-              />
-            );
-          }
-          if (title === "WEDDINGS & SERVICES") {
-            return (
-              <DropdownMenu
-                key={title}
-                title={title}
-                items={weddingServiceTag}
-                dropdownKey="wedding"
-              />
-            );
-          }
-          if (title === "SHOP ALL") {
-            return (
-              <Link key={title} to="/products" className="text-primary">
-                {title}
-              </Link>
-            );
-          }
-          if (title === "BEST SELLERS") {
-            return (
-              <Link
-                key={title}
-                to="/categories/bestsellers"
-                className="text-primary"
-              >
-                {title}
-              </Link>
-            );
-          }
-          if (title === "ABOUT US") {
-            return (
-              <Link
-                key={title}
-                to="/about"
-                className="text-primary"
-              >
-                {title}
-              </Link>
-            );
-          }
-          if (title === "HOME") {
-            return (
-              <Link
-                key={title}
-                to="/"
-                className="text-primary"
-              >
-                {title}
-              </Link>
-            );
-          }
-          return (
-            <div key={title} className="text-primary cursor-default">
-              {title}
-            </div>
-          );
-        })}
-      </div>
+      {/* Hairline */}
+      <div className="hidden md:block h-px bg-border" />
 
-      {/* 移动端菜单 */}
+      {/* Desktop nav */}
+      <nav className="hidden md:flex justify-center items-center gap-12 lg:gap-16 py-5">
+        {navBarTitle.map(renderDesktopNavItem)}
+      </nav>
+
+      {/* Mobile nav drawer */}
       <div
-        className={`md:hidden bg-white absolute left-0 w-full z-50 transition-all duration-300 ${isMobileMenuOpen ? "max-h-[600px]" : "max-h-0"
-          } overflow-hidden`}
+        className={`md:hidden absolute left-0 w-full z-50 bg-bone border-t border-border transition-all duration-300 overflow-hidden ${
+          isMobileMenuOpen ? "max-h-[640px]" : "max-h-0"
+        }`}
       >
         <a
-          href={`tel:${phoneNumber}`}
-          className="flex items-center gap-2 p-4 border-b border-gray-200"
+          href={`tel:${PHONE_NUMBER}`}
+          className="flex items-center gap-3 px-6 py-4 border-b border-border text-charcoal text-[14px]"
         >
-          <i className="ri-phone-line text-2xl text-primary"></i>
-          <span className="text-primary">0451 182 178</span>
+          <i className="ri-phone-line text-lg text-terracotta"></i>
+          <span>{PHONE_DISPLAY}</span>
         </a>
-
-        <div className="flex flex-col">
-          {navBarTitle.map((title) => {
-            if (title === "OCCATION") {
-              return (
-                <DropdownMenu
-                  key={title}
-                  title={title}
-                  items={categoryListTag}
-                  isMobile={true}
-                  dropdownKey="occasion"
-                />
-              );
-            }
-            if (title === "WEDDINGS & SERVICES") {
-              return (
-                <DropdownMenu
-                  key={title}
-                  isMobile={true}
-                  title={title}
-                  items={weddingServiceTag}
-                  dropdownKey="wedding"
-                />
-              );
-            }
-            if (title === "SHOP ALL") {
-              return (
-                <Link onClick={handleMenuItemClick} key={title} to="/products"
-                  className="p-4 text-primary border-b border-gray-200 last:border-b-0">
-                  {title}
-                </Link>
-              );
-            }
-            if (title === "BEST SELLERS") {
-              return (
-                <Link
-                  key={title}
-                  onClick={handleMenuItemClick}
-                  to="/categories/bestsellers"
-                  className="p-4 text-primary border-b border-gray-200 last:border-b-0"
-                >
-                  {title}
-                </Link>
-              );
-            }
-            if (title === "ABOUT US") {
-              return (
-                <Link
-                  key={title}
-                  onClick={handleMenuItemClick}
-                  to="/about"
-                  className="p-4 text-primary border-b border-gray-200 last:border-b-0"
-                >
-                  {title}
-                </Link>
-              );
-            }
-            if (title === "HOME") {
-              return (
-                <Link
-                  className="p-4 text-primary border-b border-gray-200 last:border-b-0"
-                  key={title}
-                  onClick={handleMenuItemClick}
-                  to="/"
-
-                >
-                  {title}
-                </Link>
-              );
-            }
-            return (
-              <Link
-                key={title}
-                to="/products"
-                onClick={handleMenuItemClick}
-                className="p-4 text-primary border-b border-gray-200 last:border-b-0"
-              >
-                {title}
-              </Link>
-            );
-          })}
-        </div>
+        <div>{navBarTitle.map(renderMobileNavItem)}</div>
+        <button
+          onClick={() => {
+            setIsLocationOpen(true);
+            setIsMobileMenuOpen(false);
+          }}
+          className={`${mobileLinkClass} w-full text-left`}
+        >
+          Sydney delivery
+        </button>
       </div>
 
-      {/* 通知栏 */}
-      <div className="flex items-center justify-center py-2 bg-[#F5F0EC] text-xs md:text-sm px-4 text-center">
-        <p>
-          Order now for delivery on Monday
-          <span>
-            <i className="ri-flower-line mx-2"></i>
-          </span>
-          Same day flower delivery Monday – Saturday
-        </p>
+      {/* Notification bar */}
+      <div className="bg-charcoal text-bone py-2.5 px-4 text-center text-[12px] tracking-wide">
+        Same-day delivery across Sydney, Mon — Sat. Order before 2 PM.
       </div>
-    </div >
+    </div>
   );
 }

@@ -4,27 +4,26 @@ import { ProductListItem } from "~/types/product";
 
 export default function ProductItem({ id, name, imgUrl, price }: ProductListItem) {
   return (
-    <div className="cursor-pointer group">
-      <Link to={`/product/${id}`}>
-        <div className="overflow-hidden aspect-square rounded-md mb-2">
-          <img
-            src={imgUrl}
-            alt={name}
-            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
-          />
-        </div>
-        <div className="font-semibold pt-1 text-sm md:text-base text-gray-800 truncate group-hover:text-primary transition-colors">
+    <Link
+      to={`/product/${id}`}
+      className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-terracotta/40"
+    >
+      <div className="overflow-hidden bg-cream aspect-[4/5]">
+        <img
+          src={imgUrl}
+          alt={name}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-slow ease-out group-hover:scale-[1.03]"
+        />
+      </div>
+      <div className="pt-4">
+        <h3 className="font-display text-[17px] md:text-[18px] text-charcoal leading-tight tracking-tight truncate">
           {name}
-        </div>
-        <div className="flex mt-1">
-          {[...Array(5)].map((_, index) => (
-            <i key={index} className="ri-star-fill text-[#FCBF02] text-xs sm:text-sm"></i>
-          ))}
-        </div>
-        <div className="text-sm md:text-base font-medium text-primary mt-1">
+        </h3>
+        <div className="mt-1.5 text-[13px] text-ink-muted">
           {formatCurrency(price)}
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }

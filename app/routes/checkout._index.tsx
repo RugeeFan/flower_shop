@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCartStore } from "~/zustand/useCartStore";
 import {
@@ -40,7 +40,11 @@ const todayISO = () => new Date().toISOString().slice(0, 10);
 
 export default function CheckoutPage() {
   const cart = useCartStore((state) => state.items);
-  const hasHydrated = useCartStore((state) => state.hasHydrated);
+  // Local mount flag — fires every component mount, independent of zustand
+  // persist's `hasHydrated`, which can stay false when localStorage has no
+  // cart-storage entry (fresh visit / after clearCart).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const {
     register,
@@ -145,7 +149,7 @@ export default function CheckoutPage() {
     }
   };
 
-  if (!hasHydrated) return <div className="text-center py-10">Loading...</div>;
+  if (!mounted) return <div className="text-center py-10">Loading...</div>;
 
   return (
     <div className="container mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">

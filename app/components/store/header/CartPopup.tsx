@@ -13,141 +13,153 @@ export default function CartPopup({ onClose }: CartPopupProps) {
   const items = useCartStore((state) => state.items);
   const addToCart = useCartStore((state) => state.addToCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 0;
-  const total = subtotal + shipping;
 
   const handleCheckout = () => {
     onClose();
-    // Zustand persist already syncs items to localStorage under "cart-storage".
-    // No manual localStorage write here — kept clean to avoid stale duplicate keys.
-    setTimeout(() => {
-      navigate("/checkout");
-    }, 100);
+    setTimeout(() => navigate("/checkout"), 100);
+  };
+
+  const handleDecrement = (id: string, currentQty: number) => {
+    if (currentQty > 1) {
+      updateQuantity(id, currentQty - 1);
+    } else {
+      removeFromCart(id);
+    }
   };
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end"
+      className="fixed inset-0 bg-charcoal/40 z-50 flex justify-end"
       onClick={onClose}
     >
-      <div
-        className="bg-white w-full md:w-[480px] h-full flex flex-col shadow-xl"
+      <aside
+        className="bg-bone w-full md:w-[460px] h-full flex flex-col"
         onClick={(e) => e.stopPropagation()}
+        aria-label="Shopping bag"
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-4 md:p-6 border-b">
-          <h2 className="text-xl font-semibold flex items-center gap-2">
-            <i className="ri-shopping-cart-line"></i>
-            Shopping Cart
+        <div className="flex justify-between items-center px-6 py-5 border-b border-border">
+          <h2 className="font-display text-charcoal text-[22px] leading-none">
+            Your bag
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-ink-muted hover:text-charcoal transition-colors"
+            aria-label="Close"
           >
             <i className="ri-close-line text-2xl"></i>
           </button>
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-auto p-4 md:p-6">
+        <div className="flex-1 overflow-auto px-6 py-6">
           {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-gray-500">
-              <i className="ri-shopping-cart-line text-5xl mb-4"></i>
-              <p>Your cart is empty</p>
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="eyebrow mb-3">Empty bag</div>
+              <p className="font-display text-charcoal text-[26px] leading-display max-w-[26ch]">
+                A blank canvas, waiting for the right bouquet.
+              </p>
+              <button
+                onClick={onClose}
+                className="mt-8 text-charcoal text-sm underline underline-offset-4 decoration-charcoal/30 hover:decoration-charcoal transition"
+              >
+                Continue browsing
+              </button>
             </div>
           ) : (
-            <div className="space-y-4">
+            <ul className="divide-y divide-border">
               {items.map((item) => (
-                <div key={item.id} className="flex gap-4 pb-4 border-b">
-                  <div className="w-24 h-24 flex-shrink-0">
+                <li key={item.id} className="flex gap-5 py-5 first:pt-0 last:pb-0">
+                  <div className="w-20 h-24 flex-shrink-0 bg-cream overflow-hidden">
                     <img
                       src={Array.isArray(item.imgUrl) ? item.imgUrl[0] : item.imgUrl}
                       alt={item.name}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-full object-cover"
                     />
                   </div>
 
-                  <div className="flex-1">
-                    <h3 className="font-medium text-gray-800">{item.name}</h3>
-                    <div className="text-gray-500 text-sm mt-1">
-                      Unit Price: {formatCurrency(item.price)}
+                  <div className="flex-1 flex flex-col">
+                    <h3 className="font-display text-charcoal text-[16px] leading-tight">
+                      {item.name}
+                    </h3>
+                    <div className="text-[12px] text-ink-muted mt-1">
+                      {formatCurrency(item.price)} each
                     </div>
 
-                    <div className="flex items-center gap-2 mt-2">
+                    <div className="mt-auto pt-4 flex items-center gap-3">
+                      <div className="inline-flex items-center border border-border">
+                        <button
+                          onClick={() => handleDecrement(item.id, item.quantity)}
+                          className="w-8 h-8 flex items-center justify-center text-charcoal hover:bg-cream transition-colors"
+                          aria-label="Decrease quantity"
+                        >
+                          <i className="ri-subtract-line text-sm"></i>
+                        </button>
+                        <span className="w-8 text-center text-[13px] tabular-nums">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() => addToCart(item)}
+                          className="w-8 h-8 flex items-center justify-center text-charcoal hover:bg-cream transition-colors"
+                          aria-label="Increase quantity"
+                        >
+                          <i className="ri-add-line text-sm"></i>
+                        </button>
+                      </div>
+
                       <button
-                        className="w-8 h-8 flex items-center justify-center border rounded-lg hover:bg-gray-50 transition-colors"
-                        onClick={() =>
-                          item.quantity > 1
-                            ? useCartStore.setState((state) => ({
-                              items: state.items.map((i) =>
-                                i.id === item.id
-                                  ? { ...i, quantity: i.quantity - 1 }
-                                  : i
-                              ),
-                            }))
-                            : removeFromCart(item.id)
-                        }
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-[12px] text-ink-muted hover:text-terracotta underline underline-offset-2 transition-colors"
                       >
-                        <i className="ri-subtract-line"></i>
-                      </button>
-                      <span className="w-8 text-center">{item.quantity}</span>
-                      <button
-                        className="w-8 h-8 flex items-center justify-center border rounded-lg hover:bg-gray-50 transition-colors"
-                        onClick={() => addToCart(item)}
-                      >
-                        <i className="ri-add-line"></i>
+                        Remove
                       </button>
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-end gap-2">
-                    <div className="font-medium">
-                      {formatCurrency(item.price * item.quantity)}
-                    </div>
-                    <button
-                      className="text-gray-400 hover:text-red-500 transition-colors"
-                      onClick={() => removeFromCart(item.id)}
-                    >
-                      <i className="ri-delete-bin-line"></i>
-                    </button>
+                  <div className="text-charcoal text-[14px] tabular-nums">
+                    {formatCurrency(item.price * item.quantity)}
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </div>
 
-        {/* Summary & Actions */}
-        <div className="border-t p-4 md:p-6 bg-gray-50">
-          <div className="space-y-2 mb-4">
-            <div className="flex justify-between text-gray-600">
-              <span>Subtotal</span>
-              <span>{formatCurrency(subtotal)}</span>
+        {/* Summary */}
+        {items.length > 0 && (
+          <div className="border-t border-border px-6 py-5 bg-cream/40">
+            <div className="space-y-2 mb-5 text-[14px]">
+              <div className="flex justify-between text-ink-muted">
+                <span>Subtotal</span>
+                <span className="tabular-nums">{formatCurrency(subtotal)}</span>
+              </div>
+              <div className="flex justify-between text-ink-muted">
+                <span>Delivery</span>
+                <span>Calculated at checkout</span>
+              </div>
+              <div className="flex justify-between pt-3 border-t border-border text-charcoal">
+                <span className="font-display text-[18px]">Total</span>
+                <span className="font-display text-[18px] tabular-nums">
+                  {formatCurrency(subtotal)}
+                </span>
+              </div>
             </div>
-            <div className="flex justify-between text-gray-600">
-              <span>Shipping</span>
-              <span className=" text-gray-500">calculated at checkout</span>
-            </div>
-            <div className="flex justify-between text-lg font-semibold pt-2 border-t">
-              <span>Total</span>
-              <span>{`${formatCurrency(total)} + Shipping Fee`}</span>
-            </div>
+
+            <Button fullWidth onClick={handleCheckout}>
+              Proceed to checkout
+            </Button>
+            <button
+              onClick={onClose}
+              className="w-full mt-3 text-center text-ink-muted hover:text-charcoal transition-colors text-[12px] tracking-eyebrow uppercase"
+            >
+              Continue browsing
+            </button>
           </div>
-
-          <Button fullWidth onClick={handleCheckout}>
-            Proceed to Checkout
-          </Button>
-
-          <button
-            onClick={onClose}
-            className="w-full mt-2 text-center text-gray-600 hover:text-gray-800 transition-colors text-sm"
-          >
-            Continue Shopping
-          </button>
-        </div>
-      </div>
+        )}
+      </aside>
     </div>
   );
 }

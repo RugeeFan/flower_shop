@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { stripe } from "~/lib/stripe.server";
 import { prisma } from "~/lib/prisma.server";
 import { useEffect } from "react";
@@ -10,6 +10,7 @@ import {
   PICKUP_TIME_SLOTS,
 } from "~/lib/delivery";
 import { useCartStore } from "~/zustand/useCartStore";
+import formatCurrency from "~/utils/formatCurrency";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -47,9 +48,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ order, devMode });
 };
 
+const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div>
+    <div className="eyebrow mb-1">{label}</div>
+    <div className="text-charcoal text-[15px] leading-snug">{children}</div>
+  </div>
+);
+
 export default function CheckoutSuccessPage() {
   const { order, devMode } = useLoaderData<typeof loader>();
   const clearCart = useCartStore((state) => state.clearCart);
+
   useEffect(() => {
     clearCart();
     localStorage.removeItem("current_order_id");
@@ -58,90 +67,178 @@ export default function CheckoutSuccessPage() {
   }, [clearCart]);
 
   const isPickup = order.deliveryType === "PICKUP";
+  const subtotal = order.items.reduce(
+    (s, i) => s + i.unitPrice * i.quantity,
+    0,
+  );
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-3xl">
-      {devMode && (
-        <div className="mb-4 p-3 rounded border border-yellow-300 bg-yellow-50 text-yellow-900 text-sm">
-          <strong>DEV MODE:</strong> Stripe was bypassed. No real charge was made — order data was saved and notification email was sent (or logged to console if SMTP is not configured).
-        </div>
-      )}
-      <h1 className="text-2xl font-bold mb-6 text-gray-900">
-        {devMode ? "Order Created (dev) ✅" : "Payment Successful 🎉"}
-      </h1>
-
-      <div className="space-y-2 text-gray-800 bg-white border rounded-lg p-5">
-        <div><strong>Order ID:</strong> {order.id}</div>
-        <div><strong>Recipient:</strong> {order.recipientName}</div>
-        <div><strong>Email:</strong> {order.recipientEmail}</div>
-
-        {isPickup ? (
-          <>
-            <div className="pt-2 border-t mt-2">
-              <strong>Store Pickup</strong>
-            </div>
-            <div>
-              <strong>Location:</strong>{" "}
-              {order.pickupLocation && PICKUP_LOCATIONS[order.pickupLocation].label}
-            </div>
-            <div>
-              <strong>Address:</strong>{" "}
-              {order.pickupLocation && PICKUP_LOCATIONS[order.pickupLocation].address}
-            </div>
-            <div>
-              <strong>Pickup Date:</strong>{" "}
-              {new Date(order.deliveryDate).toLocaleDateString()}
-            </div>
-            <div>
-              <strong>Time Slot:</strong>{" "}
-              {order.pickupTimeSlot && PICKUP_TIME_SLOTS[order.pickupTimeSlot].label}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="pt-2 border-t mt-2">
-              <strong>Local Delivery</strong>
-            </div>
-            <div><strong>Address:</strong> {order.address}</div>
-            <div><strong>Postcode:</strong> {order.postcode}</div>
-            <div>
-              <strong>Delivery Date:</strong>{" "}
-              {new Date(order.deliveryDate).toLocaleDateString()}
-            </div>
-            <div>
-              <strong>Delivery Window:</strong>{" "}
-              {order.deliveryWindow && DELIVERY_WINDOWS[order.deliveryWindow].label}
-            </div>
-          </>
-        )}
-
-        {order.message && (
-          <div className="pt-2 border-t mt-2">
-            <strong>Card Message:</strong> {order.message}
+    <div className="bg-bone min-h-screen">
+      <div className="max-w-3xl mx-auto px-4 md:px-8 py-12 md:py-20">
+        {devMode && (
+          <div className="mb-8 border border-border bg-cream/60 p-4 text-[12px] text-ink-muted">
+            <span className="eyebrow text-terracotta mr-2">Dev mode</span>
+            Stripe was bypassed. No real charge — order saved, notification email
+            sent (or logged to console if SMTP is not configured).
           </div>
         )}
-      </div>
 
-      <h2 className="text-xl font-semibold mt-6 mb-3 text-gray-900">Order Items</h2>
-      <ul className="space-y-3">
-        {order.items.map((item) => (
-          <li key={item.id} className="flex justify-between border-b pb-2 text-gray-800">
-            <div>{item.product.name}</div>
-            <div>x{item.quantity}</div>
-            <div>${(item.unitPrice * item.quantity).toFixed(2)}</div>
-          </li>
-        ))}
-      </ul>
-
-      {order.deliveryFee > 0 && (
-        <div className="mt-3 flex justify-between text-gray-700">
-          <span>Priority delivery</span>
-          <span>+ ${order.deliveryFee.toFixed(2)}</span>
+        {/* Headline */}
+        <div className="mb-12">
+          <div className="eyebrow mb-3">
+            {devMode ? "Order created" : "Payment received"}
+          </div>
+          <h1 className="font-display text-charcoal text-[44px] md:text-[60px] leading-display tracking-tight">
+            Thank you.
+          </h1>
+          <p className="mt-4 text-ink-muted text-[15px] max-w-[42ch] leading-body">
+            We've got it from here. A confirmation has been sent to{" "}
+            <span className="text-charcoal">{order.recipientEmail}</span>.
+          </p>
         </div>
-      )}
-      <div className="mt-3 flex justify-between text-lg font-semibold text-gray-900">
-        <span>Total Paid</span>
-        <span>${order.totalAmount.toFixed(2)}</span>
+
+        {/* Order summary card */}
+        <div className="border border-border bg-white p-6 md:p-8">
+          <div className="flex items-baseline justify-between mb-6">
+            <div>
+              <div className="eyebrow">Order</div>
+              <div className="font-display text-charcoal text-[18px] mt-1 break-all">
+                {order.id}
+              </div>
+            </div>
+          </div>
+
+          <div className="hairline mb-6" />
+
+          {/* Recipient + fulfilment */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Field label="Recipient">
+              {order.recipientName}
+              <div className="text-ink-muted text-[13px] mt-0.5">
+                {order.recipientEmail}
+              </div>
+            </Field>
+
+            {isPickup ? (
+              <>
+                <Field label="Pickup location">
+                  {order.pickupLocation && PICKUP_LOCATIONS[order.pickupLocation].label}
+                  <div className="text-ink-muted text-[13px] mt-0.5">
+                    {order.pickupLocation && PICKUP_LOCATIONS[order.pickupLocation].address}
+                  </div>
+                </Field>
+                <Field label="Pickup date">
+                  {new Date(order.deliveryDate).toLocaleDateString("en-AU", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </Field>
+                <Field label="Time slot">
+                  {order.pickupTimeSlot && PICKUP_TIME_SLOTS[order.pickupTimeSlot].label}
+                </Field>
+              </>
+            ) : (
+              <>
+                <Field label="Delivery to">
+                  {order.address}
+                  <div className="text-ink-muted text-[13px] mt-0.5">
+                    Postcode {order.postcode}
+                  </div>
+                </Field>
+                <Field label="Delivery date">
+                  {new Date(order.deliveryDate).toLocaleDateString("en-AU", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </Field>
+                <Field label="Delivery window">
+                  {order.deliveryWindow && DELIVERY_WINDOWS[order.deliveryWindow].label}
+                </Field>
+              </>
+            )}
+          </div>
+
+          {order.message && (
+            <>
+              <div className="hairline my-6" />
+              <Field label="Card message">
+                <span className="italic">"{order.message}"</span>
+              </Field>
+            </>
+          )}
+        </div>
+
+        {/* Items */}
+        <div className="mt-12">
+          <div className="eyebrow mb-4">Your order</div>
+          <ul className="divide-y divide-border border-y border-border">
+            {order.items.map((item) => (
+              <li key={item.id} className="flex gap-5 py-5">
+                <div className="w-16 h-20 bg-cream flex-shrink-0 overflow-hidden">
+                  <img
+                    src={
+                      Array.isArray(item.product.imgUrl)
+                        ? item.product.imgUrl[0]
+                        : item.product.imgUrl
+                    }
+                    alt={item.product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <div className="font-display text-charcoal text-[16px] leading-tight">
+                    {item.product.name}
+                  </div>
+                  <div className="text-[12px] text-ink-muted mt-1">
+                    Qty {item.quantity} · {formatCurrency(item.unitPrice)} each
+                  </div>
+                </div>
+                <div className="text-charcoal text-[14px] tabular-nums">
+                  {formatCurrency(item.unitPrice * item.quantity)}
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6 ml-auto max-w-xs space-y-2 text-[14px]">
+            <div className="flex justify-between text-ink-muted">
+              <span>Subtotal</span>
+              <span className="tabular-nums">{formatCurrency(subtotal)}</span>
+            </div>
+            {order.deliveryFee > 0 && (
+              <div className="flex justify-between text-ink-muted">
+                <span>Priority delivery</span>
+                <span className="tabular-nums">+ {formatCurrency(order.deliveryFee)}</span>
+              </div>
+            )}
+            <div className="flex justify-between pt-3 border-t border-border">
+              <span className="font-display text-charcoal text-[18px]">Total paid</span>
+              <span className="font-display text-charcoal text-[18px] tabular-nums">
+                {formatCurrency(order.totalAmount)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA back */}
+        <div className="mt-16 flex flex-wrap items-center gap-6">
+          <Link
+            to="/products"
+            className="inline-flex items-center justify-center bg-charcoal text-bone px-7 py-3 text-[12px] font-medium tracking-eyebrow uppercase hover:bg-terracotta transition-colors"
+          >
+            Browse more flowers
+          </Link>
+          <Link
+            to="/"
+            className="text-charcoal text-sm underline underline-offset-4 decoration-charcoal/30 hover:decoration-charcoal transition"
+          >
+            Return home
+          </Link>
+        </div>
       </div>
     </div>
   );

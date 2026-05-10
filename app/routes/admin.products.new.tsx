@@ -2,6 +2,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect, json } from "@remix-r
 import { Form, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
 import { requireAdmin } from "~/lib/auth.server";
+import ImageUploadField from "~/components/admin/ImageUploadField";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await requireAdmin(request);
@@ -72,15 +73,12 @@ export default function NewProductPage() {
           />
         </div>
 
-        <div>
-          <label className="block font-medium">图片地址（URL） *</label>
-          <input
-            name="imgUrl"
-            type="url"
-            className="w-full border rounded px-3 py-2"
-            required
-          />
-        </div>
+        <ImageUploadField
+          name="imgUrl"
+          kind="products"
+          label="图片地址（URL） *"
+          required
+        />
 
         <div>
           <label className="block font-medium">分类</label>

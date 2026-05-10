@@ -3,6 +3,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/nod
 import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
 import { useTranslation } from "react-i18next";
+import ImageUploadField from "~/components/admin/ImageUploadField";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const content = await prisma.pageContent.findUnique({
@@ -107,16 +108,14 @@ export default function EditSiteContent() {
 
         {/* ✅ 仅在 id === 1 时显示多个图片 URL 输入框 */}
         {content.id === 1 && (
-          <div>
+          <div className="space-y-4">
             <label className="block text-sm font-medium text-gray-700">{t("imageUrls")}</label>
             {[0, 1, 2].map((i) => (
-              <input
+              <ImageUploadField
                 key={i}
-                type="text"
                 name={`imageUrl${i + 1}`}
+                kind="content"
                 defaultValue={content.imageUrl[i] || ""}
-                placeholder={`Image URL ${i + 1}`}
-                className="mt-1 mb-2 block w-full border-gray-300 rounded-md shadow-sm"
               />
             ))}
           </div>

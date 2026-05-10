@@ -1,0 +1,5 @@
+# Ignore everything in uploads/ except the structure
+*
+!.gitignore
+!*/
+!*/.gitkeep

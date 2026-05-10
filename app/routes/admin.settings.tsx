@@ -2,6 +2,7 @@ import { json, redirect, type ActionFunctionArgs, type LoaderFunctionArgs } from
 import { Form, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
 import { requireAdmin } from "~/lib/auth.server";
 import { getInformationBanner, setInformationBanner } from "~/lib/settings.server";
+import ImageUploadField from "~/components/admin/ImageUploadField";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAdmin(request);
@@ -20,10 +21,16 @@ export async function action({ request }: ActionFunctionArgs) {
   if (!imageUrl) {
     return json({ error: "图片 URL 不能为空" }, { status: 400 });
   }
-  try {
-    new URL(imageUrl);
-  } catch {
-    return json({ error: "图片 URL 格式无效" }, { status: 400 });
+  // Accept either an absolute URL (e.g. https://cdn.example.com/foo.jpg)
+  // or a same-origin relative path written by the upload pipeline
+  // (e.g. /uploads/settings/2026-05-11/abc.webp).
+  const isRelativeUpload = imageUrl.startsWith("/uploads/");
+  if (!isRelativeUpload) {
+    try {
+      new URL(imageUrl);
+    } catch {
+      return json({ error: "图片 URL 格式无效" }, { status: 400 });
+    }
   }
 
   await setInformationBanner({ imageUrl, title, subtitle, showLogo });
@@ -58,22 +65,13 @@ export default function AdminSettingsPage() {
       )}
 
       <Form method="post" className="space-y-5 bg-white border rounded-lg p-6">
-        <div>
-          <label className="block font-medium mb-1">背景图片 URL *</label>
-          <input
-            name="imageUrl"
-            type="url"
-            defaultValue={banner.imageUrl}
-            required
-            className="w-full border rounded px-3 py-2"
-          />
-          {banner.imageUrl && (
-            <div
-              className="mt-3 h-40 rounded border bg-gray-100 bg-cover bg-center"
-              style={{ backgroundImage: `url('${banner.imageUrl}')` }}
-            />
-          )}
-        </div>
+        <ImageUploadField
+          name="imageUrl"
+          kind="settings"
+          label="背景图片 URL *"
+          defaultValue={banner.imageUrl}
+          required
+        />
 
         <div>
           <label className="block font-medium mb-1">主标题</label>

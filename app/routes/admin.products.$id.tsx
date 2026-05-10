@@ -12,6 +12,7 @@ import {
 } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
 import { requireAdmin } from "~/lib/auth.server";
+import ImageUploadField from "~/components/admin/ImageUploadField";
 
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -120,16 +121,13 @@ export default function EditProductPage() {
           />
         </div>
 
-        <div>
-          <label className="block font-medium text-gray-700 mb-1">图片地址 *</label>
-          <input
-            name="imgUrl"
-            type="url"
-            defaultValue={product.imgUrl}
-            className="input-style"
-            required
-          />
-        </div>
+        <ImageUploadField
+          name="imgUrl"
+          kind="products"
+          label="图片地址 *"
+          defaultValue={product.imgUrl}
+          required
+        />
 
         <div>
           <label className="block font-medium text-gray-700 mb-1">分类</label>

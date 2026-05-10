@@ -5,42 +5,54 @@ import type { Product } from "~/types/product";
 
 export default function BestSell({ products }: { products: Product[] }) {
   return (
-    <div className="bg-[#F4F7F7]">
-      <div className="px-4 md:px-0">
-        <div className="flex justify-center items-center font-bold text-xl md:text-3xl pt-6 md:pt-10 text-center">
-          THIS WEEK'S BEST SELLERS
+    <section className="bg-bone py-20 md:py-28">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
+        {/* Section header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10 md:mb-14 gap-4">
+          <div>
+            <div className="eyebrow mb-2">This week</div>
+            <h2 className="font-display text-charcoal text-[32px] md:text-[44px] leading-display tracking-tight">
+              Best sellers
+            </h2>
+          </div>
+          <Link
+            to="/products"
+            className="text-charcoal text-sm font-medium underline underline-offset-4 decoration-charcoal/30 hover:decoration-charcoal transition self-start md:self-end"
+          >
+            View all flowers →
+          </Link>
         </div>
-        <div className="text-xs md:text-sm flex justify-center items-center pt-2 pb-6 md:pb-10 text-center px-4">
-          Same day flower delivery across Sydney and
+
+        {/* Product grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-14">
+          {products.map((product) => (
+            <ProductItem key={product.id} {...product} />
+          ))}
         </div>
-      </div>
 
-      {/* 产品展示 */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 px-4 md:px-20 lg:px-40">
-        {products.map((product) => (
-          <ProductItem key={product.id} {...product} />
-        ))}
+        {/* Category quick links */}
+        {categoriesTag?.length > 0 && (
+          <>
+            <div className="hairline my-16 md:my-20" />
+            <div className="flex flex-wrap justify-center gap-x-12 gap-y-10 md:gap-x-20">
+              {categoriesTag.map((item) => (
+                <Link
+                  key={item.title}
+                  to="/products"
+                  className="group flex flex-col items-center text-charcoal hover:text-terracotta transition-colors"
+                >
+                  <i
+                    className={`${item.icon} text-3xl md:text-4xl mb-3 transition-transform duration-slow group-hover:-translate-y-1`}
+                  ></i>
+                  <span className="text-[12px] uppercase tracking-eyebrow font-medium">
+                    {item.title}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </div>
-
-      {/* 分类标签 */}
-      <div className="flex flex-wrap md:flex-nowrap justify-center gap-4 md:gap-28 pt-8 text-primary px-4 md:px-0">
-        {categoriesTag.map(item => {
-          return (
-            <Link
-              to="/products"
-              key={item.title}
-              className="pb-4 w-[calc(33%-1rem)] md:w-auto hover:opacity-80 transition-opacity"
-            >
-              <div className="flex justify-center items-center py-2 md:py-4 cursor-pointer">
-                <i className={`${item.icon} text-4xl md:text-6xl`}></i>
-              </div>
-              <div className="font-semibold text-center text-sm md:text-base">
-                {item.title}
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-    </div>
+    </section>
   );
 }

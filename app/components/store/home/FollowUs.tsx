@@ -3,20 +3,30 @@ const INSTAGRAM_URL =
 
 export default function FollowUs() {
   return (
-    <div className="mt-10 md:mt-20 bg-[#F4F7F7] px-4 md:px-20 lg:px-40 py-6 md:py-10 flex justify-center items-center">
-      <a
-        href={INSTAGRAM_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="w-full md:w-3/4 lg:w-1/2 h-48 md:h-80 bg-[#2E2E2E] flex justify-center items-center cursor-pointer hover:bg-[#3a3a3a] transition-colors"
-      >
-        <div className="text-white text-center">
-          <div className="text-xl md:text-2xl font-semibold">FOLLOW US ON INSTAGRAM</div>
-          <div className="text-xl md:text-2xl font-bold underline flex justify-center items-center mt-2">
-            @royalrose_au
+    <section className="bg-bone py-20 md:py-28">
+      <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-12">
+        <a
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block bg-charcoal text-bone py-16 md:py-24 px-6 md:px-12 text-center transition-colors hover:bg-terracotta"
+        >
+          <div className="eyebrow text-bone/70 mb-4 group-hover:text-bone/90 transition-colors">
+            On Instagram
           </div>
-        </div>
-      </a>
-    </div>
+          <h2 className="font-display text-[36px] md:text-[52px] leading-display tracking-tight">
+            @royalrose_au
+          </h2>
+          <p className="mt-6 text-bone/80 text-[14px] md:text-[15px] max-w-md mx-auto leading-body">
+            Follow along for arrangements in the studio, seasonal blooms, and
+            small moments from the Sydney shop.
+          </p>
+          <span className="inline-flex items-center gap-2 mt-8 text-[12px] uppercase tracking-eyebrow font-medium border-b border-bone/40 pb-1 group-hover:border-bone transition">
+            <i className="ri-instagram-line"></i>
+            Follow us
+          </span>
+        </a>
+      </div>
+    </section>
   );
 }

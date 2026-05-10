@@ -26,22 +26,26 @@ export default function PromotionBar() {
     }
   }, [promotion]);
 
-  if (!promotion) {
-    return null;
-  }
+  if (!promotion) return null;
 
-  const text = `${promotion.title} — ${promotion.subtitle} — ${promotion.content}`;
+  // Build a single marquee line from non-empty fields, separated by a thin bullet.
+  const parts = [promotion.title, promotion.subtitle, promotion.content]
+    .map((p) => p?.trim())
+    .filter(Boolean);
+  if (parts.length === 0) return null;
+  const text = parts.join("  ·  ");
 
   return (
-    <div className="bg-yellow-400 overflow-hidden py-2">
+    <div className="bg-charcoal text-bone overflow-hidden py-2.5">
       <div
         ref={containerRef}
         className="marquee3k"
-        data-speed="0.5"
+        data-speed="0.4"
         data-pausable="true"
-      // 删除 data-reverse，让它默认从右到左
       >
-        <span className="px-4 text-sm sm:text-base font-semibold whitespace-nowrap">{text}</span>
+        <span className="px-6 text-[12px] tracking-eyebrow uppercase whitespace-nowrap">
+          {text}
+        </span>
       </div>
     </div>
   );

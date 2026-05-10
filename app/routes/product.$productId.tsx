@@ -67,14 +67,26 @@ export default function ProductPage() {
   const { product, error, success } = useLoaderData<typeof loader>();
 
   if (!success || !product) {
-    return <div className="text-center py-20 text-red-500">{error || "Product not found"}</div>;
+    return (
+      <div className="bg-bone min-h-[60vh] flex items-center justify-center px-6">
+        <div className="text-center max-w-md">
+          <div className="eyebrow mb-3">Not found</div>
+          <h1 className="font-display text-charcoal text-[36px] leading-display">
+            {error || "We couldn't find that flower."}
+          </h1>
+          <p className="text-ink-muted text-[14px] mt-4">
+            It may have been retired for the season — try our full collection.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <>
       <ProductContainer product={product} />
       <Comments />
       <FAQs />
-    </div>
+    </>
   );
 }

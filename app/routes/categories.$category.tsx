@@ -71,38 +71,54 @@ export default function CategoryPage() {
   const displayName = category ? formatCategoryName(category) : "";
 
   return (
-    <div>
-      <h1 className="text-2xl md:text-3xl font-semibold mb-6 text-primary py-6 px-4">{displayName}</h1>
-      <div className="flex flex-col md:flex-row">
-        <div className="hidden md:block">
-          <Sidebar />
+    <section className="bg-bone min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-12 md:py-20">
+        {/* Header */}
+        <div className="mb-12 md:mb-16">
+          <div className="eyebrow mb-3">Category</div>
+          <h1 className="font-display text-charcoal text-[40px] md:text-[56px] leading-display tracking-tight">
+            {displayName}
+          </h1>
         </div>
-        <div className="container mx-auto px-4 py-8">
-          {!success && error && (
-            <p className="text-red-500 mb-4">{error}</p>
-          )}
 
-          {products.length === 0 && !error ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500">No products found in this category.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {products.map((product: ProductListItem) => (
-                <ProductItem
-                  key={product.id}
-                  id={product.id}
-                  name={product.name}
-                  imgUrl={product.imgUrl}
-                  price={product.price}
-                />
-              ))}
-            </div>
-          )}
+        <div className="flex flex-col md:flex-row gap-10 lg:gap-14">
+          <div className="hidden md:block">
+            <Sidebar />
+          </div>
+          <div className="flex-1">
+            {!success && error && (
+              <div className="mb-8 border border-border bg-cream/50 p-4 text-[13px] text-ink-muted">
+                <span className="eyebrow text-terracotta mr-2">Heads up</span>
+                {error}
+              </div>
+            )}
+
+            {products.length === 0 && !error ? (
+              <div className="text-center py-20 max-w-md mx-auto">
+                <div className="eyebrow mb-3">Empty for now</div>
+                <p className="font-display text-charcoal text-[24px] leading-display">
+                  No flowers in this category yet.
+                </p>
+                <p className="text-ink-muted text-[14px] mt-3">
+                  Try another occasion in the sidebar.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-12 md:gap-x-6 md:gap-y-14">
+                {products.map((product: ProductListItem) => (
+                  <ProductItem
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    imgUrl={product.imgUrl}
+                    price={product.price}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-
-
+    </section>
   );
 }

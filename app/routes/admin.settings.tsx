@@ -21,15 +21,29 @@ export async function action({ request }: ActionFunctionArgs) {
   if (!imageUrl) {
     return json({ error: "图片 URL 不能为空" }, { status: 400 });
   }
-  // Accept either an absolute URL (e.g. https://cdn.example.com/foo.jpg)
-  // or a same-origin relative path written by the upload pipeline
-  // (e.g. /uploads/settings/2026-05-11/abc.webp).
-  const isRelativeUpload = imageUrl.startsWith("/uploads/");
-  if (!isRelativeUpload) {
+  // Accept either:
+  //   (a) an absolute http(s) URL, e.g. https://cdn.example.com/foo.jpg
+  //   (b) a same-origin relative path written by the upload pipeline,
+  //       e.g. /uploads/settings/2026-05-11/abc.webp
+  // Reject everything else — including javascript:/data:/file: schemes,
+  // and relative paths containing traversal segments or off-list extensions.
+  // The /uploads/* splat route also blocks bad paths at serve time;
+  // this is defense in depth so the DB never holds garbage either.
+  const REL_UPLOAD_RE =
+    /^\/uploads\/(products|content|settings)\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+\.(webp|jpg|jpeg|png)$/;
+  if (imageUrl.startsWith("/")) {
+    if (!REL_UPLOAD_RE.test(imageUrl)) {
+      return json({ error: "图片路径无效" }, { status: 400 });
+    }
+  } else {
+    let parsed: URL;
     try {
-      new URL(imageUrl);
+      parsed = new URL(imageUrl);
     } catch {
       return json({ error: "图片 URL 格式无效" }, { status: 400 });
+    }
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return json({ error: "图片 URL 必须为 http/https" }, { status: 400 });
     }
   }
 

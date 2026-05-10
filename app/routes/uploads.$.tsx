@@ -1,6 +1,7 @@
 import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
 import { extname } from "node:path";
+import { Readable } from "node:stream";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import {
   resolveUploadPath,
@@ -50,12 +51,12 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     return new Response("Not Found", { status: 404 });
   }
 
-  // Stream it.
-  const stream = createReadStream(absPath);
-  // ReadStream is a Node Readable — cast to a Web ReadableStream via the
-  // helper Remix exposes on Node's Readable.
-  // Remix accepts Node streams in Response body since v2.
-  return new Response(stream as unknown as BodyInit, {
+  // Stream it. Convert Node Readable -> Web ReadableStream explicitly so
+  // the Response body is a documented, supported type — avoids relying on
+  // Remix's accidental tolerance of Node streams in BodyInit.
+  const nodeStream = createReadStream(absPath);
+  const webStream = Readable.toWeb(nodeStream) as ReadableStream<Uint8Array>;
+  return new Response(webStream, {
     status: 200,
     headers: {
       "Content-Type": contentType,

@@ -5,17 +5,22 @@ export default function Intro() {
   return <div className="bg-[#2E2E2E] text-white py-6 md:py-10">
     <div className="flex flex-col justify-center items-center px-4 md:px-0">
       <div className="font-semibold text-2xl md:text-3xl py-6 md:py-10 text-center">
-        FAMILY OWNED SINCE 1969
+        About Us
       </div>
 
       {/* 主要介绍文字 */}
       <div className="w-full md:w-3/4 lg:w-1/2 text-center py-4 text-sm md:text-base">
-        For over 50 years, Pearsons Florist have been providing high quality, fresh flower arrangements and Flower Delivery in Sydney. Every flower bouquet delivered is created by one of our qualified, experienced and dedicated Sydney and Melbourne florists. With over 50 years experience in floristry you can ensure the team at Pearsons Florists are flower experts. If for any reason you are not 100% satisfied with your gift, contact us within 48 hours, email a photo or return your gift to us and we will create a replacement for you. That's our guarantee as Sydney and Melbourne's best florists!
+        Sharing Love and Beauty, One Bouquet at a Time — Sydney’s Local Florist
+        At Royalrose Florist, flowers are more than just gifts—they’re little moments of joy, love, and connection. For over ten years, we’ve been helping people across Sydney express their feelings through thoughtfully arranged, fresh flowers.
+
+        Every bouquet is made with care by our experienced team, using seasonal blooms chosen for their colour, fragrance, and charm. Whether it’s a birthday, a “just because,” or a moment that needs comfort, we’re here to help you make it special. And if your flowers aren’t quite right, let us know within 48 hours—we’ll happily fix it.
+
+
       </div>
 
       {/* 致谢文字 */}
       <div className="w-full md:w-3/4 lg:w-1/2 text-center text-sm md:text-base px-4">
-        Pearsons Florist acknowledges the Traditional Owners of this country and recognise their continuing connection to land, waters and culture. We pay our respect to Aboriginal and Torres Strait Islander peoples, and their Elders – past, present and emerging.
+        Royalrose Florist respectfully acknowledge the Traditional Owners of the land we work on and honour their deep connection to Country, culture, and community.
       </div>
 
       {/* 特色标签部分 */}

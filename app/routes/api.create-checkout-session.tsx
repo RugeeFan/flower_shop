@@ -34,7 +34,8 @@ export async function action({ request }: ActionFunctionArgs) {
     where: { postcode: customer.postcode },
   });
 
-  const shippingFee = shippingZone ? shippingZone.small : 0;
+  const shippingFee = shippingZone ? parseFloat((shippingZone.medium * 1.1).toFixed(2)) : 0;
+
 
   // 3️⃣ 计算总价
   const subtotal = cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
@@ -55,6 +56,7 @@ export async function action({ request }: ActionFunctionArgs) {
         recipientEmail: customer.recipientEmail,
         address: customer.address,
         postcode: customer.postcode,
+        recipientPhone: customer.recipientPhone,
         deliveryDate: new Date(customer.deliveryDate),
         message: customer.message || "",
         status: "PENDING",

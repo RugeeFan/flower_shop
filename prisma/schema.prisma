@@ -45,6 +45,7 @@ model Order {
   user            User?       @relation(fields: [userId], references: [id])
   recipientName   String
   recipientEmail  String
+  recipientPhone  String? // ✅ 新增字段
   address         String
   postcode        String
   deliveryDate    DateTime
@@ -72,7 +73,7 @@ model PageContent {
   title     String?
   subtitle  String?
   content   String? // 富文本或者普通正文内容
-  imageUrl  String? // 可选，比如 Banner 图片地址
+  imageUrl  String[] // 可选，比如 Banner 图片地址
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

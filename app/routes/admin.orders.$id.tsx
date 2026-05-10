@@ -46,8 +46,10 @@ export default function AdminOrderDetail() {
           <div><span className="font-medium">{t("buyer")}:</span> {order.user?.name || "-"}</div>
           <div><span className="font-medium">{t("email")}:</span> {order.user?.email || "-"}</div>
           <div><span className="font-medium">{t("phone")}:</span> {order.user?.phone || "-"}</div>
+          <br />
           <div><span className="font-medium">{t("recipient")}:</span> {order.recipientName}</div>
           <div><span className="font-medium">{t("recipientEmail")}:</span> {order.recipientEmail}</div>
+          <div><span className="font-medium">{t("recipientPhone")}:</span> {order.recipientPhone}</div>
           <div><span className="font-medium">{t("address")}:</span> {order.address}</div>
           <div><span className="font-medium">{t("postcode")}:</span> {order.postcode}</div>
           <div><span className="font-medium">{t("deliveryDate")}:</span> {new Date(order.deliveryDate).toLocaleDateString()}</div>

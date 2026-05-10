@@ -76,7 +76,7 @@ export default function CommentItem({ comment }: { comment: Comment }) {
         </div>
         <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-500">
           Warm regards,<br />
-          The Pearsons Team
+          The Royalrose Team
         </div>
       </div>
 

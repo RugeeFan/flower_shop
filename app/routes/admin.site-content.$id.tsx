@@ -22,16 +22,29 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const title = formData.get("title") as string;
   const subtitle = formData.get("subtitle") as string;
   const content = formData.get("content") as string;
-  const imageUrl = formData.get("imageUrl") as string;
+
+  let dataToUpdate: any = {
+    title,
+    subtitle,
+    content,
+  };
+
+  // ✅ 如果是 site-content/1，则收集 3 个 imageUrl 字段为数组
+  if (params.id === "1") {
+    const imageUrls = [
+      formData.get("imageUrl1"),
+      formData.get("imageUrl2"),
+      formData.get("imageUrl3"),
+    ]
+      .map((url) => url?.toString().trim())
+      .filter((url) => url); // 去除 null 和空字符串
+
+    dataToUpdate.imageUrl = imageUrls;
+  }
 
   await prisma.pageContent.update({
     where: { id: Number(params.id) },
-    data: {
-      title,
-      subtitle,
-      content,
-      imageUrl,
-    },
+    data: dataToUpdate,
   });
 
   return redirect("/admin/site-content");
@@ -92,16 +105,22 @@ export default function EditSiteContent() {
           />
         </div>
 
-        {/* Image URL */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">{t("imageUrl")}</label>
-          <input
-            type="text"
-            name="imageUrl"
-            defaultValue={content.imageUrl || ""}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-          />
-        </div>
+        {/* ✅ 仅在 id === 1 时显示多个图片 URL 输入框 */}
+        {content.id === 1 && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">{t("imageUrls")}</label>
+            {[0, 1, 2].map((i) => (
+              <input
+                key={i}
+                type="text"
+                name={`imageUrl${i + 1}`}
+                defaultValue={content.imageUrl[i] || ""}
+                placeholder={`Image URL ${i + 1}`}
+                className="mt-1 mb-2 block w-full border-gray-300 rounded-md shadow-sm"
+              />
+            ))}
+          </div>
+        )}
 
         {/* Buttons */}
         <div className="flex justify-between">

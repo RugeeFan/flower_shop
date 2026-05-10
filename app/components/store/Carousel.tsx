@@ -1,41 +1,42 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 
 export default function Carousel({ images }: { images: string[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right');
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
 
-  const handlePrev = () => {
-    if (currentIndex === 0) return;
-    setTransitionDirection('left');
-    setCurrentIndex((prev) => prev - 1);
-  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPrevIndex(currentIndex);
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
 
-  const handleNext = () => {
-    if (currentIndex === images.length - 1) return;
-    setTransitionDirection('right');
-    setCurrentIndex((prev) => prev + 1);
-  };
+    return () => clearInterval(timer);
+  }, [currentIndex, images.length]);
 
-  if (images.length === 0) return null; // 避免报错
+  if (images.length === 0) return null;
 
   return (
-    <div className="w-full flex flex-col justify-center items-center py-4 md:py-6 lg:py-10">
-      <div className="relative w-full aspect-square max-h-[400px] md:max-h-[500px] lg:max-h-[900px] overflow-hidden">
-        <div
-          className="w-full h-full flex transition-transform duration-500"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {images.map((img, index) => (
-            <div key={index} className="min-w-full h-full">
-              <img
-                src={img}
-                alt="展示商品"
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+    <div className="relative w-full h-full max-h-[600px] overflow-hidden rounded-none">
+      {images.map((img, index) => {
+        const isCurrent = index === currentIndex;
+        const isPrev = index === prevIndex;
+
+        const baseStyle =
+          "absolute inset-0 w-full h-full bg-center bg-cover transition-opacity duration-[1500ms] ease-in-out";
+
+        return (
+          <div
+            key={index}
+            className={`${baseStyle} ${isCurrent
+              ? "opacity-100 z-2"
+              : isPrev
+                ? "opacity-0 z-1"
+                : "opacity-0 z-0"
+              }`}
+            style={{ backgroundImage: `url(${img})` }}
+          />
+        );
+      })}
     </div>
   );
 }

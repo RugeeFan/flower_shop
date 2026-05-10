@@ -24,7 +24,7 @@ export default function Footer() {
         <div className="text-sm">
           <div className="font-semibold py-1">WHERE WE DELIVER</div>
           <div>Sydney Flower Delivery</div>
-          <div>Melbourne Flower Delivery</div>
+          <div> Flower Delivery</div>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ export default function Footer() {
     {/* Copyright Section */}
     <div className="bg-[#DCC0B7] flex flex-col sm:flex-row px-4 md:px-20 lg:px-40 justify-between text-xs md:text-sm py-3 sm:py-1 gap-2 sm:gap-0">
       <div className="hover:underline cursor-pointer text-center sm:text-left">
-        Copyright © 2025 Pearsons Florist. All rights reserved.
+        Copyright © 2025 Royalrose Florist. All rights reserved.
       </div>
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-20 text-center sm:text-left">
         <div className="hover:underline cursor-pointer">Terms and Conditions</div>

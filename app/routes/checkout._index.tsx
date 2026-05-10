@@ -8,6 +8,7 @@ interface CheckoutFormData {
   buyerPhone: string;
   recipientName: string;
   recipientEmail: string;
+  recipientPhone: string; // ✅ 新增字段
   address: string;
   postcode: string;
   deliveryDate: string;
@@ -162,6 +163,12 @@ export default function CheckoutPage() {
               Recipient Email
             </label>
             <input id="recipientEmail" {...register("recipientEmail", { required: true })} className="input-style" />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="recipientPhone" className="text-sm font-medium text-gray-700">
+              Recipient Phone
+            </label>
+            <input id="recipientPhone" {...register("recipientPhone", { required: true })} className="input-style" />
           </div>
           <div className="md:col-span-2 space-y-1">
             <label htmlFor="address" className="text-sm font-medium text-gray-700">

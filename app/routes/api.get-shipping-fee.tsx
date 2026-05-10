@@ -23,6 +23,6 @@ export async function loader({ request }: { request: Request }) {
 
   return json({
     suburb: zone.suburb,
-    price: parseFloat(zone.small.toFixed(2)), // 你可以根据条件选择 small / medium / large
+    price: parseFloat((zone.medium * 1.1).toFixed(2)), // 你可以根据条件选择 small / medium / large
   });
 }

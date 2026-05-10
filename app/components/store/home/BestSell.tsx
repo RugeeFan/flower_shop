@@ -11,7 +11,7 @@ export default function BestSell({ products }: { products: Product[] }) {
           THIS WEEK'S BEST SELLERS
         </div>
         <div className="text-xs md:text-sm flex justify-center items-center pt-2 pb-6 md:pb-10 text-center px-4">
-          Same day flower delivery across Sydney and Melbourne
+          Same day flower delivery across Sydney and
         </div>
       </div>
 

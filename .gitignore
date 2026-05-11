@@ -4,8 +4,11 @@ node_modules
 /build
 .env
 .env.*
+!.env.example
 .vercel
 .gstack/
 .DS_Store
 **/.DS_Store
 .env.production
+docker-compose.override.yml
+.claude/

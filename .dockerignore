@@ -9,3 +9,23 @@ generated
 .prisma
 node_modules/.prisma
 node_modules/@prisma/client/query-engine*
+
+# Never bake local uploads into the image — the bind mount at /app/uploads
+# is the source of truth in production.
+uploads
+!uploads/.gitignore
+!uploads/products/.gitkeep
+!uploads/content/.gitkeep
+!uploads/settings/.gitkeep
+
+# Local dev / repo metadata
+.git
+.gitignore
+.DS_Store
+**/.DS_Store
+backups
+.gstack
+sakura.png
+fly.toml
+README.md
+DEPLOYMENT.md

@@ -3,7 +3,6 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
-import { getInformationBanner } from "~/lib/settings.server";
 
 import Hero from "~/components/store/home/Hero";
 import BestSell from "~/components/store/home/BestSell";
@@ -28,10 +27,8 @@ export async function loader({}: LoaderFunctionArgs) {
       where: { categories: { some: { name: "star" } } },
       include: { categories: true },
     }),
-    prisma.pageContent.findUnique({
-      where: { slug: "home-banner" },
-    }),
-    getInformationBanner(),
+    prisma.pageContent.findUnique({ where: { slug: "home-banner" } }),
+    prisma.pageContent.findUnique({ where: { slug: "home-information" } }),
   ]);
 
   const transformedProducts: Product[] = starProducts.map((p) => ({
@@ -50,7 +47,7 @@ export default function Index() {
   const { starProducts, banner, informationBanner } = useLoaderData<{
     starProducts: Product[];
     banner: PageContent | null;
-    informationBanner: Awaited<ReturnType<typeof getInformationBanner>>;
+    informationBanner: PageContent | null;
   }>();
 
   return (

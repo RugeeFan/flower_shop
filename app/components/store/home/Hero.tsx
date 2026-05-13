@@ -1,11 +1,13 @@
 import { Link } from "@remix-run/react";
 import Carousel from "../Carousel";
+import type { HomeBannerData } from "~/lib/site-content";
 
 interface BannerContent {
   title: string | null;
   subtitle: string | null;
   content: string | null;
   imageUrl: string[];
+  data?: unknown;
 }
 
 export default function Hero({ banner }: { banner: BannerContent | null }) {
@@ -15,6 +17,15 @@ export default function Hero({ banner }: { banner: BannerContent | null }) {
   const headline = banner?.content?.trim() || "Flowers, gathered with care.";
   const supporting = banner?.title?.trim() || "";
   const images = banner?.imageUrl?.length ? banner.imageUrl : [];
+
+  // CTA labels + hrefs come from PageContent.data (Json). Fall back to the
+  // long-standing defaults if either piece is missing — never render a button
+  // with an empty href or empty label.
+  const ctaData = (banner?.data ?? {}) as HomeBannerData;
+  const primaryLabel = ctaData.primaryCta?.label?.trim() || "Shop the collection";
+  const primaryHref = ctaData.primaryCta?.href?.trim() || "/products";
+  const secondaryLabel = ctaData.secondaryCta?.label?.trim() || "Our story";
+  const secondaryHref = ctaData.secondaryCta?.href?.trim() || "/about";
 
   return (
     <section className="bg-bone">
@@ -46,16 +57,16 @@ export default function Hero({ banner }: { banner: BannerContent | null }) {
 
           <div className="mt-10 flex items-center gap-6">
             <Link
-              to="/products"
+              to={primaryHref}
               className="inline-flex items-center justify-center bg-charcoal text-bone px-7 py-3 text-sm font-medium tracking-eyebrow uppercase hover:bg-terracotta transition-colors"
             >
-              Shop the collection
+              {primaryLabel}
             </Link>
             <Link
-              to="/about"
+              to={secondaryHref}
               className="text-charcoal text-sm font-medium underline underline-offset-4 decoration-charcoal/30 hover:decoration-charcoal transition"
             >
-              Our story
+              {secondaryLabel}
             </Link>
           </div>
         </div>

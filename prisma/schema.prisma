@@ -80,6 +80,7 @@ model PageContent {
   subtitle  String?
   content   String?
   imageUrl  String[]
+  data      Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

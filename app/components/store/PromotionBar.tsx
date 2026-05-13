@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Marquee3k from "marquee3000";
+import type { PromotionBarData } from "~/lib/site-content";
 
 interface PromotionContent {
   title: string;
   subtitle: string;
   content: string;
+  data?: unknown;
 }
 
 export default function PromotionBar() {
@@ -27,6 +29,11 @@ export default function PromotionBar() {
   }, [promotion]);
 
   if (!promotion) return null;
+
+  // Admin can hide the bar entirely via PageContent.data.enabled === false.
+  // Missing/null treats as enabled (matches pre-feature behaviour).
+  const enabled = ((promotion.data ?? {}) as PromotionBarData).enabled !== false;
+  if (!enabled) return null;
 
   // Build a single marquee line from non-empty fields, separated by a thin bullet.
   const parts = [promotion.title, promotion.subtitle, promotion.content]

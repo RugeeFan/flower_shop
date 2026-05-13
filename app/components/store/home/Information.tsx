@@ -1,15 +1,23 @@
+import type { HomeInformationData } from "~/lib/site-content";
+
 interface InformationProps {
+  // Shape comes from PageContent[slug=home-information]. Pick the first
+  // image (single-slot form) and read showLogo out of the data JSON.
   banner: {
-    imageUrl: string;
-    title: string;
-    subtitle: string;
-    showLogo: boolean;
-  };
+    title: string | null;
+    subtitle: string | null;
+    imageUrl: string[];
+    data?: unknown;
+  } | null;
 }
 
 export default function Information({ banner }: InformationProps) {
-  const hasImage = !!banner?.imageUrl;
-  const hasContent = !!(banner?.title || banner?.subtitle || banner?.showLogo);
+  const imageUrl = banner?.imageUrl?.[0] ?? "";
+  const title = banner?.title ?? "";
+  const subtitle = banner?.subtitle ?? "";
+  const showLogo = !!((banner?.data ?? {}) as HomeInformationData).showLogo;
+  const hasImage = !!imageUrl;
+  const hasContent = !!(title || subtitle || showLogo);
 
   // If both empty, render nothing — Information is purely promotional.
   if (!hasImage && !hasContent) return null;
@@ -21,8 +29,8 @@ export default function Information({ banner }: InformationProps) {
         <div className="relative bg-cream order-1 md:order-1 overflow-hidden">
           {hasImage ? (
             <img
-              src={banner.imageUrl}
-              alt={banner.title || ""}
+              src={imageUrl}
+              alt={title || ""}
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : null}
@@ -30,24 +38,24 @@ export default function Information({ banner }: InformationProps) {
 
         {/* Text side */}
         <div className="flex flex-col justify-center items-start px-6 md:px-12 lg:px-20 py-16 md:py-0 order-2 md:order-2">
-          {banner.showLogo && (
+          {showLogo && (
             <img
-              src="/logo.png"
+              src="/brand/logo.png"
               alt="Royal Rose"
               className="w-32 md:w-40 mb-8 opacity-90"
             />
           )}
-          {banner.title && (
+          {title && (
             <>
               <div className="eyebrow mb-3">A note from the studio</div>
               <h2 className="font-display text-charcoal text-[32px] md:text-[42px] leading-display tracking-tight">
-                {banner.title}
+                {title}
               </h2>
             </>
           )}
-          {banner.subtitle && (
+          {subtitle && (
             <p className="mt-5 text-ink-muted text-[15px] md:text-base max-w-md leading-body">
-              {banner.subtitle}
+              {subtitle}
             </p>
           )}
         </div>

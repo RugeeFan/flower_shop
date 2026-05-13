@@ -86,10 +86,10 @@ export default function ProductContainer({ product }: { product: Product }) {
             <div className="mt-10 flex flex-col md:flex-row md:items-center justify-between gap-4 text-ink-muted text-[12px]">
               <div className="eyebrow">Guaranteed safe checkout</div>
               <div className="flex flex-wrap gap-3 items-center opacity-80">
-                <img alt="Visa" className="h-6" src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742704094/visa-60cf74cbad7400ab7427cd41529af15330af6383_spuac2.svg" />
-                <img alt="MasterCard" className="h-6" src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742704094/mastercard-2789e991b7ade46039eafc9c2dee83e7713eddb3_bwvc1z.svg" />
-                <img alt="Amex" className="h-6" src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742704112/amex-07ada099123d628aca142a88f03a41bf0af62076_br4ty5.svg" />
-                <img alt="PayPal" className="h-6" src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742704095/paypal-2db521f81867a9e2879753ee1a4889d0ef6af0e8_vfncb8.svg" />
+                <img alt="Visa" className="h-6" src="/brand/visa.svg" />
+                <img alt="MasterCard" className="h-6" src="/brand/mastercard.svg" />
+                <img alt="Amex" className="h-6" src="/brand/amex.svg" />
+                <img alt="PayPal" className="h-6" src="/brand/paypal.svg" />
               </div>
             </div>
           </div>

@@ -77,10 +77,10 @@ export default function Footer() {
             </div>
             <div className="eyebrow mb-3">We accept</div>
             <div className="flex flex-wrap gap-2 opacity-80">
-              <img alt="Visa" width="40" src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742704094/visa-60cf74cbad7400ab7427cd41529af15330af6383_spuac2.svg" />
-              <img alt="MasterCard" width="40" src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742704094/mastercard-2789e991b7ade46039eafc9c2dee83e7713eddb3_bwvc1z.svg" />
-              <img alt="Amex" width="40" src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742704112/amex-07ada099123d628aca142a88f03a41bf0af62076_br4ty5.svg" />
-              <img alt="PayPal" width="40" src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742704095/paypal-2db521f81867a9e2879753ee1a4889d0ef6af0e8_vfncb8.svg" />
+              <img alt="Visa" width="40" src="/brand/visa.svg" />
+              <img alt="MasterCard" width="40" src="/brand/mastercard.svg" />
+              <img alt="Amex" width="40" src="/brand/amex.svg" />
+              <img alt="PayPal" width="40" src="/brand/paypal.svg" />
             </div>
           </div>
         </div>

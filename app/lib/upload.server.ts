@@ -217,3 +217,21 @@ export const SERVABLE_EXTENSIONS: Record<string, string> = {
   ".jpeg": "image/jpeg",
   ".png": "image/png",
 };
+
+/**
+ * Accepts either a same-origin upload path or an absolute http(s) URL.
+ * Rejects javascript:/data:/file:, traversal segments, off-list extensions.
+ * Used by admin routes that store imgUrl strings in the DB.
+ */
+const REL_UPLOAD_RE =
+  /^\/uploads\/(products|content|settings)\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+\.(webp|jpg|jpeg|png)$/;
+export function isValidImageUrl(url: string): boolean {
+  if (!url) return false;
+  if (url.startsWith("/")) return REL_UPLOAD_RE.test(url);
+  try {
+    const u = new URL(url);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}

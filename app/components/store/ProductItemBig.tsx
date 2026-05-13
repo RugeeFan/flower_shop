@@ -8,7 +8,7 @@ export default function ProductItemBig() {
       <Link to="/product" className="h-full flex flex-col">
         <div className="overflow-hidden flex-grow">
           <img
-            src="https://res.cloudinary.com/djwau0xeb/image/upload/v1742726175/Hyacinth_Vase_4_vhuqh4.webp"
+            src="/brand/hyacinth.webp"
             alt="Hyacinth Vase"
             className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
           />

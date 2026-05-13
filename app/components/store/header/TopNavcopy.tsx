@@ -43,7 +43,7 @@ function TopNav() {
         <Link to="/">
           <img
             className="w-[68px] md:w-[110px] object-contain"
-            src="https://res.cloudinary.com/djwau0xeb/image/upload/v1745231609/logo_pmahyd.png"
+            src="/brand/logo.png"
             alt="logo"
           />
         </Link>

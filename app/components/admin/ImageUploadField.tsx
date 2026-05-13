@@ -97,7 +97,7 @@ export default function ImageUploadField({
       <div className="flex flex-col sm:flex-row gap-3">
         <input
           name={name}
-          type="url"
+          type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           required={required}

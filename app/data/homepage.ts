@@ -31,24 +31,24 @@ export const bestSellTitle = [
   {
     title: "With Gratitude Hamper",
     price: 99,
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742682953/With_Gratitude_Hamper_5_fd8d3r.webp"
+    imgUrl: "/brand/homepage/with-gratitude-hamper.webp"
   },
   {
     title: "Pink Crush",
     price: 150,
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742682952/Blush_Vase_1_nsqpkl.webp"
+    imgUrl: "/brand/homepage/pink-crush-blush-vase.webp"
 
   },
   {
     title: "Pretty Little Gift Hamper",
     price: 110,
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742682952/Pretty_Little_Gift_Hamper_2_x49jf2.webp"
+    imgUrl: "/brand/homepage/pretty-little-gift-hamper.webp"
 
   },
   {
     title: "Seasonal Pastel Beauty Bouquet",
     price: 135,
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742682953/Seasonal_Pastel_Beauty_Bouquet_4_zk088v.webp"
+    imgUrl: "/brand/homepage/seasonal-pastel-beauty.webp"
   }
 ]
 
@@ -83,22 +83,22 @@ export const categoriesTitle = [
   {
     title: "EVENT FLOWERS",
     content: "THEFINNISHING TOUCH",
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742690693/Table_Centres_2024_2_e2lfdi.webp"
+    imgUrl: "/brand/homepage/table-centres.webp"
   },
   {
     title: "PLANT HAMPERS",
     content: "GREEN STYLE",
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742690693/Plant_Hamper_Link_3_mthaqg.webp"
+    imgUrl: "/brand/homepage/plant-hamper-link.webp"
   },
   {
     title: "PLANTS & ORCHIDS",
     content: "GREEN & FLOWERING GIFTS",
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742690692/Calathea_Peacock_c1wohy.webp"
+    imgUrl: "/brand/homepage/calathea-peacock.webp"
   },
   {
     title: "WELCOME",
     content: "BABY GIFTS",
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742690692/Bundle_and_Save_Products_15_d2h4so.webp"
+    imgUrl: "/brand/homepage/bundle-and-save.webp"
   },
 
 ]
@@ -150,28 +150,28 @@ export const footerLinks = [
 ];
 
 export const productImgDemoList = [
-  "https://res.cloudinary.com/djwau0xeb/image/upload/v1742717001/Pink_Crush_3_jmzme5.webp",
-  "https://res.cloudinary.com/djwau0xeb/image/upload/v1742717002/Pink_Crush_4_xetngq.webp",
-  "https://res.cloudinary.com/djwau0xeb/image/upload/v1742717002/Blush_Vase_1_ezap52.webp",
-  "https://res.cloudinary.com/djwau0xeb/image/upload/v1742717001/Pink_Crush_2_thzpyk.webp",
-  "https://res.cloudinary.com/djwau0xeb/image/upload/v1742717000/Review_Tile_5_i3yrgo.webp"
+  "/brand/homepage/pink-crush-3.webp",
+  "/brand/homepage/pink-crush-4.webp",
+  "/brand/homepage/blush-vase-1.webp",
+  "/brand/homepage/pink-crush-2.webp",
+  "/brand/homepage/review-tile-5.webp"
 ];
 
 export const addMoreItemList = [
   {
     title: "Urban Rituelle Velvet Rose Garden Candle",
     price: 49,
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742721173/New_candles_1_khv7kj.webp"
+    imgUrl: "/brand/homepage/candle.webp"
   },
   {
     title: "Tread Softly Rose Wine",
     price: 35,
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742721205/Tread_Softly_Wine_gnowqb.webp"
+    imgUrl: "/brand/homepage/rose-wine.webp"
   },
   {
     title: "Pink Teddy",
     price: 25,
-    imgUrl: "https://res.cloudinary.com/djwau0xeb/image/upload/v1742721174/Royalrose-florist-pink-teddy-bear1_wrz2t4.webp"
+    imgUrl: "/brand/homepage/pink-crush-blush-vase.webp"
   }
 ]
 

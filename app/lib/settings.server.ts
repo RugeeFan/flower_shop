@@ -10,8 +10,7 @@ export interface InformationBanner {
 const INFORMATION_BANNER_KEY = "home_information_banner";
 
 const DEFAULT_INFORMATION_BANNER: InformationBanner = {
-  imageUrl:
-    "https://res.cloudinary.com/djwau0xeb/image/upload/v1742699053/bg-school-a4c3bbae2125a416790a17e6e9908b5fde1d6711_psrsxq.jpg",
+  imageUrl: "/brand/homepage/banner-default.jpg",
   title: "",
   subtitle: "",
   showLogo: true,

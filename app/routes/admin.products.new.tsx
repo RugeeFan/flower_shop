@@ -3,6 +3,7 @@ import { Form, useActionData, useLoaderData, useNavigation } from "@remix-run/re
 import { prisma } from "~/lib/prisma.server";
 import { requireAdmin } from "~/lib/auth.server";
 import ImageUploadField from "~/components/admin/ImageUploadField";
+import { isValidImageUrl } from "~/lib/upload.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await requireAdmin(request);
@@ -21,6 +22,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (!name || isNaN(price) || !imgUrl) {
     return json({ error: "请填写所有必填字段。" }, { status: 400 });
+  }
+  if (!isValidImageUrl(imgUrl)) {
+    return json({ error: "图片路径无效，请重新上传或粘贴 http(s) 链接。" }, { status: 400 });
   }
 
   try {

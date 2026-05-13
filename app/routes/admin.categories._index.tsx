@@ -18,9 +18,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const q = url.searchParams.get("q")?.trim() ?? "";
   const successName = url.searchParams.get("success");
 
+  // Include the per-category product count so admin sees usage at a glance
+  // and can decide whether deletion is safe.
   const categories = await prisma.category.findMany({
     where: { name: { contains: q, mode: "insensitive" } },
     orderBy: { name: "asc" },
+    include: { _count: { select: { products: true } } },
   });
 
   return json({ categories, q, successName });
@@ -58,6 +61,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (actionType === "delete") {
     if (!id) return json({ error: "缺少 id" }, { status: 400 });
+    // Guard: refuse to delete if products are still attached. Forces the
+    // admin to reassign or detach products first, instead of silently
+    // breaking the storefront category filters.
+    const inUse = await prisma.product.count({
+      where: { categories: { some: { id } } },
+    });
+    if (inUse > 0) {
+      return json(
+        { error: `该分类下还有 ${inUse} 件商品，请先移除或改分类。` },
+        { status: 400 },
+      );
+    }
     await prisma.category.delete({ where: { id } });
     return redirect("/admin/categories");
   }
@@ -148,75 +163,105 @@ export default function CategoryPage() {
         </button>
       )}
 
+      {/* Delete error surface (for the in-use guard) */}
+      {actionData && "error" in actionData && actionData.error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded text-sm">
+          {actionData.error}
+        </div>
+      )}
+
       {/* 列表 */}
       {categories.length === 0 ? (
         <p className="text-gray-600">{t("noCategory")}</p>
       ) : (
         <ul className="space-y-3">
-          {categories.map((cat) => (
-            <li
-              key={cat.id}
-              className="border px-4 py-3 rounded flex items-center justify-between"
-            >
-              {editingId === cat.id ? (
-                <Form method="post" className="flex gap-2 items-center w-full">
-                  <input type="hidden" name="_action" value="update" />
-                  <input type="hidden" name="id" value={cat.id} />
-                  <input
-                    name="name"
-                    className="border px-2 py-1 rounded flex-1"
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                  />
-                  <button
-                    type="submit"
-                    className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-                  >
-                    {t("save")}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditingId(null)}
-                    className="text-gray-500 hover:underline text-sm"
-                  >
-                    {t("cancel")}
-                  </button>
-                </Form>
-              ) : (
-                <>
-                  <span>{cat.name}</span>
-                  <div className="flex gap-2 items-center">
+          {categories.map((cat) => {
+            const count = cat._count?.products ?? 0;
+            const inUse = count > 0;
+            return (
+              <li
+                key={cat.id}
+                className="border px-4 py-3 rounded flex items-center justify-between gap-3"
+              >
+                {editingId === cat.id ? (
+                  <Form method="post" className="flex gap-2 items-center w-full">
+                    <input type="hidden" name="_action" value="update" />
+                    <input type="hidden" name="id" value={cat.id} />
+                    <input
+                      name="name"
+                      className="border px-2 py-1 rounded flex-1"
+                      value={editValue}
+                      onChange={(e) => setEditValue(e.target.value)}
+                    />
                     <button
-                      onClick={() => {
-                        setEditingId(cat.id);
-                        setEditValue(cat.name);
-                      }}
-                      className="text-blue-600 hover:underline text-sm"
+                      type="submit"
+                      className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
                     >
-                      {t("edit")}
+                      {t("save")}
                     </button>
-                    <Form
-                      method="post"
-                      onSubmit={(e) => {
-                        if (!confirm(t("confirmDelete"))) {
-                          e.preventDefault();
-                        }
-                      }}
+                    <button
+                      type="button"
+                      onClick={() => setEditingId(null)}
+                      className="text-gray-500 hover:underline text-sm"
                     >
-                      <input type="hidden" name="_action" value="delete" />
-                      <input type="hidden" name="id" value={cat.id} />
-                      <button
-                        type="submit"
-                        className="text-red-600 hover:underline text-sm"
+                      {t("cancel")}
+                    </button>
+                  </Form>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="truncate">{cat.name}</span>
+                      <span
+                        className={`shrink-0 inline-block px-2 py-0.5 text-[11px] rounded border ${
+                          inUse
+                            ? "bg-blue-50 text-blue-700 border-blue-200"
+                            : "bg-gray-100 text-gray-500 border-gray-200"
+                        }`}
+                        title={inUse ? `${count} 件商品挂在此分类` : "暂无商品"}
                       >
-                        {t("delete")}
+                        {count} 件
+                      </span>
+                    </div>
+                    <div className="flex gap-2 items-center shrink-0">
+                      <button
+                        onClick={() => {
+                          setEditingId(cat.id);
+                          setEditValue(cat.name);
+                        }}
+                        className="text-blue-600 hover:underline text-sm"
+                      >
+                        {t("edit")}
                       </button>
-                    </Form>
-                  </div>
-                </>
-              )}
-            </li>
-          ))}
+                      <Form
+                        method="post"
+                        onSubmit={(e) => {
+                          if (inUse) {
+                            e.preventDefault();
+                            alert(`该分类下还有 ${count} 件商品，请先在「商品管理」里移除或改分类。`);
+                            return;
+                          }
+                          if (!confirm(t("confirmDelete"))) {
+                            e.preventDefault();
+                          }
+                        }}
+                      >
+                        <input type="hidden" name="_action" value="delete" />
+                        <input type="hidden" name="id" value={cat.id} />
+                        <button
+                          type="submit"
+                          disabled={inUse}
+                          title={inUse ? "该分类下还有商品，无法直接删除" : "删除分类"}
+                          className="text-red-600 hover:underline text-sm disabled:opacity-40 disabled:no-underline disabled:cursor-not-allowed"
+                        >
+                          {t("delete")}
+                        </button>
+                      </Form>
+                    </div>
+                  </>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

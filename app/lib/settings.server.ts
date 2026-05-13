@@ -36,3 +36,26 @@ export async function setInformationBanner(value: InformationBanner): Promise<vo
     update: { value: JSON.stringify(value) },
   });
 }
+
+// ── Admin notification email ─────────────────────────────────────────────────
+// Recipient address for "new paid order" notifications. Admin-editable in
+// /admin/settings. If the row is missing OR the value is empty, the email
+// sender falls back to process.env.NOTIFICATION_EMAIL (and finally skips).
+
+const NOTIFICATION_EMAIL_KEY = "admin_notification_email";
+
+export async function getNotificationEmail(): Promise<string> {
+  const row = await prisma.siteSetting.findUnique({
+    where: { key: NOTIFICATION_EMAIL_KEY },
+  });
+  return row?.value?.trim() ?? "";
+}
+
+export async function setNotificationEmail(email: string): Promise<void> {
+  const value = email.trim();
+  await prisma.siteSetting.upsert({
+    where: { key: NOTIFICATION_EMAIL_KEY },
+    create: { key: NOTIFICATION_EMAIL_KEY, value },
+    update: { value },
+  });
+}

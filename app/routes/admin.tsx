@@ -30,6 +30,9 @@ export default function AdminLayout() {
       <NavLink to="/admin/users" className={navLinkClass}>
         管理员管理
       </NavLink>
+      <NavLink to="/admin/site-content" className={navLinkClass}>
+        内容管理
+      </NavLink>
       <NavLink to="/admin/settings" className={navLinkClass}>
         站点设置
       </NavLink>

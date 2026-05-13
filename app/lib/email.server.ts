@@ -1,4 +1,5 @@
 import nodemailer, { type Transporter } from "nodemailer";
+import { getNotificationEmail } from "./settings.server";
 
 let cachedTransporter: Transporter | null = null;
 
@@ -81,9 +82,14 @@ interface OrderEmailPayload {
 }
 
 export async function sendNewOrderNotification(payload: OrderEmailPayload): Promise<void> {
-  const to = process.env.NOTIFICATION_EMAIL;
+  // Recipient resolution order:
+  //   1. SiteSetting[admin_notification_email] (admin-editable in /admin/settings)
+  //   2. process.env.NOTIFICATION_EMAIL (legacy/static fallback)
+  //   3. Skip with a warning.
+  const dbEmail = (await getNotificationEmail()).trim();
+  const to = dbEmail || process.env.NOTIFICATION_EMAIL?.trim() || "";
   if (!to) {
-    console.warn("[email] NOTIFICATION_EMAIL not set — skipping order notification");
+    console.warn("[email] No admin email set (DB or env) — skipping order notification");
     return;
   }
 

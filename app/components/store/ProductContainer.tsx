@@ -18,7 +18,7 @@ export default function ProductContainer({ product }: { product: Product }) {
           {/* Image (left, sticky on desktop) */}
           <div className="md:col-span-7 lg:col-span-7">
             <div className="md:sticky md:top-12">
-              <div className="bg-cream overflow-hidden">
+              <div className="bg-cream overflow-hidden aspect-[4/5]">
                 <Carousel images={images} />
               </div>
             </div>

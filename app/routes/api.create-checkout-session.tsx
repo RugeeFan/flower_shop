@@ -45,8 +45,9 @@ export async function action({ request }: ActionFunctionArgs) {
     cart?: CartLine[];
     customer?: Customer;
     orderId?: string | null;
+    confirmDuplicate?: boolean;
   };
-  const { cart, customer, orderId } = body;
+  const { cart, customer, orderId, confirmDuplicate } = body;
 
   if (!cart || cart.length === 0 || !customer) {
     return json({ error: "Invalid request" }, { status: 400 });
@@ -154,6 +155,42 @@ export async function action({ request }: ActionFunctionArgs) {
   }));
   const subtotal = lineItems.reduce((s, l) => s + l.product.price * l.quantity, 0);
   const totalAmount = subtotal + surcharge;
+
+  // Duplicate-order guard: same buyer email + identical (productId, quantity)
+  // set, paid in the last hour, with no explicit user confirmation.
+  if (!confirmDuplicate) {
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const newSig = Array.from(qtyById.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([id, q]) => `${id}:${q}`)
+      .join(",");
+    const recentPaid = await prisma.order.findMany({
+      where: {
+        status: "PAID",
+        createdAt: { gte: oneHourAgo },
+        user: { email: customer.buyerEmail },
+      },
+      include: { items: { select: { productId: true, quantity: true } } },
+      orderBy: { createdAt: "desc" },
+    });
+    const dup = recentPaid.find((o) => {
+      const sig = o.items
+        .map((i) => [i.productId, i.quantity] as const)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([id, q]) => `${id}:${q}`)
+        .join(",");
+      return sig === newSig;
+    });
+    if (dup) {
+      return json({
+        duplicate: true,
+        message:
+          "You just paid for an identical order. Do you want to pay again?",
+        lastOrderId: dup.id,
+        lastOrderAt: dup.createdAt.toISOString(),
+      });
+    }
+  }
 
   // Reuse PENDING order only if it belongs to a real user whose email matches
   // the request's buyerEmail. Guest orders (userId = null) cannot be reused —

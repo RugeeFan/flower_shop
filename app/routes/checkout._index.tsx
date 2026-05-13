@@ -52,7 +52,7 @@ export default function CheckoutPage() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>({
-    defaultValues: { deliveryType: "DELIVERY" },
+    defaultValues: { deliveryType: "DELIVERY", pickupDate: todayISO() },
   });
 
   const deliveryType = watch("deliveryType");
@@ -127,13 +127,24 @@ export default function CheckoutPage() {
     }
 
     const orderId = localStorage.getItem("current_order_id");
-    try {
+    const postCheckout = async (confirmDuplicate: boolean) => {
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart, customer: data, orderId }),
+        body: JSON.stringify({ cart, customer: data, orderId, confirmDuplicate }),
       });
-      const result = await res.json();
+      return res.json();
+    };
+    try {
+      let result = await postCheckout(false);
+      if (result.duplicate) {
+        const ok = window.confirm(
+          result.message ||
+            "You just paid for an identical order. Do you want to pay again?",
+        );
+        if (!ok) return;
+        result = await postCheckout(true);
+      }
       if (result.url) {
         if (result.orderId) localStorage.setItem("current_order_id", result.orderId);
         window.location.href = result.url;

@@ -41,7 +41,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     include: { items: { include: { product: true } } },
   });
   if (!order) throw new Response("Order Not Found", { status: 404 });
-  if (devMode && order.status !== "PAID") {
+  if (order.status !== "PAID") {
     throw new Response("Order not in PAID state", { status: 402 });
   }
 
@@ -63,7 +63,6 @@ export default function CheckoutSuccessPage() {
     clearCart();
     localStorage.removeItem("current_order_id");
     localStorage.removeItem("checkout_form");
-    localStorage.removeItem("cart");
   }, [clearCart]);
 
   const isPickup = order.deliveryType === "PICKUP";

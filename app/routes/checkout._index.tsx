@@ -44,6 +44,10 @@ export default function CheckoutPage() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  useEffect(() => {
+    void useCartStore.persist.rehydrate();
+  }, []);
+
   const {
     register,
     handleSubmit,

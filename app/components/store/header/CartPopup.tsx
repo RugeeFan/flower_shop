@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import formatCurrency from "~/utils/formatCurrency";
 import Button from "~/components/ui/Button";
 import { useCartStore } from "~/zustand/useCartStore";
@@ -9,6 +10,10 @@ interface CartPopupProps {
 
 export default function CartPopup({ onClose }: CartPopupProps) {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    void useCartStore.persist.rehydrate();
+  }, []);
 
   const items = useCartStore((state) => state.items);
   const addToCart = useCartStore((state) => state.addToCart);

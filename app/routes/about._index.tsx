@@ -40,15 +40,22 @@ export default function AboutPage() {
       {/* Body */}
       <div className="max-w-3xl mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-20">
         {body ? (
-          <div
-            className="prose prose-lg max-w-none
-                       prose-headings:font-display prose-headings:text-charcoal prose-headings:tracking-tight
-                       prose-p:text-charcoal prose-p:leading-body
-                       prose-a:text-terracotta prose-a:no-underline hover:prose-a:underline
-                       prose-strong:text-charcoal
-                       prose-em:text-ink-muted"
-            dangerouslySetInnerHTML={{ __html: body }}
-          />
+          // Render the CMS body as plain-text paragraphs. We deliberately
+          // do NOT use dangerouslySetInnerHTML — content is editable by an
+          // admin in /admin/site-content with no sanitiser, so raw HTML
+          // would be a stored XSS vector (e.g. <script>, <img onerror=>).
+          // If a future requirement needs rich text, add a server-side
+          // sanitiser (sanitize-html or DOMPurify in JSDOM) and switch
+          // back to dangerouslySetInnerHTML through it.
+          <div className="space-y-6 text-charcoal text-[16px] md:text-[17px] leading-body">
+            {body
+              .split(/\r?\n\s*\r?\n/)
+              .map((para, idx) => (
+                <p key={idx} className="whitespace-pre-line">
+                  {para}
+                </p>
+              ))}
+          </div>
         ) : (
           <div className="space-y-6 text-charcoal text-[16px] md:text-[17px] leading-body">
             <p>

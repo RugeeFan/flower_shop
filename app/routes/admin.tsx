@@ -27,6 +27,9 @@ export default function AdminLayout() {
       <NavLink to="/admin/categories" className={navLinkClass}>
         分类管理
       </NavLink>
+      <NavLink to="/admin/shipping-zones" className={navLinkClass}>
+        运费管理
+      </NavLink>
       <NavLink to="/admin/users" className={navLinkClass}>
         管理员管理
       </NavLink>

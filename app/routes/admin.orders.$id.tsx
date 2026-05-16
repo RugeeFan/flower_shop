@@ -23,6 +23,16 @@ export default function OrderDetailPage() {
   const { order } = useLoaderData<typeof loader>();
   const isPickup = order.deliveryType === "PICKUP";
 
+  const itemsSubtotal = order.items.reduce(
+    (s, i) => s + i.unitPrice * i.quantity,
+    0,
+  );
+  // totalAmount in the DB is authoritative; the items-subtotal calc above
+  // is just for display so the table footer adds up to it.
+  const totalsMatch =
+    Math.round((itemsSubtotal + order.deliveryFee) * 100) ===
+    Math.round(order.totalAmount * 100);
+
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="mb-6">
@@ -115,14 +125,47 @@ export default function OrderDetailPage() {
         </table>
       </div>
 
-      <div className="mt-6 text-right space-y-1">
-        {order.deliveryFee > 0 && (
-          <div className="text-sm text-gray-700">
-            优先配送加价：${order.deliveryFee.toFixed(2)}
+      <div className="mt-6 flex justify-end">
+        <div className="w-full md:w-80 bg-white border rounded-lg p-5 shadow-sm text-sm">
+          <div className="flex justify-between py-1">
+            <span className="text-gray-600">商品小计</span>
+            <span className="tabular-nums">${itemsSubtotal.toFixed(2)}</span>
           </div>
-        )}
-        <div className="text-lg font-bold">
-          总金额: ${order.totalAmount.toFixed(2)}
+          <div className="flex justify-between py-1">
+            <span className="text-gray-600">
+              {isPickup ? "自取（免运费）" : "配送运费"}
+            </span>
+            <span className="tabular-nums">${order.deliveryFee.toFixed(2)}</span>
+          </div>
+          <div className="border-t mt-2 pt-2 flex justify-between font-semibold text-base">
+            <span>总金额</span>
+            <span className="tabular-nums">${order.totalAmount.toFixed(2)}</span>
+          </div>
+          {!totalsMatch && (
+            <div className="mt-3 text-[12px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
+              小计 + 运费 与总金额不一致，请核对此订单（历史数据可能未存运费）
+            </div>
+          )}
+          <div className="mt-4 pt-3 border-t text-[12px] text-gray-500 space-y-1">
+            <div>
+              客户确认邮件：
+              {order.customerEmailSentAt
+                ? new Date(order.customerEmailSentAt).toLocaleString()
+                : "未发送"}
+            </div>
+            <div>
+              管理员通知邮件：
+              {order.adminEmailSentAt
+                ? new Date(order.adminEmailSentAt).toLocaleString()
+                : "未发送"}
+            </div>
+            {order.stripeSessionId && (
+              <div className="break-all">
+                Stripe Session：
+                <span className="font-mono">{order.stripeSessionId}</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

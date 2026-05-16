@@ -252,6 +252,17 @@ export default function CheckoutPage() {
     <label className="block eyebrow mb-2">{children}</label>
   );
 
+  const FieldError = ({ message }: { message?: string }) =>
+    message ? (
+      <p className="text-[12px] text-terracotta mt-1">{message}</p>
+    ) : null;
+
+  // Shared regex literals — defined once so the rules and the submit-time
+  // re-check stay consistent.
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const POSTCODE_RE = /^\d{4}$/;
+  const PHONE_RE = /^[+\d][\d\s()-]{5,}$/;
+
   const optionCard = (selected: boolean) =>
     `block cursor-pointer border transition-colors p-4 ${
       selected
@@ -280,27 +291,36 @@ export default function CheckoutPage() {
                 <div>
                   <FieldLabel>Full name</FieldLabel>
                   <input
-                    {...register("buyerName", { required: true })}
+                    {...register("buyerName", { required: "Please enter your name." })}
                     placeholder="Jane Smith"
                     className="input-style"
                   />
+                  <FieldError message={errors.buyerName?.message} />
                 </div>
                 <div>
                   <FieldLabel>Email</FieldLabel>
                   <input
-                    {...register("buyerEmail", { required: true })}
+                    {...register("buyerEmail", {
+                      required: "Please enter your email.",
+                      pattern: { value: EMAIL_RE, message: "That email looks off." },
+                    })}
                     placeholder="jane@example.com"
                     type="email"
                     className="input-style"
                   />
+                  <FieldError message={errors.buyerEmail?.message} />
                 </div>
                 <div className="md:col-span-2">
                   <FieldLabel>Phone</FieldLabel>
                   <input
-                    {...register("buyerPhone", { required: true })}
+                    {...register("buyerPhone", {
+                      required: "Please enter a phone number.",
+                      pattern: { value: PHONE_RE, message: "Use digits, spaces, +, ( ) or -." },
+                    })}
                     placeholder="0451 182 178"
                     className="input-style"
                   />
+                  <FieldError message={errors.buyerPhone?.message} />
                 </div>
               </div>
             </section>
@@ -314,19 +334,24 @@ export default function CheckoutPage() {
                 <div>
                   <FieldLabel>Recipient name</FieldLabel>
                   <input
-                    {...register("recipientName", { required: true })}
+                    {...register("recipientName", { required: "Please enter the recipient's name." })}
                     placeholder="Recipient's name"
                     className="input-style"
                   />
+                  <FieldError message={errors.recipientName?.message} />
                 </div>
                 <div>
                   <FieldLabel>Recipient email</FieldLabel>
                   <input
-                    {...register("recipientEmail", { required: true })}
+                    {...register("recipientEmail", {
+                      required: "Please enter the recipient's email.",
+                      pattern: { value: EMAIL_RE, message: "That email looks off." },
+                    })}
                     placeholder="recipient@example.com"
                     type="email"
                     className="input-style"
                   />
+                  <FieldError message={errors.recipientEmail?.message} />
                 </div>
               </div>
             </section>
@@ -385,23 +410,42 @@ export default function CheckoutPage() {
                   <div className="md:col-span-2">
                     <FieldLabel>Address</FieldLabel>
                     <input
-                      {...register("address")}
+                      {...register("address", {
+                        required: deliveryType === "DELIVERY" ? "Please enter the delivery address." : false,
+                      })}
                       placeholder="Street address"
                       className="input-style"
                     />
+                    <FieldError message={errors.address?.message} />
                   </div>
                   <div>
                     <FieldLabel>Postcode</FieldLabel>
-                    <input {...register("postcode")} placeholder="2000" className="input-style" />
+                    <input
+                      {...register("postcode", {
+                        required: deliveryType === "DELIVERY" ? "Please enter a 4-digit postcode." : false,
+                        pattern: { value: POSTCODE_RE, message: "Postcode must be 4 digits." },
+                      })}
+                      placeholder="2000"
+                      className="input-style"
+                    />
+                    <FieldError message={errors.postcode?.message} />
                   </div>
                   <div>
                     <FieldLabel>Delivery date</FieldLabel>
                     <input
-                      {...register("deliveryDate")}
+                      {...register("deliveryDate", {
+                        required: deliveryType === "DELIVERY" ? "Please pick a delivery date." : false,
+                        validate: (v) =>
+                          !v ||
+                          deliveryType !== "DELIVERY" ||
+                          v >= todayISO() ||
+                          "Delivery date can't be in the past.",
+                      })}
                       type="date"
                       min={todayISO()}
                       className="input-style"
                     />
+                    <FieldError message={errors.deliveryDate?.message} />
                   </div>
                 </div>
                 <div>
@@ -411,7 +455,14 @@ export default function CheckoutPage() {
                       <label key={k} className={optionCard(deliveryWindow === k)}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <input type="radio" value={k} {...register("deliveryWindow")} className="accent-charcoal" />
+                            <input
+                              type="radio"
+                              value={k}
+                              {...register("deliveryWindow", {
+                                required: deliveryType === "DELIVERY" ? "Please choose a delivery window." : false,
+                              })}
+                              className="accent-charcoal"
+                            />
                             <span className="text-charcoal text-[14px]">
                               {DELIVERY_WINDOWS[k].label}
                             </span>
@@ -425,6 +476,7 @@ export default function CheckoutPage() {
                       </label>
                     ))}
                   </div>
+                  <FieldError message={errors.deliveryWindow?.message} />
                 </div>
               </section>
             )}
@@ -441,7 +493,9 @@ export default function CheckoutPage() {
                           <input
                             type="radio"
                             value={k}
-                            {...register("pickupLocation")}
+                            {...register("pickupLocation", {
+                              required: deliveryType === "PICKUP" ? "Please choose a pickup location." : false,
+                            })}
                             className="mt-1 accent-charcoal"
                           />
                           <div>
@@ -461,20 +515,34 @@ export default function CheckoutPage() {
                       </label>
                     ))}
                   </div>
+                  <FieldError message={errors.pickupLocation?.message} />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <FieldLabel>Pickup date</FieldLabel>
                     <input
-                      {...register("pickupDate")}
+                      {...register("pickupDate", {
+                        required: deliveryType === "PICKUP" ? "Please pick a pickup date." : false,
+                        validate: (v) =>
+                          !v ||
+                          deliveryType !== "PICKUP" ||
+                          v >= todayISO() ||
+                          "Pickup date can't be in the past.",
+                      })}
                       type="date"
                       min={todayISO()}
                       className="input-style"
                     />
+                    <FieldError message={errors.pickupDate?.message} />
                   </div>
                   <div>
                     <FieldLabel>Time slot</FieldLabel>
-                    <select {...register("pickupTimeSlot")} className="input-style">
+                    <select
+                      {...register("pickupTimeSlot", {
+                        required: deliveryType === "PICKUP" ? "Please choose a time slot." : false,
+                      })}
+                      className="input-style"
+                    >
                       <option value="">Select a time slot</option>
                       {availablePickupSlots.map((k) => (
                         <option key={k} value={k}>
@@ -487,6 +555,7 @@ export default function CheckoutPage() {
                         No slots available for this date — please pick another day.
                       </p>
                     )}
+                    <FieldError message={errors.pickupTimeSlot?.message} />
                   </div>
                 </div>
                 <p className="text-[12px] text-ink-muted bg-cream/60 border border-border p-4">

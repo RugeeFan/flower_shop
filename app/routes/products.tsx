@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, Link, useSearchParams } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import ProductItem from "~/components/store/ProductItem";
 import Sidebar from "~/components/store/SideBar";
 import { prisma } from "~/lib/prisma.server";
@@ -7,30 +7,37 @@ import { ProductListItem } from "~/types/product";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
-  const page = Number(url.searchParams.get("page") || "1");
   const pageSize = 28;
+
+  // Pagination guard: clamp into [1, pageCount]. Anything weird from the
+  // querystring — "0", "-1", "abc", "9999" — must NOT produce skip < 0
+  // (Prisma throws) or a blank page that 500s.
+  const total = await prisma.product.count();
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const rawPage = Number.parseInt(url.searchParams.get("page") ?? "1", 10);
+  const page = Number.isFinite(rawPage)
+    ? Math.min(Math.max(1, rawPage), pageCount)
+    : 1;
   const skip = (page - 1) * pageSize;
-  const [products, total] = await Promise.all([
-    prisma.product.findMany({
-      skip,
-      take: pageSize,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        imgUrl: true,
-      },
-    }),
-    prisma.product.count(),
-  ]);
+
+  const products = await prisma.product.findMany({
+    skip,
+    take: pageSize,
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      imgUrl: true,
+    },
+  });
 
   return {
     products,
     pagination: {
       page,
       pageSize,
-      pageCount: Math.ceil(total / pageSize),
+      pageCount,
       total,
     },
     success: true,
@@ -39,8 +46,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Products() {
   const { products, pagination } = useLoaderData<typeof loader>();
-  const [searchParams] = useSearchParams();
-  const currentPage = Number(searchParams.get("page") || "1");
+  // Use the loader's already-clamped page so highlighting and prev/next
+  // links match what the server actually rendered.
+  const currentPage = pagination.page;
   const totalPages = pagination.pageCount;
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 

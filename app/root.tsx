@@ -107,20 +107,14 @@ export default function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
 
-  const { user, clientId } = useLoaderData<typeof loader>();
+  const { clientId } = useLoaderData<typeof loader>();
 
-  const appContent = (
-    <>
+  return (
+    <GoogleOAuthProvider clientId={clientId}>
       {!isAdminRoute && <Header />}
       <BackToTop />
       <Outlet />
       {!isAdminRoute && <Footer />}
-    </>
-  );
-
-  return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <Layout>{appContent}</Layout>
     </GoogleOAuthProvider>
   );
 }

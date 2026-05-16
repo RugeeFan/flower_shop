@@ -1,44 +1,60 @@
 // app/routes/admin.login.tsx
-import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, json } from "@remix-run/node";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { prisma } from "~/lib/prisma.server";
 import { verifyPassword, createUserSession } from "~/lib/auth.server";
+import { inspect, recordFailure, reset } from "~/lib/rateLimit.server";
+
+// 5 failures per IP+email in any 15-minute window. After that the
+// endpoint refuses to compare passwords at all and returns a generic
+// "Invalid email or password" — same wording as a wrong password, so
+// the attacker can't tell whether they're throttled vs. wrong.
+const RATE_LIMIT = { max: 5, windowMs: 15 * 60 * 1000 };
+
+const GENERIC_ERROR = "Invalid email or password.";
+
+function clientKey(request: Request, email: string): string {
+  // Trust X-Forwarded-For when present (Nginx in front of the app sets it).
+  // Fall back to whatever the request reports. Either way the key is only
+  // ever used as an internal bucket id — never written back to the user.
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+  return `admin-login:${ip}:${email.toLowerCase()}`;
+}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
-    console.log("📩 Admin login request received");
-
     const formData = await request.formData();
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
-    console.log("📧 email:", email);
-    console.log("🔑 password:", password ? "●●●" : "empty");
+    const email = (formData.get("email") as string | null)?.trim() ?? "";
+    const password = (formData.get("password") as string | null) ?? "";
 
     if (!email || !password) {
-      return json({ error: "Please enter both email and password." }, { status: 400 });
+      return json({ error: GENERIC_ERROR }, { status: 400 });
+    }
+
+    const key = clientKey(request, email);
+    const pre = inspect(key, RATE_LIMIT);
+    if (pre.limited) {
+      // Don't burn time on a bcrypt compare for a blocked actor.
+      return json({ error: GENERIC_ERROR }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
+    const passwordValid =
+      user && user.password && user.isAdmin
+        ? await verifyPassword(password, user.password)
+        : false;
 
-    if (!user) {
-      console.log("❌ user not found");
-      return json({ error: "User not found." }, { status: 404 });
+    if (!user || !passwordValid) {
+      recordFailure(key, RATE_LIMIT);
+      return json({ error: GENERIC_ERROR }, { status: 401 });
     }
 
-    if (!user.password || !user.isAdmin) {
-      console.log("❌ user is not admin or password missing");
-      return json({ error: "Not authorized." }, { status: 403 });
-    }
+    // Success — drop any prior failure counters for this caller.
+    reset(key);
 
-    const valid = await verifyPassword(password, user.password);
-    console.log("🔐 password valid:", valid);
-
-    if (!valid) {
-      return json({ error: "Incorrect password." }, { status: 401 });
-    }
-
-    console.log("✅ creating session for admin:", user.email);
     return createUserSession({
       request,
       userId: user.id,
@@ -46,8 +62,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       isAdmin: true,
     });
   } catch (err) {
-    console.error("🔥 Unexpected error during admin login:", err);
-    return json({ error: "服务器错误，请稍后再试。" }, { status: 500 });
+    console.error("Unexpected error during admin login:", err);
+    return json({ error: "Server error. Please try again." }, { status: 500 });
   }
 };
 

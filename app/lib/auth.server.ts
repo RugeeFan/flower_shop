@@ -2,10 +2,22 @@ import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import bcrypt from "bcryptjs";
 import { prisma } from "~/lib/prisma.server";
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
+if (!SESSION_SECRET || SESSION_SECRET.length < 16) {
+  // Fail fast: a missing or trivially short cookie key turns the whole
+  // session layer into a forged-cookie playground. Refuse to boot rather
+  // than silently fall back to a guessable secret. Generate one with
+  // `openssl rand -hex 32` and set it in .env.
+  throw new Error(
+    "SESSION_SECRET is not set (or is shorter than 16 chars). " +
+      "Generate one with `openssl rand -hex 32` and set it in .env before starting the app.",
+  );
+}
+
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: "__session",
-    secrets: [process.env.SESSION_SECRET || "dev"],
+    secrets: [SESSION_SECRET],
     sameSite: "lax",
     path: "/",
     httpOnly: true,

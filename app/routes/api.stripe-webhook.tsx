@@ -2,12 +2,7 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import Stripe from "stripe";
 import { prisma } from "~/lib/prisma.server";
 import { stripe } from "~/lib/stripe.server";
-import { sendNewOrderNotification } from "~/lib/email.server";
-import {
-  DELIVERY_WINDOWS,
-  PICKUP_LOCATIONS,
-  PICKUP_TIME_SLOTS,
-} from "~/lib/delivery";
+import { markOrderPaid } from "~/lib/orders.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const sig = request.headers.get("stripe-signature");
@@ -31,16 +26,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         break;
       }
 
-      const result = await prisma.order.updateMany({
-        where: { id: orderId, status: "PENDING" },
-        data: { status: "PAID", stripeSessionId: session.id },
-      });
-
-      if (result.count > 0) {
-        console.log(`Order ${orderId} marked as PAID`);
-        await notifyOrderPaid(orderId);
+      const result = await markOrderPaid(orderId, session.id);
+      if (result.status === "not_found") {
+        console.warn(`Webhook: order ${orderId} not found`);
+      } else if (result.transitioned) {
+        console.log(`Order ${orderId} marked as PAID by webhook`);
       } else {
-        console.log(`Order ${orderId} already in terminal state, skipped`);
+        console.log(`Order ${orderId} already PAID (success-page backstop won the race)`);
       }
       break;
     }
@@ -63,44 +55,3 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   return new Response("Webhook handled", { status: 200 });
 };
-
-async function notifyOrderPaid(orderId: string) {
-  try {
-    const order = await prisma.order.findUnique({
-      where: { id: orderId },
-      include: {
-        user: true,
-        items: { include: { product: true } },
-      },
-    });
-    if (!order) return;
-
-    await sendNewOrderNotification({
-      orderId: order.id,
-      recipientName: order.recipientName,
-      recipientEmail: order.recipientEmail,
-      buyerEmail: order.user?.email ?? null,
-      buyerName: order.user?.name ?? null,
-      buyerPhone: order.user?.phone ?? null,
-      totalAmount: order.totalAmount,
-      deliveryFee: order.deliveryFee,
-      deliveryDate: order.deliveryDate,
-      message: order.message,
-      deliveryType: order.deliveryType,
-      address: order.address,
-      postcode: order.postcode,
-      deliveryWindowLabel: order.deliveryWindow ? DELIVERY_WINDOWS[order.deliveryWindow].label : null,
-      pickupLocationLabel: order.pickupLocation ? PICKUP_LOCATIONS[order.pickupLocation].label : null,
-      pickupLocationAddress: order.pickupLocation ? PICKUP_LOCATIONS[order.pickupLocation].address : null,
-      pickupTimeSlotLabel: order.pickupTimeSlot ? PICKUP_TIME_SLOTS[order.pickupTimeSlot].label : null,
-      items: order.items.map((i) => ({
-        name: i.product.name,
-        quantity: i.quantity,
-        unitPrice: i.unitPrice,
-      })),
-    });
-  } catch (err) {
-    // Don't let email failure break the webhook acknowledgement
-    console.error("Failed to send order notification email:", err);
-  }
-}

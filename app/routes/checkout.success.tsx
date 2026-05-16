@@ -9,6 +9,7 @@ import {
   PICKUP_LOCATIONS,
   PICKUP_TIME_SLOTS,
 } from "~/lib/delivery";
+import { markOrderPaid } from "~/lib/orders.server";
 import { useCartStore } from "~/zustand/useCartStore";
 import formatCurrency from "~/utils/formatCurrency";
 
@@ -32,6 +33,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       throw new Response("Order Not Found", { status: 404 });
     }
     orderId = session.metadata.orderId;
+
+    // Stripe says paid; our DB may still be PENDING if the webhook is
+    // delayed or unreachable. Act as a backstop and transition the order
+    // here. markOrderPaid uses an atomic updateMany so whichever path wins
+    // (this loader vs. the webhook) is the only one that fires the email.
+    const result = await markOrderPaid(orderId, session.id);
+    if (result.status === "not_found") {
+      throw new Response("Order Not Found", { status: 404 });
+    }
   } else {
     throw new Response("Missing session_id", { status: 400 });
   }
@@ -41,8 +51,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     include: { items: { include: { product: true } } },
   });
   if (!order) throw new Response("Order Not Found", { status: 404 });
+  // Dev-mode flow already marks the order PAID in the create-checkout-session
+  // route, and the Stripe branch above transitions it through markOrderPaid.
+  // If we still see a non-PAID order here, something is genuinely wrong —
+  // e.g. CANCELLED via session.expired — so surface it rather than masking.
   if (order.status !== "PAID") {
-    throw new Response("Order not in PAID state", { status: 402 });
+    throw new Response(`Order is ${order.status}`, { status: 409 });
   }
 
   return json({ order, devMode });

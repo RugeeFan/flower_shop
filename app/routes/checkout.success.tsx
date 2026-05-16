@@ -59,7 +59,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw new Response(`Order is ${order.status}`, { status: 409 });
   }
 
-  return json({ order, devMode });
+  return json({
+    order,
+    devMode,
+    customerEmailSent: order.customerEmailSentAt !== null,
+  });
 };
 
 const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
@@ -70,7 +74,7 @@ const Field = ({ label, children }: { label: string; children: React.ReactNode }
 );
 
 export default function CheckoutSuccessPage() {
-  const { order, devMode } = useLoaderData<typeof loader>();
+  const { order, devMode, customerEmailSent } = useLoaderData<typeof loader>();
   const clearCart = useCartStore((state) => state.clearCart);
 
   useEffect(() => {
@@ -105,8 +109,14 @@ export default function CheckoutSuccessPage() {
             Thank you.
           </h1>
           <p className="mt-4 text-ink-muted text-[15px] max-w-[42ch] leading-body">
-            We've got it from here. A confirmation has been sent to{" "}
-            <span className="text-charcoal">{order.recipientEmail}</span>.
+            {customerEmailSent ? (
+              <>We've got it from here. A confirmation has been emailed to you.</>
+            ) : (
+              <>
+                We've got it from here. Your order has been received and our
+                team will follow up if anything's needed.
+              </>
+            )}
           </p>
         </div>
 

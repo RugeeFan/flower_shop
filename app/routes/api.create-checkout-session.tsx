@@ -2,7 +2,6 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { prisma } from "~/lib/prisma.server";
 import { stripe, isStripeDevMode } from "~/lib/stripe.server";
-import { sendNewOrderNotification } from "~/lib/email.server";
 import {
   DELIVERY_WINDOWS,
   PICKUP_LOCATIONS,
@@ -13,6 +12,7 @@ import {
   type PickupTimeSlotKey,
 } from "~/lib/delivery";
 import { calculateDeliveryFee } from "~/lib/delivery.server";
+import { markOrderPaid } from "~/lib/orders.server";
 
 interface CartLine {
   id: string;
@@ -304,11 +304,6 @@ export async function action({ request }: ActionFunctionArgs) {
   // The real Stripe flow below runs unchanged when that env var is real.
   // ──────────────────────────────────────────────────────────────────────
   if (isStripeDevMode()) {
-    await prisma.order.update({
-      where: { id: order.id },
-      data: { status: "PAID" },
-    });
-
     console.log("\n=== [DEV MODE] Stripe bypassed — order marked PAID ===");
     console.log(JSON.stringify({
       orderId: order.id,
@@ -326,40 +321,10 @@ export async function action({ request }: ActionFunctionArgs) {
     }, null, 2));
     console.log("=========================================================\n");
 
-    try {
-      const fullOrder = await prisma.order.findUnique({
-        where: { id: order.id },
-        include: { user: true, items: { include: { product: true } } },
-      });
-      if (fullOrder) {
-        await sendNewOrderNotification({
-          orderId: fullOrder.id,
-          recipientName: fullOrder.recipientName,
-          recipientEmail: fullOrder.recipientEmail,
-          buyerEmail: fullOrder.user?.email ?? null,
-          buyerName: fullOrder.user?.name ?? null,
-          buyerPhone: fullOrder.user?.phone ?? null,
-          totalAmount: fullOrder.totalAmount,
-          deliveryFee: fullOrder.deliveryFee,
-          deliveryDate: fullOrder.deliveryDate,
-          message: fullOrder.message,
-          deliveryType: fullOrder.deliveryType,
-          address: fullOrder.address,
-          postcode: fullOrder.postcode,
-          deliveryWindowLabel: fullOrder.deliveryWindow ? DELIVERY_WINDOWS[fullOrder.deliveryWindow].label : null,
-          pickupLocationLabel: fullOrder.pickupLocation ? PICKUP_LOCATIONS[fullOrder.pickupLocation].label : null,
-          pickupLocationAddress: fullOrder.pickupLocation ? PICKUP_LOCATIONS[fullOrder.pickupLocation].address : null,
-          pickupTimeSlotLabel: fullOrder.pickupTimeSlot ? PICKUP_TIME_SLOTS[fullOrder.pickupTimeSlot].label : null,
-          items: fullOrder.items.map((i) => ({
-            name: i.product.name,
-            quantity: i.quantity,
-            unitPrice: i.unitPrice,
-          })),
-        });
-      }
-    } catch (err) {
-      console.error("[dev] notification email failed:", err);
-    }
+    // Run the same PAID transition (with admin + customer emails, all
+    // idempotent) we run for real Stripe payments. Sharing the path means
+    // dev-mode keeps drifting bug-for-bug with production.
+    await markOrderPaid(order.id, null);
 
     return json({
       url: `${process.env.BASE_URL}/checkout/success?devOrderId=${order.id}`,

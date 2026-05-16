@@ -54,6 +54,12 @@ model Order {
   status          OrderStatus @default(PENDING)
   createdAt       DateTime    @default(now())
   stripeSessionId String?
+  // Idempotency markers for the two emails markOrderPaid sends. Each one
+  // is checked + stamped inside the same updateMany that flips PENDING to
+  // PAID, so a webhook replay (or a success-page backstop racing the
+  // webhook) cannot double-send.
+  customerEmailSentAt DateTime?
+  adminEmailSentAt    DateTime?
   user            User?       @relation(fields: [userId], references: [id])
   items           OrderItem[]
 

@@ -12,6 +12,7 @@ import {
   type PickupLocationKey,
   type PickupTimeSlotKey,
 } from "~/lib/delivery";
+import { calculateDeliveryFee } from "~/lib/delivery.server";
 
 interface CartLine {
   id: string;
@@ -72,7 +73,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
   // Branch-specific validation + scheduled date
   let scheduledDate: Date;
-  let surcharge = 0;
+  let zoneFee = 0;
+  let windowSurcharge = 0;
   let deliveryWindow: DeliveryWindowKey | null = null;
   let pickupLocation: PickupLocationKey | null = null;
   let pickupTimeSlot: PickupTimeSlotKey | null = null;
@@ -92,9 +94,22 @@ export async function action({ request }: ActionFunctionArgs) {
     }
     scheduledDate = d;
     deliveryWindow = customer.deliveryWindow;
-    surcharge = DELIVERY_WINDOWS[deliveryWindow].surcharge;
     address = customer.address.trim();
     postcode = customer.postcode.trim();
+
+    // Single source of truth for the shipping fee. Shared with the quote
+    // endpoint so the cart total, order row, and Stripe receipt all match.
+    const fee = await calculateDeliveryFee({
+      deliveryType: "DELIVERY",
+      postcode,
+      deliveryWindow,
+    });
+    if (!fee.ok) {
+      const status = fee.code === "UNSUPPORTED_POSTCODE" ? 422 : 400;
+      return json({ error: fee.error, code: fee.code }, { status });
+    }
+    zoneFee = fee.zoneFee;
+    windowSurcharge = fee.windowSurcharge;
   } else {
     if (!customer.pickupLocation || !customer.pickupDate || !customer.pickupTimeSlot) {
       return json({ error: "Missing pickup details" }, { status: 400 });
@@ -154,7 +169,8 @@ export async function action({ request }: ActionFunctionArgs) {
     quantity: qtyById.get(p.id)!,
   }));
   const subtotal = lineItems.reduce((s, l) => s + l.product.price * l.quantity, 0);
-  const totalAmount = subtotal + surcharge;
+  const deliveryFee = zoneFee + windowSurcharge;
+  const totalAmount = subtotal + deliveryFee;
 
   // Duplicate-order guard: same buyer email + identical (productId, quantity)
   // set, paid in the last hour, with no explicit user confirmation.
@@ -219,7 +235,7 @@ export async function action({ request }: ActionFunctionArgs) {
           deliveryDate: scheduledDate,
           message: customer.message || "",
           totalAmount,
-          deliveryFee: surcharge,
+          deliveryFee,
           deliveryType: customer.deliveryType,
           pickupLocation,
           pickupTimeSlot,
@@ -263,7 +279,7 @@ export async function action({ request }: ActionFunctionArgs) {
         message: customer.message || "",
         status: "PENDING",
         totalAmount,
-        deliveryFee: surcharge,
+        deliveryFee,
         deliveryType: customer.deliveryType,
         pickupLocation,
         pickupTimeSlot,
@@ -303,7 +319,9 @@ export async function action({ request }: ActionFunctionArgs) {
         : { type: "DELIVERY", address, postcode, window: deliveryWindow, date: scheduledDate.toISOString() },
       items: lineItems.map((l) => ({ name: l.product.name, qty: l.quantity, unit: l.product.price })),
       subtotal,
-      surcharge,
+      zoneFee,
+      windowSurcharge,
+      deliveryFee,
       totalAmount,
     }, null, 2));
     console.log("=========================================================\n");
@@ -363,22 +381,29 @@ export async function action({ request }: ActionFunctionArgs) {
     },
     quantity: l.quantity,
   }));
-  // Shipping/surcharge policy:
-  //   Today the only non-zero shipping cost is PRIORITY ($30) from
-  //   DELIVERY_WINDOWS in app/lib/delivery.ts. RESIDENTIAL and
-  //   BUSINESS_SCHOOL are free — surcharge=0 — so we deliberately skip
-  //   creating a $0 Stripe line item (Stripe rejects $0 amounts and it's
-  //   noise on the receipt). PICKUP also has no shipping cost.
-  //   ShippingZone (postcode-based fee) exists in the schema but is NOT
-  //   wired into checkout yet; if it's ever wired in, follow the same rule:
-  //   only push a line item when the fee is strictly > 0, and decide a
-  //   policy for unmatched postcodes (block checkout vs. allow $0).
-  if (surcharge > 0) {
+  // Shipping fee is two parts kept as separate Stripe line items so the
+  // receipt shows what the customer is paying for:
+  //   zoneFee         — postcode-based ShippingZone fee (computed server-side
+  //                     in calculateDeliveryFee, never trusted from client)
+  //   windowSurcharge — PRIORITY delivery upcharge from DELIVERY_WINDOWS
+  // Stripe rejects $0 line items, so each is pushed only when strictly > 0.
+  // PICKUP orders skip both — calculateDeliveryFee returns 0 for that branch.
+  if (zoneFee > 0) {
+    stripeLineItems.push({
+      price_data: {
+        currency: "aud",
+        product_data: { name: "Delivery" },
+        unit_amount: Math.round(zoneFee * 100),
+      },
+      quantity: 1,
+    });
+  }
+  if (windowSurcharge > 0) {
     stripeLineItems.push({
       price_data: {
         currency: "aud",
         product_data: { name: "Priority Delivery (within 4 hours)" },
-        unit_amount: Math.round(surcharge * 100),
+        unit_amount: Math.round(windowSurcharge * 100),
       },
       quantity: 1,
     });

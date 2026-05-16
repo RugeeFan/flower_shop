@@ -63,6 +63,17 @@ export default function CheckoutPage() {
   const pickupDate = watch("pickupDate");
   const pickupLocation = watch("pickupLocation");
   const deliveryWindow = watch("deliveryWindow");
+  const postcode = watch("postcode");
+
+  // Postcode-based shipping fee fetched from the server. The same calculation
+  // is used to charge through Stripe (api.create-checkout-session), so what
+  // the customer sees here is what they get charged.
+  const [zoneQuote, setZoneQuote] = useState<
+    | { state: "idle" }
+    | { state: "loading" }
+    | { state: "ok"; suburb: string | null; zoneFee: number }
+    | { state: "error"; message: string }
+  >({ state: "idle" });
 
   useEffect(() => {
     const saved = localStorage.getItem("checkout_form");
@@ -86,11 +97,58 @@ export default function CheckoutPage() {
     () => cart.reduce((s, i) => s + i.price * i.quantity, 0),
     [cart],
   );
-  const surcharge =
+  const windowSurcharge =
     deliveryType === "DELIVERY" && deliveryWindow
       ? DELIVERY_WINDOWS[deliveryWindow].surcharge
       : 0;
-  const total = subtotal + surcharge;
+  const zoneFee = zoneQuote.state === "ok" ? zoneQuote.zoneFee : 0;
+  const total = subtotal + windowSurcharge + zoneFee;
+
+  // Refresh the postcode quote when the postcode or window changes. We debounce
+  // through React's batching plus a 300ms timer so we don't hammer the API on
+  // every keystroke.
+  useEffect(() => {
+    if (deliveryType !== "DELIVERY") {
+      setZoneQuote({ state: "idle" });
+      return;
+    }
+    const code = (postcode ?? "").trim();
+    const win = deliveryWindow ?? "RESIDENTIAL";
+    if (!/^\d{4}$/.test(code)) {
+      setZoneQuote({ state: "idle" });
+      return;
+    }
+    setZoneQuote({ state: "loading" });
+    const ctrl = new AbortController();
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `/api/get-shipping-fee?postcode=${encodeURIComponent(code)}&deliveryWindow=${win}`,
+          { signal: ctrl.signal },
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          setZoneQuote({
+            state: "error",
+            message: data?.error || "Unable to quote shipping",
+          });
+          return;
+        }
+        setZoneQuote({
+          state: "ok",
+          suburb: data.suburb ?? null,
+          zoneFee: Number(data.zoneFee ?? 0),
+        });
+      } catch (err) {
+        if ((err as Error).name === "AbortError") return;
+        setZoneQuote({ state: "error", message: "Network error" });
+      }
+    }, 300);
+    return () => {
+      clearTimeout(t);
+      ctrl.abort();
+    };
+  }, [deliveryType, postcode, deliveryWindow]);
 
   const availablePickupSlots = useMemo(() => {
     if (!pickupDate) return Object.keys(PICKUP_TIME_SLOTS) as PickupTimeSlotKey[];
@@ -115,6 +173,14 @@ export default function CheckoutPage() {
     if (data.deliveryType === "DELIVERY") {
       if (!data.address || !data.postcode || !data.deliveryDate || !data.deliveryWindow) {
         alert("Please complete all delivery fields.");
+        return;
+      }
+      if (zoneQuote.state === "error") {
+        alert(zoneQuote.message);
+        return;
+      }
+      if (zoneQuote.state !== "ok") {
+        alert("Please wait while we calculate your delivery fee.");
         return;
       }
     } else {
@@ -500,10 +566,32 @@ export default function CheckoutPage() {
                       <span>Subtotal</span>
                       <span className="tabular-nums">{formatCurrency(subtotal)}</span>
                     </div>
-                    {surcharge > 0 && (
+                    {deliveryType === "DELIVERY" && zoneQuote.state === "loading" && (
+                      <div className="flex justify-between text-ink-muted">
+                        <span>Delivery</span>
+                        <span className="text-[12px] italic">calculating…</span>
+                      </div>
+                    )}
+                    {deliveryType === "DELIVERY" && zoneQuote.state === "ok" && zoneFee > 0 && (
+                      <div className="flex justify-between text-ink-muted">
+                        <span>
+                          Delivery
+                          {zoneQuote.suburb && (
+                            <span className="text-[11px] text-ink-muted/70"> · {zoneQuote.suburb}</span>
+                          )}
+                        </span>
+                        <span className="tabular-nums">+ {formatCurrency(zoneFee)}</span>
+                      </div>
+                    )}
+                    {deliveryType === "DELIVERY" && zoneQuote.state === "error" && (
+                      <div className="text-[12px] text-terracotta">
+                        {zoneQuote.message}
+                      </div>
+                    )}
+                    {windowSurcharge > 0 && (
                       <div className="flex justify-between text-ink-muted">
                         <span>Priority delivery</span>
-                        <span className="tabular-nums">+ {formatCurrency(surcharge)}</span>
+                        <span className="tabular-nums">+ {formatCurrency(windowSurcharge)}</span>
                       </div>
                     )}
                     <div className="flex justify-between pt-3 border-t border-border">

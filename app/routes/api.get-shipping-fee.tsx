@@ -1,28 +1,40 @@
 // app/routes/api.get-shipping-fee.tsx
+// Frontend quote endpoint. Returns the same numbers the checkout API will
+// charge through Stripe, so the summary on /checkout matches the receipt.
+
 import { json } from "@remix-run/node";
-import { prisma } from "~/lib/prisma.server";
+import { calculateDeliveryFee } from "~/lib/delivery.server";
+import { DELIVERY_WINDOWS, type DeliveryWindowKey } from "~/lib/delivery";
 
 export async function loader({ request }: { request: Request }) {
   const url = new URL(request.url);
   const postcode = url.searchParams.get("postcode");
+  const windowParam = url.searchParams.get("deliveryWindow") ?? "RESIDENTIAL";
 
   if (!postcode) {
-    return json({ error: "缺少 postcode 参数" }, { status: 400 });
+    return json({ error: "Missing postcode" }, { status: 400 });
+  }
+  if (!(windowParam in DELIVERY_WINDOWS)) {
+    return json({ error: "Invalid delivery window" }, { status: 400 });
   }
 
-  const zones = await prisma.shippingZone.findMany({
-    where: { postcode },
+  const result = await calculateDeliveryFee({
+    deliveryType: "DELIVERY",
+    postcode,
+    deliveryWindow: windowParam as DeliveryWindowKey,
   });
 
-  if (zones.length === 0) {
-    return json({ error: "找不到对应邮编" }, { status: 404 });
+  if (!result.ok) {
+    const status = result.code === "UNSUPPORTED_POSTCODE" ? 404 : 400;
+    return json({ error: result.error, code: result.code }, { status });
   }
 
-  // 默认选第一条记录作为代表
-  const zone = zones[0];
-
   return json({
-    suburb: zone.suburb,
-    price: parseFloat((zone.medium * 1.1).toFixed(2)), // 你可以根据条件选择 small / medium / large
+    suburb: result.zoneSuburb,
+    zoneFee: result.zoneFee,
+    windowSurcharge: result.windowSurcharge,
+    total: result.total,
+    // legacy field: older clients read `price` as the total quote
+    price: result.total,
   });
 }

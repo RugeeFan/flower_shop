@@ -67,6 +67,14 @@ export default function OrderDetailPage() {
           <h2 className="text-lg font-semibold mb-2">{isPickup ? "自取信息" : "收件人信息"}</h2>
           <div><strong>收件人：</strong>{order.recipientName}</div>
           <div><strong>邮箱：</strong>{order.recipientEmail}</div>
+          {order.recipientPhone && (
+            <div>
+              <strong>电话：</strong>
+              <a href={`tel:${order.recipientPhone}`} className="text-blue-600 hover:underline">
+                {order.recipientPhone}
+              </a>
+            </div>
+          )}
           {isPickup ? (
             <>
               {order.pickupLocation && (

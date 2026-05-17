@@ -25,6 +25,7 @@ interface Customer {
   buyerPhone: string;
   recipientName: string;
   recipientEmail: string;
+  recipientPhone: string;
   message?: string;
 
   deliveryType: "DELIVERY" | "PICKUP";
@@ -60,6 +61,7 @@ export async function action({ request }: ActionFunctionArgs) {
     "buyerPhone",
     "recipientName",
     "recipientEmail",
+    "recipientPhone",
   ];
   for (const f of baseRequired) {
     if (!customer[f] || typeof customer[f] !== "string") {
@@ -230,6 +232,7 @@ export async function action({ request }: ActionFunctionArgs) {
         data: {
           recipientName: customer.recipientName,
           recipientEmail: customer.recipientEmail,
+          recipientPhone: customer.recipientPhone,
           address,
           postcode,
           deliveryDate: scheduledDate,
@@ -273,6 +276,7 @@ export async function action({ request }: ActionFunctionArgs) {
         userId: buyer.id,
         recipientName: customer.recipientName,
         recipientEmail: customer.recipientEmail,
+        recipientPhone: customer.recipientPhone,
         address,
         postcode,
         deliveryDate: scheduledDate,
@@ -308,7 +312,7 @@ export async function action({ request }: ActionFunctionArgs) {
     console.log(JSON.stringify({
       orderId: order.id,
       buyer: { name: customer.buyerName, email: customer.buyerEmail, phone: customer.buyerPhone },
-      recipient: { name: customer.recipientName, email: customer.recipientEmail },
+      recipient: { name: customer.recipientName, email: customer.recipientEmail, phone: customer.recipientPhone },
       fulfilment: customer.deliveryType === "PICKUP"
         ? { type: "PICKUP", location: pickupLocation, slot: pickupTimeSlot, date: scheduledDate.toISOString() }
         : { type: "DELIVERY", address, postcode, window: deliveryWindow, date: scheduledDate.toISOString() },

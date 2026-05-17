@@ -62,6 +62,7 @@ interface OrderEmailPayload {
   orderId: string;
   recipientName: string;
   recipientEmail: string;
+  recipientPhone?: string | null;
   buyerEmail?: string | null;
   buyerName?: string | null;
   buyerPhone?: string | null;
@@ -127,7 +128,9 @@ export async function sendNewOrderNotification(payload: OrderEmailPayload): Prom
 
       <h3>Recipient</h3>
       <p><strong>Name:</strong> ${escapeHtml(payload.recipientName)}<br/>
-      <strong>Email:</strong> ${escapeHtml(payload.recipientEmail)}</p>
+      <strong>Email:</strong> ${escapeHtml(payload.recipientEmail)}${
+        payload.recipientPhone ? `<br/><strong>Phone:</strong> ${escapeHtml(payload.recipientPhone)}` : ""
+      }</p>
 
       ${payload.buyerEmail || payload.buyerName || payload.buyerPhone
         ? `<h3>Buyer</h3>
@@ -200,7 +203,9 @@ export async function sendCustomerOrderConfirmation(payload: OrderEmailPayload):
         <strong>Time slot:</strong> ${escapeHtml(payload.pickupTimeSlotLabel ?? "")}</p>`
       : `
         <h3 style="margin-top:24px;">Delivery</h3>
-        <p><strong>To:</strong> ${escapeHtml(payload.recipientName)}<br/>
+        <p><strong>To:</strong> ${escapeHtml(payload.recipientName)}${
+          payload.recipientPhone ? ` (${escapeHtml(payload.recipientPhone)})` : ""
+        }<br/>
         <strong>Address:</strong> ${escapeHtml(payload.address ?? "")}<br/>
         <strong>Postcode:</strong> ${escapeHtml(payload.postcode ?? "")}<br/>
         <strong>Delivery date:</strong> ${formatDate(payload.deliveryDate)}<br/>

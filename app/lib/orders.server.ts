@@ -69,6 +69,7 @@ async function dispatchPaidNotifications(orderId: string) {
     orderId: order.id,
     recipientName: order.recipientName,
     recipientEmail: order.recipientEmail,
+    recipientPhone: order.recipientPhone ?? null,
     buyerEmail: order.user?.email ?? null,
     buyerName: order.user?.name ?? null,
     buyerPhone: order.user?.phone ?? null,

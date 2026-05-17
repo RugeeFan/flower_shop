@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useCartStore } from "~/zustand/useCartStore";
 import {
   DELIVERY_WINDOWS,
@@ -11,6 +11,7 @@ import {
   type PickupTimeSlotKey,
 } from "~/lib/delivery";
 import formatCurrency from "~/utils/formatCurrency";
+import EnDatePicker from "~/components/store/EnDatePicker";
 
 type DeliveryType = "DELIVERY" | "PICKUP";
 
@@ -20,6 +21,7 @@ interface CheckoutFormData {
   buyerPhone: string;
   recipientName: string;
   recipientEmail: string;
+  recipientPhone: string;
 
   deliveryType: DeliveryType;
 
@@ -54,6 +56,7 @@ export default function CheckoutPage() {
     watch,
     reset,
     setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>({
     defaultValues: { deliveryType: "DELIVERY", pickupDate: todayISO() },
@@ -353,6 +356,24 @@ export default function CheckoutPage() {
                   />
                   <FieldError message={errors.recipientEmail?.message} />
                 </div>
+                <div className="md:col-span-2">
+                  <FieldLabel>Recipient phone</FieldLabel>
+                  <input
+                    {...register("recipientPhone", {
+                      required: "Please enter the recipient's phone — the driver may need to call.",
+                      pattern: { value: PHONE_RE, message: "Use digits, spaces, +, ( ) or -." },
+                    })}
+                    placeholder="0451 182 178"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    className="input-style"
+                  />
+                  <p className="text-[12px] text-ink-muted mt-1">
+                    Used only if our driver needs to reach the recipient at delivery time.
+                  </p>
+                  <FieldError message={errors.recipientPhone?.message} />
+                </div>
               </div>
             </section>
 
@@ -432,18 +453,27 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <FieldLabel>Delivery date</FieldLabel>
-                    <input
-                      {...register("deliveryDate", {
+                    <Controller
+                      name="deliveryDate"
+                      control={control}
+                      rules={{
                         required: deliveryType === "DELIVERY" ? "Please pick a delivery date." : false,
                         validate: (v) =>
                           !v ||
                           deliveryType !== "DELIVERY" ||
                           v >= todayISO() ||
                           "Delivery date can't be in the past.",
-                      })}
-                      type="date"
-                      min={todayISO()}
-                      className="input-style"
+                      }}
+                      render={({ field }) => (
+                        <EnDatePicker
+                          value={field.value ?? ""}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          minDate={todayISO()}
+                          placeholder="Pick a delivery date"
+                          ariaLabel="Delivery date"
+                        />
+                      )}
                     />
                     <FieldError message={errors.deliveryDate?.message} />
                   </div>
@@ -520,18 +550,27 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <FieldLabel>Pickup date</FieldLabel>
-                    <input
-                      {...register("pickupDate", {
+                    <Controller
+                      name="pickupDate"
+                      control={control}
+                      rules={{
                         required: deliveryType === "PICKUP" ? "Please pick a pickup date." : false,
                         validate: (v) =>
                           !v ||
                           deliveryType !== "PICKUP" ||
                           v >= todayISO() ||
                           "Pickup date can't be in the past.",
-                      })}
-                      type="date"
-                      min={todayISO()}
-                      className="input-style"
+                      }}
+                      render={({ field }) => (
+                        <EnDatePicker
+                          value={field.value ?? ""}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          minDate={todayISO()}
+                          placeholder="Pick a pickup date"
+                          ariaLabel="Pickup date"
+                        />
+                      )}
                     />
                     <FieldError message={errors.pickupDate?.message} />
                   </div>

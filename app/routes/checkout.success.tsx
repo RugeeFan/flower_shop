@@ -126,7 +126,7 @@ export default function CheckoutSuccessPage() {
             <div>
               <div className="eyebrow">Order</div>
               <div className="font-display text-charcoal text-[18px] mt-1 break-all">
-                {order.id}
+                {order.orderNumber}
               </div>
             </div>
           </div>

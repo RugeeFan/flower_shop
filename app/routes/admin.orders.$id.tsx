@@ -46,7 +46,7 @@ export default function OrderDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <div className="bg-white rounded-lg border p-5 shadow-sm space-y-2 text-sm">
           <h2 className="text-lg font-semibold mb-2">订单信息</h2>
-          <div><strong>订单编号：</strong>{order.id}</div>
+          <div><strong>订单编号：</strong>{order.orderNumber}</div>
           <div>
             <strong>订单状态：</strong>
             <span className={`inline-block px-2 py-1 text-xs rounded ${order.status === "PAID" ? "bg-green-100 text-green-700" : order.status === "PENDING" ? "bg-yellow-100 text-yellow-700" : "bg-gray-100 text-gray-600"}`}>

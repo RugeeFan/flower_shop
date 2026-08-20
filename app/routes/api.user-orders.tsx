@@ -21,6 +21,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
+      orderNumber: true,
       totalAmount: true,
       status: true,
       deliveryDate: true,

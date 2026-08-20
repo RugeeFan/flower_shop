@@ -19,7 +19,7 @@ async function main() {
   }
   console.log(`Sending test notification for order ${order.id}...`);
   await sendNewOrderNotification({
-    orderId: order.id,
+    orderNumber: order.orderNumber,
     recipientName: order.recipientName,
     recipientEmail: order.recipientEmail,
     buyerEmail: order.user?.email ?? null,

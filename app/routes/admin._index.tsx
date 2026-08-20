@@ -19,6 +19,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       take: 5,
       select: {
         id: true,
+        orderNumber: true,
         recipientName: true,
         status: true,
         createdAt: true,
@@ -74,7 +75,7 @@ export default function AdminDashboard() {
             <tbody>
               {recentOrders.map((order, i) => (
                 <tr key={order.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                  <td className="px-4 py-2">{order.id}</td>
+                  <td className="px-4 py-2">{order.orderNumber}</td>
                   <td className="px-4 py-2">{order.recipientName}</td>
                   <td className="px-4 py-2">
                     <span className={`inline-block px-2 py-1 text-xs rounded ${order.status === "PAID"
@@ -107,7 +108,7 @@ export default function AdminDashboard() {
         <div className="block sm:hidden p-4 space-y-4">
           {recentOrders.map((order) => (
             <div key={order.id} className="border rounded-md p-4 shadow-sm bg-gray-50">
-              <div className="text-sm mb-2 text-gray-600">订单号：<span className="text-gray-800">{order.id}</span></div>
+              <div className="text-sm mb-2 text-gray-600">订单号：<span className="text-gray-800">{order.orderNumber}</span></div>
               <div className="text-sm mb-2 text-gray-600">收件人：<span className="text-gray-800">{order.recipientName}</span></div>
               <div className="text-sm mb-2 text-gray-600">
                 状态：

@@ -66,7 +66,7 @@ async function dispatchPaidNotifications(orderId: string) {
   if (!order) return;
 
   const payload = {
-    orderId: order.id,
+    orderNumber: order.orderNumber,
     recipientName: order.recipientName,
     recipientEmail: order.recipientEmail,
     recipientPhone: order.recipientPhone ?? null,

@@ -59,6 +59,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (status) where.status = status;
   if (q) {
     where.OR = [
+      { orderNumber: { contains: q, mode: "insensitive" } },
       { id: { contains: q, mode: "insensitive" } },
       {
         user: {
@@ -193,7 +194,7 @@ export default function AdminOrdersPage() {
               orders.map((order) => (
                 <tr key={order.id} className="border-t hover:bg-gray-50">
                   <td className="px-4 py-2 font-mono text-xs text-gray-600">
-                    {order.id.slice(0, 8)}…
+                    {order.orderNumber}
                   </td>
                   <td className="px-4 py-2">{order.user?.name || order.recipientName || "—"}</td>
                   <td className="px-4 py-2 text-xs text-gray-600">
@@ -254,7 +255,7 @@ export default function AdminOrdersPage() {
           orders.map((order) => (
             <div key={order.id} className="border rounded-lg p-4 bg-white shadow-sm space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-xs text-gray-500">{order.id.slice(0, 8)}…</span>
+                <span className="font-mono text-xs text-gray-500">{order.orderNumber}</span>
                 {statusBadge(order.status)}
               </div>
               <div className="text-sm font-medium text-gray-800">

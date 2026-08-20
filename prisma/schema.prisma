@@ -41,6 +41,10 @@ model Product {
 
 model Order {
   id              String      @id @default(cuid())
+  // Human-facing order number, e.g. RR-20260820-01 (Sydney date + per-day
+  // sequence). The cuid `id` stays the primary key; this is what customers,
+  // admins and emails see. Assigned at creation, backfilled for old orders.
+  orderNumber     String      @unique
   userId          String?
   recipientName   String
   recipientEmail  String

@@ -59,7 +59,7 @@ interface OrderEmailItem {
 }
 
 interface OrderEmailPayload {
-  orderId: string;
+  orderNumber: string;
   recipientName: string;
   recipientEmail: string;
   recipientPhone?: string | null;
@@ -124,7 +124,7 @@ export async function sendNewOrderNotification(payload: OrderEmailPayload): Prom
   const html = `
     <div style="font-family:Helvetica,Arial,sans-serif;color:#222;max-width:640px;margin:0 auto;">
       <h2>New Paid Order</h2>
-      <p><strong>Order ID:</strong> ${escapeHtml(payload.orderId)}</p>
+      <p><strong>Order ID:</strong> ${escapeHtml(payload.orderNumber)}</p>
 
       <h3>Recipient</h3>
       <p><strong>Name:</strong> ${escapeHtml(payload.recipientName)}<br/>
@@ -164,7 +164,7 @@ export async function sendNewOrderNotification(payload: OrderEmailPayload): Prom
 
   await sendEmail({
     to,
-    subject: `New order ${payload.orderId} — ${payload.deliveryType === "PICKUP" ? "Store Pickup" : "Delivery"}`,
+    subject: `New order ${payload.orderNumber} — ${payload.deliveryType === "PICKUP" ? "Store Pickup" : "Delivery"}`,
     html,
     text: stripHtml(html),
   });
@@ -175,7 +175,7 @@ export async function sendNewOrderNotification(payload: OrderEmailPayload): Prom
 export async function sendCustomerOrderConfirmation(payload: OrderEmailPayload): Promise<void> {
   const to = payload.buyerEmail?.trim();
   if (!to) {
-    console.warn(`[email] Order ${payload.orderId} has no buyer email — skipping customer confirmation`);
+    console.warn(`[email] Order ${payload.orderNumber} has no buyer email — skipping customer confirmation`);
     return;
   }
 
@@ -216,7 +216,7 @@ export async function sendCustomerOrderConfirmation(payload: OrderEmailPayload):
       <h2 style="margin-bottom:4px;">Thank you${payload.buyerName ? `, ${escapeHtml(payload.buyerName)}` : ""}.</h2>
       <p style="margin-top:0;color:#666;">We've received your order and will start preparing it shortly.</p>
 
-      <p><strong>Order:</strong> ${escapeHtml(payload.orderId)}<br/>
+      <p><strong>Order:</strong> ${escapeHtml(payload.orderNumber)}<br/>
       <strong>Status:</strong> Paid</p>
 
       ${fulfilmentBlock}
@@ -253,7 +253,7 @@ export async function sendCustomerOrderConfirmation(payload: OrderEmailPayload):
 
   await sendEmail({
     to,
-    subject: `Order ${payload.orderId} confirmed — Royal Rose`,
+    subject: `Order ${payload.orderNumber} confirmed — Royal Rose`,
     html,
     text: stripHtml(html),
   });

@@ -13,6 +13,7 @@ import {
 } from "~/lib/delivery";
 import { calculateDeliveryFee } from "~/lib/delivery.server";
 import { markOrderPaid } from "~/lib/orders.server";
+import { withOrderNumberRetry } from "~/lib/order-number.server";
 
 interface CartLine {
   id: string;
@@ -271,33 +272,36 @@ export async function action({ request }: ActionFunctionArgs) {
         select: { id: true },
       });
     }
-    order = await prisma.order.create({
-      data: {
-        userId: buyer.id,
-        recipientName: customer.recipientName,
-        recipientEmail: customer.recipientEmail,
-        recipientPhone: customer.recipientPhone,
-        address,
-        postcode,
-        deliveryDate: scheduledDate,
-        message: customer.message || "",
-        status: "PENDING",
-        totalAmount,
-        deliveryFee,
-        deliveryType: customer.deliveryType,
-        pickupLocation,
-        pickupTimeSlot,
-        deliveryWindow,
-        items: {
-          create: lineItems.map((l) => ({
-            productId: l.product.id,
-            quantity: l.quantity,
-            unitPrice: l.product.price,
-          })),
+    order = await withOrderNumberRetry((orderNumber) =>
+      prisma.order.create({
+        data: {
+          orderNumber,
+          userId: buyer.id,
+          recipientName: customer.recipientName,
+          recipientEmail: customer.recipientEmail,
+          recipientPhone: customer.recipientPhone,
+          address,
+          postcode,
+          deliveryDate: scheduledDate,
+          message: customer.message || "",
+          status: "PENDING",
+          totalAmount,
+          deliveryFee,
+          deliveryType: customer.deliveryType,
+          pickupLocation,
+          pickupTimeSlot,
+          deliveryWindow,
+          items: {
+            create: lineItems.map((l) => ({
+              productId: l.product.id,
+              quantity: l.quantity,
+              unitPrice: l.product.price,
+            })),
+          },
         },
-      },
-      select: { id: true },
-    });
+        select: { id: true },
+      }),
+    );
   }
 
   // ─── DEV-MODE BRANCH ──────────────────────────────────────────────────
